@@ -24,7 +24,7 @@ fun main() {
     //playWithStream() - 문제 외 스트림 함수 구현 부분
 }
 
-fun solveProblem(){
+fun solveProblem() {
     // 1. 2011년에 일어난 모든 트랙잭션을 찾아 값을 value 기준으로 오름차순으로 정리하시오
     println("[Problem 1]")
     transactions.filter { it.year == 2011 }//2011년 필터링
@@ -34,54 +34,54 @@ fun solveProblem(){
 
     // 2. 거래자가 근무하는 모든 도시를 중복 없이 나열하시오
     println("\n[Problem 2]")
-    transactions.map{ it.trader.city }//map: 컬렉션 내 인자를 다른 값으로 변경, city 값만 추가
+    transactions.map { it.trader.city }//map: 컬렉션 내 인자를 다른 값으로 변경, city 값만 추가
         .distinct()//중복 제거
         .forEach { println(it) }
 
     // 3. 케임브리지에서 근무하는 모든 거래자를 찾아서 이름순으로 정렬하시오
     println("\n[Problem 3]")
-    transactions.filter{ it.trader.city == "Cambridge" }
-        .map{ it.trader.name }
+    transactions.filter { it.trader.city == "Cambridge" }
+        .map { it.trader.name }
         .distinct()
         .sorted()
-        .forEach{ println(it) }
+        .forEach { println(it) }
 
     // 4. 모든 거래자의 이름을 알파벳순으로 정렬해서 반환하시오
     println("\n[Problem 4]")
-    transactions.map{it.trader.name}
+    transactions.map { it.trader.name }
         .distinct()
         .sorted()
         .forEach { println(it) }
 
     // 5. 밀라노에 거래자가 있는가?
     println("\n[Problem 5]")
-    println(transactions.any{ it.trader.city == "Milan"})//Milan에 거래자가 있으면 True 반
+    println(transactions.any { it.trader.city == "Milan" })//Milan에 거래자가 있으면 True 반
 
     // 6. 케임브리지에 근무하는 거래자의 모든 트랙잭션값을 출력하시오
     println("\n[Problem 6]")
-    transactions.filter{it.trader.city == "Cambridge"}
-        .forEach{ println(it) }
+    transactions.filter { it.trader.city == "Cambridge" }
+        .forEach { println(it) }
 
     // 7. 전체 트랜잭션 중 최댓값을 얼마인가?
     println("\n[Problem 7]")
-    println(transactions.maxOf{it.value})
+    println(transactions.maxOf { it.value })
 
     // 8. 전체 트랜잭션 중 최솟값은 얼마인가?
     println("\n[Problem 8]")
-    println(transactions.minOf{it.value})
+    println(transactions.minOf { it.value })
 }
 
-fun playWithStream(){
+fun playWithStream() {
     //take: 받은 인자 개수 만큼 앞에서부터 받은 인자로 이뤄진 리스트 반환
     println("\n[take]")
     transactions.take(2)
-        .forEach{println(it)}
+        .forEach { println(it) }
     println("\n[takeLast - 정렬은 작은 인스부터]")
     transactions.takeLast(3)
-        .forEach{println(it)}
+        .forEach { println(it) }
     println("\n[takeWhile]")
-    transactions.takeWhile{it.value <= 500}
-        .forEach{println(it)}
+    transactions.takeWhile { it.value <= 500 }
+        .forEach { println(it) }
     println("\n[takeLastWhile]")
     transactions.takeLastWhile { it.value >= 500 }
         .forEach { println(it) }
@@ -89,35 +89,35 @@ fun playWithStream(){
     //drop: take와 반대
     println("\n[drop]")
     transactions.drop(2)
-        .forEach{println(it)}
+        .forEach { println(it) }
     println("\n[dropLast]")
     transactions.dropLast(3)
-        .forEach{println(it)}
+        .forEach { println(it) }
 
     //distinctBy: 조건에 맞춰서 중복 제거
     println("\n[distinctBy]")
     transactions.distinctBy { it.trader.city }
-        .forEach{println(it)}
+        .forEach { println(it) }
 
     //None: any와 반대, 조건에 맞는게 없으면 True 아님 False
     println("\nis Milan None: ${transactions.none { it.trader.city == "Milan" }}")
     //first: 조건에 맞는 첫번째 인자 리턴
-    println("first over 500: ${transactions.first{it.value >= 500}}")
+    println("first over 500: ${transactions.first { it.value >= 500 }}")
     //last: 조건에 맞는 마지막 인자 리턴
-    println("last below 500: ${transactions.last{it.value <= 500}}")
+    println("last below 500: ${transactions.last { it.value <= 500 }}")
     //count: 조건에 맞는 인자 개수 리턴
     println("count over 500: ${transactions.count { it.value >= 500 }}")
     println()
 
-    val example = listOf(1,2,3,4,5)
-    val example2 = listOf(6,7,8,9,10)
+    val example = listOf(1, 2, 3, 4, 5)
+    val example2 = listOf(6, 7, 8, 9, 10)
     //reduce: 리스트의 수 식에 따라 합쳐서 리턴
-    println("reduce: ${example.reduce{acc, s -> acc + s}}")
+    println("reduce: ${example.reduce { acc, s -> acc + s }}")
     //fold: reduce랑 비슷한데 초기값 지정
-    println("fold: ${example.fold(100){acc, s -> acc + s}}")
+    println("fold: ${example.fold(100) { acc, s -> acc + s }}")
     //average: list의 평균
     println("average: ${example.average()}")
     //zip: 2개의 list를 pair 형태로 합치기
     println("zip: ${example.zip(example2)}")
-    println("zip: ${example.zip(example2){n1, n2 -> "$n1 !! $n2"}}")
+    println("zip: ${example.zip(example2) { n1, n2 -> "$n1 !! $n2" }}")
 }
