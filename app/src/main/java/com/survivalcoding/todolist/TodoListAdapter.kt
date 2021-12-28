@@ -42,12 +42,11 @@ class TodoListAdapter(private val items: List<SampleData>) : BaseAdapter() {
         // color checking when view (re)used
         if (items[position].isClick) holder.numberTextView.setBackgroundColor(Color.RED)
         else holder.numberTextView.setBackgroundColor(Color.TRANSPARENT)
+/*        else {
+            if ((holder.numberTextView.background as ColorDrawable).color == Color.RED)
+                holder.numberTextView.setBackgroundColor(Color.TRANSPARENT)
+        }*/
 
-
-/*        {
-        if (holder.numberTextView.background as ColorDrawable).color == Color.RED
-            holder.numberTextView.setBackgroundColor(Color.TRANSPARENT)
-            }*/
 
 
         return view
