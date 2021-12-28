@@ -1,12 +1,10 @@
 package com.survivalcoding.todolist
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-const val REQUEST_SELECT_CONTACT = 1
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,22 +12,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<TextView>(R.id.hello_text).setOnClickListener {
-            startActivityForResult(
-                Intent(this, AddTodoActivity::class.java),
-                REQUEST_SELECT_CONTACT
-            )
+        val data = (0..30).map { it.toString() }.toList()
+
+//        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
+        val adapter = MyFirstAdapter(data)
+
+        val listView = findViewById<ListView>(R.id.list_view)
+        listView.adapter = adapter
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            Toast.makeText(this, "$position 번째 아이템 선택 $id", Toast.LENGTH_SHORT).show()
+//            view.setBackgroundColor(Color.RED)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_SELECT_CONTACT && resultCode == RESULT_OK) {
-            if (data != null) {
-                val result = data.getStringExtra("result")
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }

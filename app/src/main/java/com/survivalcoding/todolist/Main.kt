@@ -1,15 +1,19 @@
 package com.survivalcoding.todolist
 
+data class Trader(val name: String, val city: String)
+
 fun main() {
-    print("hello World")
-    print("hello World")
+    val person = Person("홍길동", 10)
+    val person2 = Person("홍길동", 10)
 
-    var items = listOf(1, 2, 3, 4, 5)   // 변수
-    val items2 = listOf(1, 2, 3, 4, 5)   // 상수
+    val person3 = Person(person.name, person.age)
 
-    for (item in items) {
-        print(item)
-    }
+    val people = setOf(person, person2)
 
-    items.filter { it % 2 == 0 }.forEach(::print)
+    val trader = Trader("test", "test")
+    val trader2 = Trader("test", "test")
+
+    val trader3 = trader.copy(city = "suwon")
+
+    println(trader == trader2)
 }
