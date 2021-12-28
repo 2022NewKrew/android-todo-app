@@ -1,11 +1,12 @@
 package com.survivalcoding.todolist.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.add.AddActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         val fab = findViewById<FloatingActionButton>(R.id.main_fab_add)
         fab.setOnClickListener {
-            Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
         }
     }
 }

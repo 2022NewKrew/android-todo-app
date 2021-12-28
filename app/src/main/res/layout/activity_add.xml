@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.MainActivity">
+    tools:context=".add.AddActivity">
 
-    <ListView
-        android:id="@+id/main_lv_todo"
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@android:layout/simple_list_item_1" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/add_todo_hint"
+        android:importantForAutofill="no"
+        android:inputType="textImeMultiLine"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_fab_add"
+        android:id="@+id/add_fab_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:contentDescription="@string/main_add_button"
-        android:src="@drawable/ic_add"
+        android:contentDescription="@string/add_complete_button"
+        android:src="@drawable/ic_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
