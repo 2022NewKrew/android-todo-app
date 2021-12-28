@@ -15,7 +15,7 @@ fun main() {
     )
 
     //1
-    val ans1 = transactions.filter { it.year==2011 }.sortedBy { it.value }
+    val ans1 = transactions.filter { it.year == 2011 }.sortedBy { it.value }
     println(ans1)
 
     //2
@@ -29,7 +29,7 @@ fun main() {
     println(ans3)
 
     //4
-    val ans4 = transactions.distinctBy { it.trader.name }.map {it.trader.name}.sorted()
+    val ans4 = transactions.distinctBy { it.trader.name }.map { it.trader.name }.sorted()
     println(ans4)
 
     //5
