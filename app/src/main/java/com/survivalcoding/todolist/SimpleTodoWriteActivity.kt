@@ -2,9 +2,9 @@ package com.survivalcoding.todolist
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivitySimpleTodoWriteBinding
 
 class SimpleTodoWriteActivity : AppCompatActivity() {
