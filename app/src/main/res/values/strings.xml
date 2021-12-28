@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">todolist</string>
+    <string name="main_add_button">todo 추가 버튼</string>
+    <string name="add_complete_button">todo 작성 완료 버튼</string>
+    <string name="add_todo_hint">할 일을 입력하세요.</string>
 </resources>
