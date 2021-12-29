@@ -2,6 +2,7 @@ package com.survivalcoding.todolist.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.model.Todo
@@ -24,22 +25,24 @@ class MainActivity : AppCompatActivity() {
         val today: Calendar = Calendar.getInstance()
 
         //1~30 숫자를 매핑해서 Todo형의 list 작성
-        todos = (1..30).map{ num ->
+        todos = (1..30).map { num ->
             today.add(Calendar.DATE, 1)
-            Todo(num.toLong(),"# $num", today.timeInMillis, "${num}번째 내용입니다")
+            Todo(num.toLong(), "# $num", today.timeInMillis, "${num}번째 내용입니다")
         }
 
         val adapter = TodoListAdapter(todos)
-        val listView = binding.listView
-        listView.adapter = adapter
+        val recyclerView = binding.todoRecyclerView
+        recyclerView.adapter = adapter
+        // RecyclerView에 layoutManager 지정으로 설정 가능
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        //ItemClickListener를 지정
-        adapter.onItemClicked = { modify ->
-            todos = todos.toMutableList().map{ origin ->
-                if(origin.id == modify.id) origin.copy(isDone = !origin.isDone)
+        // ItemClickListener를 지정
+        adapter.onItemClicked = { modify, position ->
+            todos = todos.toMutableList().map { origin ->
+                if (origin.id == modify.id) origin.copy(isDone = !origin.isDone)
                 else origin
             }
-            adapter.submitTodos(todos)
+            adapter.submitTodos(todos, position)
         }
     }
 }
