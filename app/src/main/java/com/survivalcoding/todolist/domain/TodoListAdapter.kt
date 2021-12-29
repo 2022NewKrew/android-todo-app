@@ -11,24 +11,27 @@ import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.model.Todo
 
 class TodoListAdapter(
-    private var items: List<Todo>,
+    private val items: MutableList<Todo>,
     private val onItemClicked: (Int, TodoListAdapter) -> Unit
 ) :
     RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
     // view holder
-    inner class ViewHolder(private val binding: ItemTodoBinding) :
+    class ViewHolder(private val binding: ItemTodoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-
-        fun setItem(position: Int) {
-            val item = items[position]
+        fun setItem(
+            item: Todo,
+            position: Int,
+            onItemClicked: (Int, TodoListAdapter) -> Unit,
+            outerClass: TodoListAdapter
+        ) {
             binding.todoTextview.text = item.title
             if (item.isDone) binding.todoCardView.setBackgroundColor(Color.RED)
             else binding.todoCardView.setBackgroundColor(Color.TRANSPARENT)
 
             binding.todoTextview.setOnClickListener {
-                onItemClicked(position, this@TodoListAdapter)
+                onItemClicked(position, outerClass)
             }
         }
     }
@@ -42,14 +45,20 @@ class TodoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setItem(position)
+        holder.setItem(items[position], position, onItemClicked, this)
     }
 
     override fun getItemCount(): Int = items.size
 
+    fun setItem(_item: Todo, position: Int) {
+        items[position] = _item
+        notifyItemChanged(position)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    fun setItems(_items: List<Todo>) {
-        items = _items
+    fun setItems(_items: MutableList<Todo>) {
+        items.clear()
+        items.addAll(_items)
         notifyDataSetChanged()
     }
 }

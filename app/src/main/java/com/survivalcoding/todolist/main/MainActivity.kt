@@ -12,11 +12,17 @@ import com.survivalcoding.todolist.model.Todo
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var data: List<Todo> = (0..30).map { Todo(id = it.toLong(), title = "title $it") }
-
+    private val data: MutableList<Todo> =
+        (0..30).map { Todo(id = it.toLong(), title = "title $it") }.toMutableList()
     private val todoListAdapter = TodoListAdapter(data) { position, it ->
-        data[position].isDone = !data[position].isDone
-        it.setItems(data)
+        val newItem = Todo(
+            data[position].id,
+            title = "title ${data[position].id}",
+            isDone = !data[position].isDone
+        )
+        data[position] = newItem
+
+        it.setItem(newItem, position)
     }
 
 
@@ -40,8 +46,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.getParcelableArrayList<Todo>("todos")?.let {
-            data = it.toList()
-            todoListAdapter.setItems(data)
+            data.clear()
+            data.addAll(it)
+            todoListAdapter.setItems(it)
         }
         super.onRestoreInstanceState(savedInstanceState)
     }
