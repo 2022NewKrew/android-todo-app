@@ -3,12 +3,10 @@ package com.survivalcoding.todolist
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.survivalcoding.todolist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,13 +16,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private val todos = (1..30).map { Todo("Todo $it", "Content $it", 0L) }
+    private val todoListAdapter = TodoListAdapter(todos).apply { todos }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
+        binding.todoListRv.adapter = todoListAdapter
+
+        binding.fab.setOnClickListener {
             pingPongWriteActivity.launch(Intent(this, WriteActivity::class.java))
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        todoListAdapter.saveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        todoListAdapter.restoreInstanceState(savedInstanceState)
     }
 }
