@@ -1,8 +1,12 @@
 package com.survivalcoding.todolist.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.survivalcoding.todolist.add.AddActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.model.Todo
@@ -12,7 +16,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     /*
     ViewBinding: View랑 코드랑 바인딩한다
-    findViewById를 없애서 관련으로 nullexception 및 타입 관련 에러를 해결
+    findViewById를 없애서 관련으로 nullException 및 타입 관련 에러를 해결
      */
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -23,8 +27,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val today: Calendar = Calendar.getInstance()
 
+        //ResultLauncher 정의
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            if(result.resultCode == RESULT_OK){
+                val data = result.data
+                Toast.makeText(this, data!!.extras!!.getString("result"), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val today: Calendar = Calendar.getInstance()
         //회전하는 경우 번들에서 받으면 된다
         todos = if (savedInstanceState?.getParcelableArrayList<Todo>("todoList") != null) {
             savedInstanceState.getParcelableArrayList("todoList")!!
@@ -48,6 +60,13 @@ class MainActivity : AppCompatActivity() {
                 else origin
             }
             adapter.submitTodos(todos, position)
+        }
+
+        //Add Button을 통해 다른 액티비티로 이동
+        val addButton = binding.addButton
+        addButton.setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            resultLauncher.launch(intent)
         }
     }
 
