@@ -15,33 +15,47 @@ class MainActivity : AppCompatActivity() {
     }
     private var todoList: List<Todo> =
         (0..30).map { num -> Todo(id = num.toLong(), title = "할 일 $num") }.toList()
+    private val adapter by lazy {
+        TodoListAdapter().apply {
+            // 초기 데이터 설정
+            setItems(todoList)
+
+            // 클릭 리스너 설정
+            setItemClickListener { todo ->
+                todoList = todoList.toMutableList().map {
+                    if (it.id == todo.id) todo.copy(isDone = !todo.isDone)
+                    else it
+                }
+                setItems(todoList)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         // recyclerView 설정
-        val adapter = TodoListAdapter().apply {
-            // 초기 데이터 설정
-            setItems(todoList)
-
-            // 클릭 리스너 설정
-            setItemClickListener { todo ->
-                val newTodoList = todoList.toMutableList().map {
-                    if (it.id == todo.id) todo.copy(isDone = !todo.isDone)
-                    else it
-                }
-
-                todoList = newTodoList
-                setItems(todoList)
-            }
-        }
-
         binding.mainRvTodo.adapter = adapter
 
         binding.mainFabAdd.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        savedInstanceState.getParcelableArrayList<Todo>("data")?.toList()?.let {
+            todoList = it
+            adapter.setItems(todoList)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putParcelableArrayList("data", ArrayList(todoList))
     }
 }
