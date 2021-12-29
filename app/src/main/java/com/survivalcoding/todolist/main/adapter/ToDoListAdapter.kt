@@ -18,18 +18,7 @@ class ToDoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ToDoListHolder, position: Int) {
-        val currentTask = tasks[position]
-        holder.nameTextView.text = currentTask.taskName
-        holder.dateTextView.text = currentTask.date
-
-        if (currentTask.isDone)
-            holder.background.setBackgroundResource(R.drawable.shape_selected_to_do_item)
-        else
-            holder.background.setBackgroundResource(R.drawable.shape_to_do_item)
-
-        holder.itemView.setOnClickListener {
-            clickEvent(position, tasks[position])
-        }
+        holder.binding(position, tasks[position], clickEvent)
     }
 
     override fun getItemCount(): Int {
