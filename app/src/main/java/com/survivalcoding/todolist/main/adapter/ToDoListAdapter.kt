@@ -2,8 +2,10 @@ package com.survivalcoding.todolist.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.model.DiffUtilCallBack
 import com.survivalcoding.todolist.model.Task
 
 class ToDoListAdapter(
@@ -31,8 +33,10 @@ class ToDoListAdapter(
     }
 
     fun resetList(newTasks: List<Task>) {
-        tasks = newTasks
-        notifyDataSetChanged()
+        val diffCallBack = DiffUtilCallBack(tasks, newTasks)
+        val diffResult = DiffUtil.calculateDiff(diffCallBack)
+
+        tasks = newTasks.apply { diffResult.dispatchUpdatesTo(this@ToDoListAdapter) }
     }
 }
 

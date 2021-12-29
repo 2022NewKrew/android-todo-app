@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.add.AddListActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.main.adapter.ToDoListAdapter
@@ -61,6 +62,8 @@ class MainActivity : AppCompatActivity() {
             }
             submitItem(toDoList, position)
         }
+        // 스크롤 위치 저장
+        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
