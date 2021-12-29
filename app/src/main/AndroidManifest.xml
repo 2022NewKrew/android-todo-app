@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todolist">
         <activity
-            android:name=".SimpleTodoWriteActivity"
+            android:name="com.survivalcoding.todolist.write.SimpleTodoWriteActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.survivalcoding.todolist.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

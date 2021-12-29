@@ -1,30 +1,32 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.write
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.survivalcoding.todolist.data.TodoItem
 import com.survivalcoding.todolist.databinding.ActivitySimpleTodoWriteBinding
 
 class SimpleTodoWriteActivity : AppCompatActivity() {
-    private var mBinding: ActivitySimpleTodoWriteBinding? = null
-    private val binding get() = mBinding!!
+    private val binding by lazy {
+        ActivitySimpleTodoWriteBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mBinding = ActivitySimpleTodoWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val newID = intent.getIntExtra("newID", 0).toLong()
 
         binding.button.setOnClickListener {
-            val content = binding.editText.text.toString().trim()
+            val title = binding.editTextTitle.text.toString().trim()
+            val description = binding.editTextDescription.text.toString().trim()
 
-            if (content.length == 0) {
+            if (title.length == 0) {
                 Toast.makeText(this, "type todo content", Toast.LENGTH_SHORT).show()
             } else {
                 intent = Intent()
-                intent.putExtra("todo", content)
+                intent.putExtra("todo", TodoItem(id = newID, title = title, description = description))
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }

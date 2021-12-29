@@ -10,17 +10,11 @@ import android.widget.TextView
 class SimpleTodoAdapter(val items: List<String>) : BaseAdapter() {
     private val clickSet = mutableSetOf<Long>()
 
-    override fun getCount(): Int {
-        return items.size
-    }
+    override fun getCount() = items.size
 
-    override fun getItem(position: Int): Any {
-        return items[position]
-    }
+    override fun getItem(position: Int) = items[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int) = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -57,8 +51,7 @@ class SimpleTodoAdapter(val items: List<String>) : BaseAdapter() {
             view.setBackgroundColor(Color.WHITE)
         }
     }
-}
-
-class MyViewHolder {
-    lateinit var textView: TextView
+    class MyViewHolder {
+        lateinit var textView: TextView
+    }
 }
