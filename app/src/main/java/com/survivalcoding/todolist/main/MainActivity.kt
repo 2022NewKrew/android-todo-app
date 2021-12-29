@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener {
             val intent = Intent(this, SimpleTodoWriteActivity::class.java)
+            intent.putExtra("newID", data.size)
             getResult.launch(intent)
         }
     }
