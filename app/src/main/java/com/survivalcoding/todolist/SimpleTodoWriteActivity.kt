@@ -8,13 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivitySimpleTodoWriteBinding
 
 class SimpleTodoWriteActivity : AppCompatActivity() {
-    private var mBinding: ActivitySimpleTodoWriteBinding? = null
-    private val binding get() = mBinding!!
+    private val binding by lazy {
+        ActivitySimpleTodoWriteBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mBinding = ActivitySimpleTodoWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.button.setOnClickListener {
