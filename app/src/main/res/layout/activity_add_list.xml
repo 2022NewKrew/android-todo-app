@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/to_do_app_background_1"
-    tools:context=".AddListActivity">
+    tools:context=".add.AddListActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -13,10 +13,10 @@
         android:background="#66ffffff" />
 
     <TextView
-        android:id="@+id/appNameTextView"
+        android:id="@+id/addTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/tway_sky"
         android:text="이것도 해야지"
         android:textColor="@color/black"
@@ -25,6 +25,22 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 여기에 정보 입력 -->
+
+    <Button
+        android:id="@+id/addNewListButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_selected_to_do_item"
+        android:fontFamily="@font/hs_uji"
+        android:text="+ 작성 끝"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
