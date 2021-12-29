@@ -40,6 +40,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.listView.adapter = adapter
+
+        if (savedInstanceState != null) {
+            savedInstanceState.getParcelableArrayList<Todo>("todos")?.let {
+                todos = it
+                adapter.submitList(todos)
+            }
+        }
     }
 
     override fun onResume() {
@@ -57,6 +64,15 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
+        outState.putParcelableArrayList("todos", ArrayList(todos))
     }
+
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//
+//        savedInstanceState.getParcelableArrayList<Todo>("todos")?.let {
+//            todos = it
+//        }
+//    }
 
 }
