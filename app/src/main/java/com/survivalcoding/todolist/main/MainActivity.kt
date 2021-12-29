@@ -34,6 +34,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        if (savedInstanceState != null) {
+            val savedTodos = savedInstanceState.getParcelableArrayList<TodoItem>("todos")
+            if (savedTodos != null) {
+                data.removeAll { true }
+                savedTodos.forEach {
+                    data.add(it)
+                }
+            }
+        }
+
         val adapter = TodoAdapter(data) { id ->
             val newData =
                 data.filter { it.id == id }[0].copy(isDone = !data.filter { it.id == id }[0].isDone)
@@ -49,5 +59,10 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("newID", data.size)
             getResult.launch(intent)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("todos", ArrayList(data))
     }
 }
