@@ -1,9 +1,10 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.add
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.survivalcoding.todolist.R
 
 class AddTodoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
