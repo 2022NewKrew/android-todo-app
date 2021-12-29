@@ -10,24 +10,38 @@ import com.survivalcoding.todolist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private val pingPongWriteActivity = registerForActivityResult(StartActivityForResult()) { result ->
-        if(result.resultCode == Activity.RESULT_OK) {
-            Toast.makeText(this, "Result OK", Toast.LENGTH_SHORT).show()
-        }
+    companion object {
+        const val SAVED_TODOS_KEY = "saved_todos_key"
     }
+
+    private val pingPongWriteActivity =
+        registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Result OK", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val todos = (1..30).map { Todo("Todo $it", "Content $it", 0L) }
-    private val todoListAdapter = TodoListAdapter(todos).apply { todos }
+    private lateinit var todos: List<Todo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.todoListRv.adapter = todoListAdapter
+        todos = savedInstanceState?.getParcelableArrayList<Todo>(SAVED_TODOS_KEY)?.toList()
+            ?: (1..30).map { Todo("Todo $it", "Content $it", 0L, false) }
+
+        binding.todoListRv.adapter = TodoListAdapter(todos) { position ->
+            todos = todos.mapIndexed { index, todo ->
+                todo.copy(hasHighlight = if (position == index) !todo.hasHighlight else todo.hasHighlight)
+            }
+
+            todos
+        }
+
 
         binding.fab.setOnClickListener {
             pingPongWriteActivity.launch(Intent(this, WriteActivity::class.java))
@@ -36,11 +50,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        todoListAdapter.saveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        todoListAdapter.restoreInstanceState(savedInstanceState)
+        outState.putParcelableArrayList(SAVED_TODOS_KEY, ArrayList(todos))
     }
 }
