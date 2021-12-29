@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.main
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.model.Todo
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TodoListAdapter(private val items: MutableList<TodoList>) : BaseAdapter() {
+class TodoListAdapter(private val items: MutableList<Todo>) : BaseAdapter() {
     private val clickSet = mutableSetOf<Int>() // click 정보 저장
 
     override fun getCount(): Int {
         return items.size
     }
 
-    override fun getItem(position: Int): TodoList {
+    override fun getItem(position: Int): Todo {
         return items[position]
     }
 
@@ -28,10 +30,10 @@ class TodoListAdapter(private val items: MutableList<TodoList>) : BaseAdapter() 
         val view: View
         val holder: MyViewHolder
 
-        val tdl = getItem(position)
+        val toDoItem = getItem(position)
         if (convertView == null) {
             view =
-                LayoutInflater.from(parent!!.context).inflate(R.layout.item_todolist, parent, false)
+                LayoutInflater.from(parent!!.context).inflate(R.layout.item_todo, parent, false)
             holder = MyViewHolder()
 
             holder.titleText = view.findViewById(R.id.titleText)
@@ -42,9 +44,9 @@ class TodoListAdapter(private val items: MutableList<TodoList>) : BaseAdapter() 
             view = convertView
             holder = view.tag as MyViewHolder
         }
-        holder.titleText.text = tdl.title
-        holder.timeText.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(tdl.date)
-        holder.contentText.text = tdl.content
+        holder.titleText.text = toDoItem.title
+        holder.timeText.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(toDoItem.date)
+        holder.contentText.text = toDoItem.content
         if (position in clickSet) view.setBackgroundColor(Color.RED) else view.setBackgroundColor(
             Color.TRANSPARENT
         )

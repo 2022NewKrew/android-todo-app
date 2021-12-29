@@ -1,8 +1,11 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ListView
+import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.main.TodoListAdapter
+import com.survivalcoding.todolist.model.Todo
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -11,10 +14,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val today: Calendar = Calendar.getInstance()
 
-        val data = mutableListOf<TodoList>()
+        val data = mutableListOf<Todo>()
         for (i in 1..30) { // i에 따라 제목, 날짜, 내용을 다르게 적어서 추
             today.add(Calendar.DATE, 1)
-            data.add(TodoList("# $i", today.time, "${i}번째 내용입니다"))
+            data.add(Todo("# $i", today.timeInMillis, "${i}번째 내용입니다"))
         }
 
         val adapter = TodoListAdapter(data)
