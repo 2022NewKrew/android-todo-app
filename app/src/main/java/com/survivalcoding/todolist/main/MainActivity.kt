@@ -1,33 +1,45 @@
 package com.survivalcoding.todolist.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ListView
-import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.main.TodoListAdapter
+import androidx.appcompat.app.AppCompatActivity
+import com.survivalcoding.todolist.databinding.ActivityMainBinding
+import com.survivalcoding.todolist.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.model.Todo
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    /*
+    ViewBinding: View랑 코드랑 바인딩한다
+    findViewById를 없애서 관련으로 nullexception 및 타입 관련 에러를 해결
+     */
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    var todos = listOf<Todo>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         val today: Calendar = Calendar.getInstance()
 
-        val data = mutableListOf<Todo>()
-        for (i in 1..30) { // i에 따라 제목, 날짜, 내용을 다르게 적어서 추
+        //1~30 숫자를 매핑해서 Todo형의 list 작성
+        todos = (1..30).map{ num ->
             today.add(Calendar.DATE, 1)
-            data.add(Todo("# $i", today.timeInMillis, "${i}번째 내용입니다"))
+            Todo(num.toLong(),"# $num", today.timeInMillis, "${num}번째 내용입니다")
         }
 
-        val adapter = TodoListAdapter(data)
-        val listView = findViewById<ListView>(R.id.listView)
+        val adapter = TodoListAdapter(todos)
+        val listView = binding.listView
         listView.adapter = adapter
 
-        listView.setOnItemClickListener { parent, view, position, _ ->
-            adapter.setClicked(position)
-            adapter.getView(position, view, parent) // 하나의 뷰만 반응하게
-            // adapter.notifyDataSetChanged() // 전체 리셋
+        //ItemClickListener를 지정
+        adapter.onItemClicked = { modify ->
+            todos = todos.toMutableList().map{ origin ->
+                if(origin.id == modify.id) origin.copy(isDone = !origin.isDone)
+                else origin
+            }
+            adapter.submitTodos(todos)
         }
     }
 }
