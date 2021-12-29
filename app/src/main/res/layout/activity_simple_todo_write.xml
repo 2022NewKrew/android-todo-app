@@ -8,22 +8,23 @@
 
     <EditText
         android:id="@+id/editTextTitle"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="TITLE"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/editTextDescription"
-        app:layout_constraintTop_toBottomOf="@id/editTextTitle"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="DESCRIPTION"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toBottomOf="@id/editTextTitle" />
 
     <Button
         android:id="@+id/button"
-        app:layout_constraintTop_toBottomOf="@id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="submit"/>
+        android:text="submit"
+        app:layout_constraintTop_toBottomOf="@id/editTextDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
