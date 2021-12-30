@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.domain
+package com.survivalcoding.todolist.znotused
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.entity.Todo
 
-class TodoListAdapter(private val items: MutableList<Todo>) :
-    RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
+class TodoRecyclerAdapter(private val items: MutableList<Todo>) :
+    RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>() {
 
     var onItemClicked: (Int) -> Unit = { _ -> }
 

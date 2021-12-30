@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.model
+package com.survivalcoding.todolist.domain.entity
 
 
 import android.os.Parcelable
