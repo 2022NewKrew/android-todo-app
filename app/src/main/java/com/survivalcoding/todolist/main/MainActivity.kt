@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             )
         }.toList()
 
-        val adapter = TodoListAdapter(todos)
+        val adapter = TodoListAdapter()
         adapter.onItemClicked = { todo ->
             todos = todos.toMutableList().map {
                 if (it.id == todo.id) {
@@ -39,14 +39,15 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(todos)
         }
 
-        binding.listView.adapter = adapter
+        binding.todoRecyclerView.adapter = adapter
 
         if (savedInstanceState != null) {
             savedInstanceState.getParcelableArrayList<Todo>("todos")?.let {
                 todos = it
-                adapter.submitList(todos)
             }
         }
+
+        adapter.submitList(todos)
     }
 
     override fun onResume() {

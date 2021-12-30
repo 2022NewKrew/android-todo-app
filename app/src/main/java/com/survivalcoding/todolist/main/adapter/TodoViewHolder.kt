@@ -3,6 +3,7 @@ package com.survivalcoding.todolist.main.adapter
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.model.Todo
@@ -10,15 +11,11 @@ import com.survivalcoding.todolist.model.Todo
 class TodoViewHolder(
     parent: ViewGroup,
     val onItemClicked: (Todo) -> Unit,
+) : RecyclerView.ViewHolder(
+    LayoutInflater.from(parent.context)
+        .inflate(R.layout.item_todo, parent, false)
 ) {
-    val binding = ItemTodoBinding.bind(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_todo, parent, false)
-    )
-
-    init {
-        binding.root.tag = this
-    }
+    private val binding = ItemTodoBinding.bind(itemView)
 
     fun bind(todo: Todo) {
         binding.titleTextView.text = todo.title
@@ -30,7 +27,7 @@ class TodoViewHolder(
         }
 
         binding.root.setOnClickListener {
-          onItemClicked(todo)
+            onItemClicked(todo)
         }
     }
 }
