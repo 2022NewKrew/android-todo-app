@@ -4,15 +4,8 @@ import com.survivalcoding.todolist.ToDo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class ToDoMockDataSource : ToDoLocalDataSource {
-    private val _toDoList = MutableStateFlow(
-        (0L..30L).map {
-            ToDo(
-                id = it,
-                title = "To Do List 만들기 $it"
-            )
-        }
-    )
+class ToDoInMemoryDataSource() : ToDoLocalDataSource {
+    private val _toDoList = MutableStateFlow<List<ToDo>>(listOf())
     override val toDoList = _toDoList.asStateFlow()
 
     override fun updateItem(id: Long, newItem: ToDo) {

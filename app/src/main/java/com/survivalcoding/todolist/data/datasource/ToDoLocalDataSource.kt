@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.StateFlow
 interface ToDoLocalDataSource {
     val toDoList: StateFlow<List<ToDo>>
 
-    fun updateItem(position: Int, newItem: ToDo)
-    fun deleteItem(position: Int)
+    fun updateItem(id: Long, newItem: ToDo)
+    fun deleteItem(id: Long)
 }
