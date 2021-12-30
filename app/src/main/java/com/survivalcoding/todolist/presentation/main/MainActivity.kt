@@ -1,32 +1,29 @@
-package com.survivalcoding.todolist.main
+package com.survivalcoding.todolist.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.survivalcoding.todolist.add.AddActivity
+import com.survivalcoding.todolist.data.TodoRepository
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.presentation.add.AddActivity
+import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainActivity : AppCompatActivity() {
 
+    private val repository = TodoRepository()
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private var todoList: List<Todo> =
-        (0..30).map { num -> Todo(id = num.toLong(), title = "할 일 $num") }.toList()
     private val adapter by lazy {
         TodoListAdapter().apply {
             // 초기 데이터 설정
-            this.submitList(todoList)
+            submitList(repository.todoList)
 
             // 클릭 리스너 설정
             itemClickListener = { todo ->
-                todoList = todoList.toMutableList().map {
-                    if (it.id == todo.id) todo.copy(isDone = !todo.isDone)
-                    else it
-                }
-                this.submitList(todoList)
+                repository.updateList(todo)
+                submitList(repository.todoList)
             }
         }
     }
@@ -48,14 +45,14 @@ class MainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
 
         savedInstanceState.getParcelableArrayList<Todo>("data")?.toList()?.let {
-            todoList = it
-            adapter.submitList(todoList)
+            repository.todoList = it
+            adapter.submitList(repository.todoList)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putParcelableArrayList("data", ArrayList(todoList))
+        outState.putParcelableArrayList("data", ArrayList(repository.todoList))
     }
 }
