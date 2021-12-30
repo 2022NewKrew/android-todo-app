@@ -13,10 +13,12 @@ class ToDoViewHolder private constructor(
 
     fun bind(
         toDo: ToDo,
-        onItemCheckedChanged: (ToDo, Boolean) -> Unit
+        onItemCheckedChanged: (ToDo, Boolean) -> Unit,
+        onDeleteButtonClick: (ToDo) -> Unit
     ) {
         bindTextView(toDo)
         bindCheckBox(toDo, onItemCheckedChanged)
+        bindDeleteButton(toDo, onDeleteButtonClick)
     }
 
     private fun bindTextView(toDo: ToDo) {
@@ -35,6 +37,15 @@ class ToDoViewHolder private constructor(
         binding.checkBox.isChecked = toDo.isDone
         binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             onItemCheckedChanged(toDo, isChecked)
+        }
+    }
+
+    private fun bindDeleteButton(
+        toDo: ToDo,
+        onDeleteButtonClick: (ToDo) -> Unit
+    ) {
+        binding.deleteButton.setOnClickListener {
+            onDeleteButtonClick(toDo)
         }
     }
 

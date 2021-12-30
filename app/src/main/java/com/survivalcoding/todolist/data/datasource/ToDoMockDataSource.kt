@@ -24,4 +24,10 @@ class ToDoMockDataSource : ToDoLocalDataSource {
             }
         }
     }
+
+    override fun deleteItem(position: Int) {
+        _toDoList.value = _toDoList.value.filterIndexed { index, _ ->
+            index != position
+        }
+    }
 }

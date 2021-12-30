@@ -13,4 +13,8 @@ class MainViewModel : ViewModel() {
     fun changeDoneState(toDo: ToDo, isDone: Boolean) {
         toDoRepository.updateItem(toDoList.value.indexOf(toDo), toDo.copy(isDone = isDone))
     }
+
+    fun deleteToDo(toDo: ToDo) {
+        toDoRepository.deleteItem(toDoList.value.indexOf(toDo))
+    }
 }

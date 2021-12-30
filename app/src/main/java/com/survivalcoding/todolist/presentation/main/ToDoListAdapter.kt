@@ -6,10 +6,11 @@ import com.survivalcoding.todolist.ToDo
 
 class ToDoListAdapter(
     private val onItemCheckedChanged: (ToDo, Boolean) -> Unit,
+    private val onDeleteButtonClick: (ToDo) -> Unit
 ) : ListAdapter<ToDo, ToDoViewHolder>(ToDoDiffUtilItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ToDoViewHolder.from(parent)
 
     override fun onBindViewHolder(holder: ToDoViewHolder, position: Int): Unit =
-        holder.bind(getItem(position), onItemCheckedChanged)
+        holder.bind(getItem(position), onItemCheckedChanged, onDeleteButtonClick)
 }

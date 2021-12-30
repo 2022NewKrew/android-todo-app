@@ -20,7 +20,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val adapter: ToDoListAdapter by lazy {
-        ToDoListAdapter(onItemCheckedChanged = viewModel::changeDoneState)
+        ToDoListAdapter(
+            onItemCheckedChanged = viewModel::changeDoneState,
+            onDeleteButtonClick = viewModel::deleteToDo
+        )
     }
 
 
