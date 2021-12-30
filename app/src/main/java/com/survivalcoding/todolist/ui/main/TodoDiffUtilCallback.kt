@@ -1,7 +1,7 @@
 package com.survivalcoding.todolist.ui.main
 
 import androidx.recyclerview.widget.DiffUtil
-import com.survivalcoding.todolist.model.TodoItem
+import com.survivalcoding.todolist.data.model.TodoItem
 
 object TodoDiffUtilCallback : DiffUtil.ItemCallback<TodoItem>() {
     override fun areItemsTheSame(oldItem: TodoItem, newItem: TodoItem) = oldItem.id == newItem.id

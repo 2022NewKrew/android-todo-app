@@ -7,7 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.model.TodoItem
+import com.survivalcoding.todolist.data.model.TodoItem
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity.Companion.NEW_TODO
 
