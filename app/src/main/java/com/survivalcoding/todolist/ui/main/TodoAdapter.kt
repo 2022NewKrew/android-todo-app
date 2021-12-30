@@ -1,9 +1,9 @@
-package com.survivalcoding.todolist.main
+package com.survivalcoding.todolist.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.survivalcoding.todolist.data.TodoItem
+import com.survivalcoding.todolist.model.TodoItem
 import com.survivalcoding.todolist.databinding.TodoListItemBinding
 
 class TodoAdapter(
