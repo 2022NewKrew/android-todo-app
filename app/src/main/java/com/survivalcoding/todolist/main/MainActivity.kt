@@ -38,9 +38,7 @@ class MainActivity : AppCompatActivity() {
             val savedTodos = savedInstanceState.getParcelableArrayList<TodoItem>("todos")
             if (savedTodos != null) {
                 data.removeAll { true }
-                savedTodos.forEach {
-                    data.add(it)
-                }
+                savedTodos.addAll(data)
             }
         }
 

@@ -7,7 +7,7 @@ import com.survivalcoding.todolist.data.TodoItem
 import com.survivalcoding.todolist.databinding.TodoListItemBinding
 
 class TodoAdapter(
-    var data: MutableList<TodoItem>, val checkChanged: (Long) -> Unit
+    var data: List<TodoItem>, val checkChanged: (Long) -> Unit
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
     inner class TodoViewHolder(val binding: TodoListItemBinding) :
