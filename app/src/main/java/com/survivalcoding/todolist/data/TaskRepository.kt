@@ -2,8 +2,7 @@ package com.survivalcoding.todolist.data
 
 import com.survivalcoding.todolist.model.Task
 
-class TaskRepository {
-    // 해야 할 일 저장하는 리스트
+object TaskRepository {
     var tasks = listOf<Task>()
 //    ArrayList<Task>().apply
 //    {

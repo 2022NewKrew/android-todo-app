@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val mainViewModel by viewModels<MainViewModel>()
     private val actForAddActivityResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { mainViewModel.actForAddActivityResult(it, binding.toDoListView.layoutManager) }
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            mainViewModel.actForAddActivityResult(it, binding.toDoListView.layoutManager)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

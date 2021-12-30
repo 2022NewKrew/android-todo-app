@@ -26,6 +26,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- 여기에 정보 입력 -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addDataSet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addTitleText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/taskNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hs_uji"
+            android:hint="할 일 입력하기"
+            android:inputType="text"
+            android:textSize="20sp"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/addNewListButton"
