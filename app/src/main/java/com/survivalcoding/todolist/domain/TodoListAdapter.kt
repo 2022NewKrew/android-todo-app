@@ -3,35 +3,31 @@ package com.survivalcoding.todolist.domain
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.model.Todo
 
-class TodoListAdapter(
-    private val items: MutableList<Todo>,
-    private val onItemClicked: (Int, TodoListAdapter) -> Unit
-) :
+class TodoListAdapter(private val items: MutableList<Todo>) :
     RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
-    // view holder
-    class ViewHolder(private val binding: ItemTodoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    var onItemClicked: (Int) -> Unit = { _ -> }
 
-        fun setItem(
+    // view holder
+    class ViewHolder(private val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(
             item: Todo,
             position: Int,
-            onItemClicked: (Int, TodoListAdapter) -> Unit,
-            outerClass: TodoListAdapter
+            onItemClicked: (Int) -> Unit,
         ) {
             binding.todoTextview.text = item.title
             if (item.isDone) binding.todoCardView.setBackgroundColor(Color.RED)
             else binding.todoCardView.setBackgroundColor(Color.TRANSPARENT)
 
             binding.todoTextview.setOnClickListener {
-                onItemClicked(position, outerClass)
+                onItemClicked(position)
             }
         }
     }
@@ -45,7 +41,7 @@ class TodoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setItem(items[position], position, onItemClicked, this)
+        holder.bind(items[position], position, onItemClicked)
     }
 
     override fun getItemCount(): Int = items.size

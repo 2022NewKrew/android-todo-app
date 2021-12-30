@@ -14,16 +14,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val data: MutableList<Todo> =
         (0..30).map { Todo(id = it.toLong(), title = "title $it") }.toMutableList()
-    private val todoListAdapter = TodoListAdapter(data) { position, it ->
-        val newItem = Todo(
-            data[position].id,
-            title = "title ${data[position].id}",
-            isDone = !data[position].isDone
-        )
-        data[position] = newItem
-
-        it.setItem(newItem, position)
+    private val todoListAdapter = TodoListAdapter(data).apply {
+        // listener 를 생성자에서 생성하지 않고 개별적으로 생성
+        onItemClicked = { position ->
+            val newItem = Todo(
+                data[position].id,
+                title = "title ${data[position].id}",
+                isDone = !data[position].isDone
+            )
+            data[position] = newItem
+            setItem(newItem, position)
+        }
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
