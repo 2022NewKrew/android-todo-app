@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.add
+package com.survivalcoding.todolist.presentation.add
 
 import android.app.Activity
 import android.content.Intent

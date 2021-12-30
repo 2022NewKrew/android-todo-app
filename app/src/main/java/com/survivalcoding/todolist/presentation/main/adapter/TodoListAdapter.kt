@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.main.adapter
+package com.survivalcoding.todolist.presentation.main.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
