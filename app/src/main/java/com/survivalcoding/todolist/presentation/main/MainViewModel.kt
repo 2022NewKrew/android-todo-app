@@ -11,4 +11,8 @@ class MainViewModel: ViewModel() {
     fun updateList(todo: Todo) {
         repository.updateList(todo)
     }
+
+    fun addItem(todo: Todo) {
+        repository.addItem(todo)
+    }
 }

@@ -2,7 +2,6 @@ package com.survivalcoding.todolist.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -32,9 +31,11 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // 작성하기 화면에서 돌아왔을 때
             if (it.resultCode == RESULT_OK && it.data != null) {
-                val todo = it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
-                // TODO 리스트에 추가하기
-                Toast.makeText(this, todo?.title, Toast.LENGTH_SHORT).show()
+                it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
+                    ?.let { todo ->
+                        viewModel.addItem(todo)
+                        adapter.submitList(viewModel.todoList)
+                    }
             }
         }
 

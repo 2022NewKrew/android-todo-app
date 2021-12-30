@@ -12,4 +12,10 @@ class TodoRepository {
             else it
         }
     }
+
+    fun addItem(todo: Todo) {
+        val newList = todoList.toMutableList()
+        newList.add(todo)
+        todoList = newList.toList()
+    }
 }
