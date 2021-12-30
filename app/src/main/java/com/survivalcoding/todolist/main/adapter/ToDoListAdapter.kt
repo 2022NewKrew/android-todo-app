@@ -2,10 +2,8 @@ package com.survivalcoding.todolist.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.model.DiffUtilCallBack
 import com.survivalcoding.todolist.model.Task
 
 class ToDoListAdapter(
@@ -27,16 +25,15 @@ class ToDoListAdapter(
         return tasks.size
     }
 
-    fun submitItem(newTasks: List<Task>, position: Int) {
+    fun submitItem(newTasks: List<Task>, position: Int? = null) {
+//        val diffCallBack = DiffUtilCallBack(tasks, newTasks)
+//        val diffResult = DiffUtil.calculateDiff(diffCallBack)
+//
+//        tasks = newTasks.apply { diffResult.dispatchUpdatesTo(this@ToDoListAdapter) }
         tasks = newTasks
-        notifyItemChanged(position)
-    }
-
-    fun resetList(newTasks: List<Task>) {
-        val diffCallBack = DiffUtilCallBack(tasks, newTasks)
-        val diffResult = DiffUtil.calculateDiff(diffCallBack)
-
-        tasks = newTasks.apply { diffResult.dispatchUpdatesTo(this@ToDoListAdapter) }
+        position?.let {
+            notifyItemChanged(position)
+        } ?: notifyItemRangeChanged(0, itemCount)
     }
 }
 

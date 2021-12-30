@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     // StartActivityForResult -> 요청한 인텐트로 액티비티를 실행하고, 액티비티 결과를 ActivityResult 로 반환한다.
     private val preContractStartActivityResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { a_result ->
-            if (a_result.resultCode == Activity.RESULT_OK) {
-                a_result.data?.getParcelableExtra<Task>("task")?.let {
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.getParcelableExtra<Task>("task")?.let {
                     toDoList = toDoList.toMutableList().apply { this.add(0, it) }
-                    adapter.resetList(toDoList)
+                    adapter.submitItem(toDoList)
                 }
             }
         }
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState.getParcelableArrayList<Task>("tasks")?.let {
             toDoList = it.toList()
-            adapter.resetList(toDoList)
+            adapter.submitItem(toDoList)
         }
     }
 
