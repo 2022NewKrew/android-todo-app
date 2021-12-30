@@ -8,4 +8,5 @@ interface ToDoLocalDataSource {
 
     fun updateItem(id: Long, newItem: ToDo)
     fun deleteItem(id: Long)
+    fun addItem(newItem: ToDo)
 }

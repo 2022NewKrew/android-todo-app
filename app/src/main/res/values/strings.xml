@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">todolist</string>
     <string name="delete">delete</string>
+    <string name="save">save</string>
+    <string name="create">create</string>
 </resources>

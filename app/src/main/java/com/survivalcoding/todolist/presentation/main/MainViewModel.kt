@@ -17,4 +17,8 @@ class MainViewModel : ViewModel() {
     fun deleteToDo(toDo: ToDo) {
         toDoRepository.deleteItem(toDo.id)
     }
+
+    fun addToDo(toDo: ToDo) {
+        toDoRepository.addItem(toDo)
+    }
 }

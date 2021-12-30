@@ -23,4 +23,9 @@ class ToDoInMemoryDataSource() : ToDoLocalDataSource {
             toDo.id != id
         }
     }
+
+    override fun addItem(newItem: ToDo) {
+        val tmpToDoList = _toDoList.value.toMutableList().apply { add(newItem) }
+        _toDoList.value = tmpToDoList
+    }
 }
