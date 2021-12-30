@@ -1,10 +1,9 @@
 package com.survivalcoding.todolist.presentation.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.survivalcoding.todolist.data.TodoRepository
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.model.Todo
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 
@@ -14,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val todoRepository = TodoRepository()
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,45 +21,13 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = TodoListAdapter()
         adapter.onItemClicked = { todo ->
-            todoRepository.updateTodo(todo)
-            adapter.submitList(todoRepository.todos)
+            viewModel.toggleTodo(todo)
+            adapter.submitList(viewModel.todos)
         }
 
         binding.todoRecyclerView.adapter = adapter
 
-        if (savedInstanceState != null) {
-            savedInstanceState.getParcelableArrayList<Todo>("todos")?.let {
-                todoRepository.todos = it
-            }
-        }
-
-        adapter.submitList(todoRepository.todos)
+        adapter.submitList(viewModel.todos)
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putParcelableArrayList("todos", ArrayList(todoRepository.todos))
-    }
-
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//
-//        savedInstanceState.getParcelableArrayList<Todo>("todos")?.let {
-//            todos = it
-//        }
-//    }
 
 }
