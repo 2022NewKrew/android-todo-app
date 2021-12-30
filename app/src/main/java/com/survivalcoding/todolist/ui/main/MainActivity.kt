@@ -6,8 +6,9 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.data.model.TodoItem
+import com.survivalcoding.todolist.data.repository.TodoRepository
+import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity.Companion.NEW_TODO
 
@@ -28,27 +29,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    private val data = (1..30.toLong()).map {
-        TodoItem(
-            id = it,
-            title = "title ${it.toInt()}",
-            description = "description of task # ${it.toInt()}"
-        )
-    }.toMutableList()
+    private val data = TodoRepository.data
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         savedInstanceState?.getParcelableArrayList<TodoItem>(SAVED_TODOS)?.let {
-            data.removeAll { true }
-            data.addAll(it)
+            TodoRepository.removeAllData()
+            TodoRepository.addAllData(it)
         }
 
         val adapter = TodoAdapter { id ->
+            val prevData = TodoRepository.findDataById(id)
             val newData =
-                data.filter { it.id == id }[0].copy(isDone = !data.filter { it.id == id }[0].isDone)
-            data[data.indexOf(data.filter { it.id == id }[0])] = newData
+                prevData.copy(isDone = !prevData.isDone)
+            TodoRepository.updateDataByIndex(data.indexOf(prevData), newData)
         }
 
         adapter.submitList(data)

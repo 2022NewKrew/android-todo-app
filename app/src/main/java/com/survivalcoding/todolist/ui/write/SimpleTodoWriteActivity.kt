@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.survivalcoding.todolist.databinding.ActivitySimpleTodoWriteBinding
 import com.survivalcoding.todolist.data.model.TodoItem
+import com.survivalcoding.todolist.databinding.ActivitySimpleTodoWriteBinding
 import com.survivalcoding.todolist.ui.main.MainActivity.Companion.NEW_ID
 
 class SimpleTodoWriteActivity : AppCompatActivity() {
