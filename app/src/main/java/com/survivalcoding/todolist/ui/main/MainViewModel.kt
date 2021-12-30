@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
     private val tasks get() = taskRepository.tasks
 
     // 리사이클러뷰 어댑터
-    val adapter = ToDoListAdapter(tasks).apply {
+    val adapter = ToDoListAdapter().apply {
         clickEvent = { id ->
             toggleTask(id)
         }

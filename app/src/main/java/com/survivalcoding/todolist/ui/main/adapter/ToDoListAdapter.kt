@@ -4,9 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.survivalcoding.todolist.model.Task
 
-class ToDoListAdapter(
-    private var tasks: List<Task>,
-) : ListAdapter<Task, ToDoListHolder>(DiffUtilCallBack) {
+class ToDoListAdapter() : ListAdapter<Task, ToDoListHolder>(DiffUtilCallBack) {
     var clickEvent: (id: Long) -> Unit = { }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoListHolder {
