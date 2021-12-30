@@ -4,10 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.data.model.TodoItem
-import com.survivalcoding.todolist.data.repository.TodoRepository
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity.Companion.NEW_TODO
@@ -21,45 +20,34 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
     private val getResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 it.data?.getParcelableExtra<TodoItem>(NEW_TODO)
-                    ?.let { content -> data.add(content) }
+                    ?.let { content -> viewModel.data.add(content) }
             }
         }
 
-    private val data = TodoRepository.data
+    private val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         savedInstanceState?.getParcelableArrayList<TodoItem>(SAVED_TODOS)?.let {
-            TodoRepository.removeAllData()
-            TodoRepository.addAllData(it)
+            viewModel.setTodos(it)
         }
 
-        val adapter = TodoAdapter { id ->
-            val prevData = TodoRepository.findDataById(id)
-            val newData =
-                prevData.copy(isDone = !prevData.isDone)
-            TodoRepository.updateDataByIndex(data.indexOf(prevData), newData)
-        }
+        val adapter = TodoAdapter(viewModel::toggleTodoDone)
 
-        adapter.submitList(data)
-        binding.recyclerViewTodoList.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewTodoList.adapter = adapter
+        adapter.submitList(viewModel.data)
 
         binding.fab.setOnClickListener {
             val intent = Intent(this, SimpleTodoWriteActivity::class.java)
-            intent.putExtra(NEW_ID, data.size)
+            intent.putExtra(NEW_ID, viewModel.data.size)
             getResult.launch(intent)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(SAVED_TODOS, ArrayList(data))
     }
 }

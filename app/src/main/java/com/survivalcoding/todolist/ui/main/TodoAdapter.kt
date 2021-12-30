@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.survivalcoding.todolist.databinding.TodoListItemBinding
 import com.survivalcoding.todolist.data.model.TodoItem
+import com.survivalcoding.todolist.databinding.TodoListItemBinding
 
 class TodoAdapter(
     private val checkChanged: (Long) -> Unit
