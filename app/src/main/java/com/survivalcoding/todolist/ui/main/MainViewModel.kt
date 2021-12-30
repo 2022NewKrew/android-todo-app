@@ -14,4 +14,8 @@ class MainViewModel : ViewModel() {
         todoRepository.upDateIsDone(position)
     }
 
+    fun addTodo(title: String){
+        todoRepository.insertTodo(title)
+    }
+
 }
