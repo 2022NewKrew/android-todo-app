@@ -10,7 +10,7 @@ class TodoAdapter(
     var data: List<TodoItem>, val checkChanged: (Long) -> Unit
 ) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
 
-    inner class TodoViewHolder(val binding: TodoListItemBinding) :
+    class TodoViewHolder(val binding: TodoListItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
