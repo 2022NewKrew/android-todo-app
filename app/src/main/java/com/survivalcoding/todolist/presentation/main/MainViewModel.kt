@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation
+package com.survivalcoding.todolist.presentation.main
 
 import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.data.TodoRepository

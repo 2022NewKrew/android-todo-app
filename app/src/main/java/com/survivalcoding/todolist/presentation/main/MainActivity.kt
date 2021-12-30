@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.main
+package com.survivalcoding.todolist.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.survivalcoding.todolist.add.AddActivity
+import com.survivalcoding.todolist.presentation.add.AddActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.main.adapter.TodoListAdapter
-import com.survivalcoding.todolist.presentation.MainViewModel
+import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainActivity : AppCompatActivity() {
     /*
