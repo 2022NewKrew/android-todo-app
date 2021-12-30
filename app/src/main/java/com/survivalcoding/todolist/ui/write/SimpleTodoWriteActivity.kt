@@ -5,14 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.survivalcoding.todolist.model.TodoItem
 import com.survivalcoding.todolist.databinding.ActivitySimpleTodoWriteBinding
+import com.survivalcoding.todolist.model.TodoItem
 import com.survivalcoding.todolist.ui.main.MainActivity.Companion.NEW_ID
 
 class SimpleTodoWriteActivity : AppCompatActivity() {
     companion object {
         const val NEW_TODO = "newTodo"
     }
+
     private val binding by lazy {
         ActivitySimpleTodoWriteBinding.inflate(layoutInflater)
     }
@@ -30,7 +31,10 @@ class SimpleTodoWriteActivity : AppCompatActivity() {
                 Toast.makeText(this, "type todo content", Toast.LENGTH_SHORT).show()
             } else {
                 intent = Intent()
-                intent.putExtra(NEW_TODO, TodoItem(id = newID, title = title, description = description))
+                intent.putExtra(
+                    NEW_TODO,
+                    TodoItem(id = newID, title = title, description = description)
+                )
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }

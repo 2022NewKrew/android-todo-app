@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.survivalcoding.todolist.model.TodoItem
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
+import com.survivalcoding.todolist.model.TodoItem
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity.Companion.NEW_TODO
 
@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         private const val SAVED_TODOS = "todos"
         const val NEW_ID = "newID"
     }
+
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -40,18 +41,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         savedInstanceState?.getParcelableArrayList<TodoItem>(SAVED_TODOS)?.let {
-            data.removeAll {true}
+            data.removeAll { true }
             data.addAll(it)
         }
 
-        val adapter = TodoAdapter(data) { id ->
+        val adapter = TodoAdapter { id ->
             val newData =
                 data.filter { it.id == id }[0].copy(isDone = !data.filter { it.id == id }[0].isDone)
             data[data.indexOf(data.filter { it.id == id }[0])] = newData
         }
 
-        binding.recyclerViewTodoList.layoutManager =
-            LinearLayoutManager(this)
+        adapter.submitList(data)
+        binding.recyclerViewTodoList.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewTodoList.adapter = adapter
 
         binding.fab.setOnClickListener {
