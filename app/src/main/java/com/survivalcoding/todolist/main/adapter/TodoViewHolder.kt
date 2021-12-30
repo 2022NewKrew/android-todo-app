@@ -13,7 +13,7 @@ import java.util.*
 
 class TodoViewHolder(
     itemView: View,
-    val onItemClicked: (Todo, Int) -> Unit
+    val onItemClicked: (Todo) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ItemTodoBinding.bind(itemView)
 
@@ -26,7 +26,7 @@ class TodoViewHolder(
         else binding.root.setBackgroundColor(Color.TRANSPARENT)
 
         itemView.setOnClickListener {
-            onItemClicked(todo, adapterPosition)
+            onItemClicked(todo)
         }
     }
 }

@@ -47,20 +47,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = TodoListAdapter(todos)
+        val adapter = TodoListAdapter()
         val recyclerView = binding.todoRecyclerView
         recyclerView.adapter = adapter
         // RecyclerView에 layoutManager 지정으로 설정 가능
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // ItemClickListener를 지정
-        adapter.onItemClicked = { modify, position ->
+        adapter.onItemClicked = { modify ->
             todos = todos.toMutableList().map { origin ->
                 if (origin.id == modify.id) origin.copy(isDone = !origin.isDone)
                 else origin
             }
-            adapter.submitTodos(todos, position)
+            adapter.submitList(todos)
         }
+
+        adapter.submitList(todos)
 
         //Add Button을 통해 다른 액티비티로 이동
         val addButton = binding.addButton
