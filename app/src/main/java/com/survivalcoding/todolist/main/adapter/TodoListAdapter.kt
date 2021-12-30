@@ -1,11 +1,8 @@
 package com.survivalcoding.todolist.main.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.model.Todo
 

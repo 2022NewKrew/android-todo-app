@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.add.AddActivity
+import com.survivalcoding.todolist.data.TodoRepository
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.model.Todo
@@ -22,7 +23,9 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    var todos = listOf<Todo>()
+    private val todoRepository = TodoRepository()
+    private val adapter = TodoListAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,18 +39,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val today: Calendar = Calendar.getInstance()
-        //회전하는 경우 번들에서 받으면 된다
-        todos = if (savedInstanceState?.getParcelableArrayList<Todo>("todoList") != null) {
-            savedInstanceState.getParcelableArrayList("todoList")!!
-        } else { // 처음 받을 시 1~30 숫자를 매핑해서 Todo형의 list 작성
-            (1..30).map { num ->
-                today.add(Calendar.DATE, 1)
-                Todo(num.toLong(), "# $num", today.timeInMillis, "${num}번째 내용입니다")
-            }
-        }
-
-        val adapter = TodoListAdapter()
         val recyclerView = binding.todoRecyclerView
         recyclerView.adapter = adapter
         // RecyclerView에 layoutManager 지정으로 설정 가능
@@ -55,14 +46,11 @@ class MainActivity : AppCompatActivity() {
 
         // ItemClickListener를 지정
         adapter.onItemClicked = { modify ->
-            todos = todos.toMutableList().map { origin ->
-                if (origin.id == modify.id) origin.copy(isDone = !origin.isDone)
-                else origin
-            }
-            adapter.submitList(todos)
+            todoRepository.updateTodos(modify)
+            adapter.submitList(todoRepository.todos)
         }
 
-        adapter.submitList(todos)
+        adapter.submitList(todoRepository.todos)
 
         //Add Button을 통해 다른 액티비티로 이동
         val addButton = binding.addButton
@@ -74,14 +62,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("todoList", ArrayList(todos))
+        outState.putParcelableArrayList("todoList", ArrayList(todoRepository.todos))
     }
-    /*
     // 호출 시점: onCreate 직후
     // 이 방법의 경우 todos의 데이터를 다시 업데이트를 해야하는 문제를 안고 있음.
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.getParcelableArrayList<Todo>("todoList")?.let{
+            todoRepository.todos = it
+            adapter.submitList(todoRepository.todos)
+        }
     }
-     */
 }
 
