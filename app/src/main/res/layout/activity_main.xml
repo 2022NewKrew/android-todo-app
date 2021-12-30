@@ -21,7 +21,9 @@
         android:layout_marginBottom="10dp"
         android:clickable="true"
         android:elevation="8dp"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="add todo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
