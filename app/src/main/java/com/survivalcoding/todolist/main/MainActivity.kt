@@ -34,12 +34,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        if (savedInstanceState != null) {
-            val savedTodos = savedInstanceState.getParcelableArrayList<TodoItem>("todos")
-            if (savedTodos != null) {
-                data.removeAll { true }
-                savedTodos.addAll(data)
-            }
+        savedInstanceState?.getParcelableArrayList<TodoItem>("todos")?.let {
+            data.removeAll {true}
+            data.addAll(it)
         }
 
         val adapter = TodoAdapter(data) { id ->
