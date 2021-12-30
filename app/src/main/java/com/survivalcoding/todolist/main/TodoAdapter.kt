@@ -8,10 +8,9 @@ import com.survivalcoding.todolist.databinding.TodoListItemBinding
 
 class TodoAdapter(
     private val data: List<TodoItem>, val checkChanged: (Long) -> Unit
-) : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
+) : RecyclerView.Adapter<TodoViewHolder>() {
 
-    class TodoViewHolder(val binding: TodoListItemBinding) :
-        RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val binding =
@@ -25,7 +24,7 @@ class TodoAdapter(
                 binding.textViewTitle.text = this.title
                 binding.textViewDescription.text = this.description ?: ""
                 binding.textViewTimestamp.text =
-                    this.timestamp?.toString() // TODO: 2021/12/29 convert to date format
+                    this.timestamp.toString() // TODO: 2021/12/29 convert to date format
                 binding.checkboxIsDone.isChecked = this.isDone
                 binding.checkboxIsDone.setOnClickListener {
                     checkChanged(this.id)
@@ -36,3 +35,6 @@ class TodoAdapter(
 
     override fun getItemCount() = data.size
 }
+
+class TodoViewHolder(val binding: TodoListItemBinding) :
+    RecyclerView.ViewHolder(binding.root)

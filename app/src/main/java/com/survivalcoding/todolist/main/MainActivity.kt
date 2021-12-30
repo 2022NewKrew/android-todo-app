@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    private val data = (0..30.toLong()).map {
+    private val data = (1..30.toLong()).map {
         TodoItem(
             id = it,
             title = "title ${it.toInt()}",
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.recyclerViewTodoList.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(this)
         binding.recyclerViewTodoList.adapter = adapter
 
         binding.fab.setOnClickListener {

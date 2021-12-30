@@ -9,6 +9,6 @@ data class TodoItem(
     val id: Long,
     val title: String,
     val description: String?,
-    val timestamp: Long? = Date().time,
+    val timestamp: Long = Date().time,
     val isDone: Boolean = false
 ) : Parcelable

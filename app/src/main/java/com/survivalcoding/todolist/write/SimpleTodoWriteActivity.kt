@@ -22,7 +22,7 @@ class SimpleTodoWriteActivity : AppCompatActivity() {
             val title = binding.editTextTitle.text.toString().trim()
             val description = binding.editTextDescription.text.toString().trim()
 
-            if (title.length == 0) {
+            if (title.isEmpty()) {
                 Toast.makeText(this, "type todo content", Toast.LENGTH_SHORT).show()
             } else {
                 intent = Intent()
