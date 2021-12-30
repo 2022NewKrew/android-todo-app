@@ -18,15 +18,15 @@ class MainActivity : AppCompatActivity() {
     private val adapter by lazy {
         TodoListAdapter().apply {
             // 초기 데이터 설정
-            setItems(todoList)
+            this.submitList(todoList)
 
             // 클릭 리스너 설정
-            setItemClickListener { todo ->
+            itemClickListener = { todo ->
                 todoList = todoList.toMutableList().map {
                     if (it.id == todo.id) todo.copy(isDone = !todo.isDone)
                     else it
                 }
-                setItems(todoList)
+                this.submitList(todoList)
             }
         }
     }
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         savedInstanceState.getParcelableArrayList<Todo>("data")?.toList()?.let {
             todoList = it
-            adapter.setItems(todoList)
+            adapter.submitList(todoList)
         }
     }
 
