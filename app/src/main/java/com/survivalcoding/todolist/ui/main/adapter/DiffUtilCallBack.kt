@@ -1,6 +1,7 @@
-package com.survivalcoding.todolist.model
+package com.survivalcoding.todolist.ui.main.adapter
 
 import androidx.recyclerview.widget.DiffUtil
+import com.survivalcoding.todolist.model.Task
 
 class DiffUtilCallBack(
     private val oldData: List<Task>,

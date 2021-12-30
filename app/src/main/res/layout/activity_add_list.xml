@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/to_do_app_background_1"
-    tools:context=".add.AddListActivity">
+    tools:context=".ui.add.AddListActivity">
 
     <ImageView
         android:layout_width="match_parent"

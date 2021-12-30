@@ -1,10 +1,10 @@
-package com.survivalcoding.todolist.add
+package com.survivalcoding.todolist.ui.add
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivityAddListBinding
-import com.survivalcoding.todolist.main.MainActivity
+import com.survivalcoding.todolist.ui.main.MainActivity
 import com.survivalcoding.todolist.model.Task
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +27,7 @@ class AddListActivity : AppCompatActivity() {
                 date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
                 isDone = true
             )
-            intent.putExtra("task", newTask)
+            intent.putExtra(MainActivity.TASK_FROM_REGISTER, newTask)
             setResult(RESULT_OK, intent)
             finish()
         }

@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.main
+package com.survivalcoding.todolist.ui.main
 
 import android.app.Activity
 import android.content.Intent
@@ -6,9 +6,9 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.survivalcoding.todolist.add.AddListActivity
+import com.survivalcoding.todolist.ui.add.AddListActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.main.adapter.ToDoListAdapter
+import com.survivalcoding.todolist.ui.main.adapter.ToDoListAdapter
 import com.survivalcoding.todolist.model.Task
 import java.util.*
 
@@ -25,6 +25,11 @@ class MainActivity : AppCompatActivity() {
      *      하나의 launcher 는 하나의 contract 를 실행하고 그 결과를 하나의 callback 으로 반환한다.
      */
 
+    companion object {
+        const val TASK_FROM_REGISTER = "task_from_register"
+        const val TASK_FROM_SAVED_INSTANCE_STATE = "task_from_savedInstanceState"
+    }
+
     // view binding
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -32,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private val preContractStartActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.getParcelableExtra<Task>("task")?.let {
+                result.data?.getParcelableExtra<Task>(TASK_FROM_REGISTER)?.let {
                     toDoList = toDoList.toMutableList().apply { this.add(0, it) }
                     adapter.submitItem(toDoList)
                 }
@@ -83,13 +88,13 @@ class MainActivity : AppCompatActivity() {
     // 화면 회전할 때, 데이터 저장
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("tasks", ArrayList(toDoList))
+        outState.putParcelableArrayList(TASK_FROM_SAVED_INSTANCE_STATE, ArrayList(toDoList))
     }
 
     // 화면 회전 후, 데이터 복원
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        savedInstanceState.getParcelableArrayList<Task>("tasks")?.let {
+        savedInstanceState.getParcelableArrayList<Task>(TASK_FROM_SAVED_INSTANCE_STATE)?.let {
             toDoList = it.toList()
             adapter.submitItem(toDoList)
         }
