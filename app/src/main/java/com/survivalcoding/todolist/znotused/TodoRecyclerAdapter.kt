@@ -1,34 +1,33 @@
-package com.survivalcoding.todolist.domain
+package com.survivalcoding.todolist.znotused
 
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.entity.Todo
 
-class TodoListAdapter(
-    private var items: List<Todo>,
-    private val onItemClicked: (Int, TodoListAdapter) -> Unit
-) :
-    RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
+class TodoRecyclerAdapter(private val items: MutableList<Todo>) :
+    RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder>() {
+
+    var onItemClicked: (Int) -> Unit = { _ -> }
 
     // view holder
-    inner class ViewHolder(private val binding: ItemTodoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
 
-
-        fun setItem(position: Int) {
-            val item = items[position]
+        fun bind(
+            item: Todo,
+            position: Int,
+            onItemClicked: (Int) -> Unit,
+        ) {
             binding.todoTextview.text = item.title
             if (item.isDone) binding.todoCardView.setBackgroundColor(Color.RED)
             else binding.todoCardView.setBackgroundColor(Color.TRANSPARENT)
 
             binding.todoTextview.setOnClickListener {
-                onItemClicked(position, this@TodoListAdapter)
+                onItemClicked(position)
             }
         }
     }
@@ -42,14 +41,20 @@ class TodoListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setItem(position)
+        holder.bind(items[position], position, onItemClicked)
     }
 
     override fun getItemCount(): Int = items.size
 
+    fun setItem(_item: Todo, position: Int) {
+        items[position] = _item
+        notifyItemChanged(position)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    fun setItems(_items: List<Todo>) {
-        items = _items
+    fun setItems(_items: MutableList<Todo>) {
+        items.clear()
+        items.addAll(_items)
         notifyDataSetChanged()
     }
 }

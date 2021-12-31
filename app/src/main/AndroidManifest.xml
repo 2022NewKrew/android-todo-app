@@ -10,10 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todolist">
         <activity
-            android:name=".add.AddActivity"
+            android:name="com.survivalcoding.todolist.ui.add.AddActivity"
+            android:windowSoftInputMode="stateVisible"
             android:exported="false" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.survivalcoding.todolist.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

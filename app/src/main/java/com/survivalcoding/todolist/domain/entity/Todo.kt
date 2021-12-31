@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.model
+package com.survivalcoding.todolist.domain.entity
 
 
 import android.os.Parcelable
@@ -11,6 +11,6 @@ data class Todo(
     val id: Long,
     val title: String,
     val timestamp: Long = Date().time,
-    var isDone: Boolean = false,
+    val isDone: Boolean = false,
 ) : Parcelable
 
