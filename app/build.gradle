@@ -47,4 +47,7 @@ dependencies {
 
     // restore recyclerview scroll position
     implementation 'androidx.recyclerview:recyclerview:1.3.0-alpha01'
+
+    // viewModels
+    implementation 'androidx.activity:activity-ktx:1.4.0'
 }
