@@ -1,11 +1,8 @@
-package com.survivalcoding.todolist.main.adapter
+package com.survivalcoding.todolist.presentation.main.adapter
 
 import android.graphics.Color
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.model.Todo
 import java.text.SimpleDateFormat
@@ -13,7 +10,8 @@ import java.util.*
 
 class TodoViewHolder(
     itemView: View,
-    val onItemClicked: (Todo, Int) -> Unit
+    val onChangeIsDone: (Todo) -> Unit,
+    val onModifyTodo: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ItemTodoBinding.bind(itemView)
 
@@ -21,12 +19,14 @@ class TodoViewHolder(
         binding.titleText.text = todo.title
         binding.timeText.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(todo.date)
         binding.contentText.text = todo.content
+        binding.isDone.isChecked = todo.isDone
 
-        if (todo.isDone) binding.root.setBackgroundColor(Color.RED)
-        else binding.root.setBackgroundColor(Color.TRANSPARENT)
+        binding.isDone.setOnClickListener {
+            onChangeIsDone(todo)
+        }
 
         itemView.setOnClickListener {
-            onItemClicked(todo, adapterPosition)
+            onModifyTodo(adapterPosition)
         }
     }
 }
