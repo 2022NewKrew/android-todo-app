@@ -10,7 +10,8 @@ import java.util.*
 
 class TodoViewHolder(
     itemView: View,
-    val onItemClicked: (Todo) -> Unit
+    val onChangeIsDone: (Todo) -> Unit,
+    val onModifyTodo: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ItemTodoBinding.bind(itemView)
 
@@ -18,12 +19,14 @@ class TodoViewHolder(
         binding.titleText.text = todo.title
         binding.timeText.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(todo.date)
         binding.contentText.text = todo.content
+        binding.isDone.isChecked = todo.isDone
 
-        if (todo.isDone) binding.root.setBackgroundColor(Color.RED)
-        else binding.root.setBackgroundColor(Color.TRANSPARENT)
+        binding.isDone.setOnClickListener {
+            onChangeIsDone(todo)
+        }
 
         itemView.setOnClickListener {
-            onItemClicked(todo)
+            onModifyTodo(adapterPosition)
         }
     }
 }

@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                     val data = result.data
                     Toast.makeText(this, data!!.extras!!.getString("result"), Toast.LENGTH_SHORT)
                         .show()
+                    adapter.submitList(mainViewModel.todos)
                 }
             }
 
@@ -44,9 +45,15 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // ItemClickListener를 지정
-        adapter.onItemClicked = { modify ->
+        adapter.onChangeIsDone = { modify ->
             mainViewModel.toggleTodo(modify)
             adapter.submitList(mainViewModel.todos)
+        }
+
+        adapter.onModifyTodo = {
+            val intent = Intent(this, AddActivity::class.java)
+            intent.putExtra("modify", it)
+            resultLauncher.launch(intent)
         }
 
         adapter.submitList(mainViewModel.todos)
