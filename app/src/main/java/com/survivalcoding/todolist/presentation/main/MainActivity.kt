@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.presentation.main
 
 import android.app.Activity
 import android.content.Intent
@@ -8,6 +8,8 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
+import com.survivalcoding.todolist.presentation.add.AddActivity
+import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,9 +17,9 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
-    private val pingPongWriteActivity =
+    private val pingPongAddActivity =
         registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 Toast.makeText(this, "Result OK", Toast.LENGTH_SHORT).show()
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             }.apply { submitList(viewModel.todos) }
 
         binding.fab.setOnClickListener {
-            pingPongWriteActivity.launch(Intent(this, WriteActivity::class.java))
+            pingPongAddActivity.launch(Intent(this, AddActivity::class.java))
         }
     }
 }

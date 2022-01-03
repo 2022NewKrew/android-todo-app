@@ -1,4 +1,6 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.data
+
+import com.survivalcoding.todolist.model.Todo
 
 class TodoRepository {
 

@@ -1,8 +1,9 @@
-package com.survivalcoding.todolist
+package com.survivalcoding.todolist.presentation.main.adapter
 
 import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.databinding.ListItemTodoBinding
+import com.survivalcoding.todolist.model.Todo
 
 class TodoViewHolder(private val listItemTodoBinding: ListItemTodoBinding) :
     RecyclerView.ViewHolder(listItemTodoBinding.root) {
