@@ -1,8 +1,11 @@
 package com.survivalcoding.todolist.ui.main
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,31 +23,32 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private val mainViewModel by viewModels<MainViewModel>()
-    private val todoListAdapter = TodoListAdapter().apply {
-        onItemClicked = { position ->
-            mainViewModel.toggleIsDone(position)
-            submitList(mainViewModel.get())
-        }
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val todoListAdapter = TodoListAdapter { item ->
+            mainViewModel.toggleIsDone(item)
+        }
+
         // enroll listAdapter
-        todoListAdapter.submitList(mainViewModel.get())
         binding.recyclerview.adapter = todoListAdapter
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
 
+        mainViewModel.todos.observe(this, { todos ->
+            todoListAdapter.submitList(todos)
+        })
 
+
+        // to add activity
         val activityResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_OK) {
                     it.data?.let { intent ->
                         intent.getStringExtra(NEW_TODO_ITEM_CODE)?.let { title ->
                             mainViewModel.addTodo(title)
-                            todoListAdapter.submitList(mainViewModel.get())
                         }
                     }
                 }

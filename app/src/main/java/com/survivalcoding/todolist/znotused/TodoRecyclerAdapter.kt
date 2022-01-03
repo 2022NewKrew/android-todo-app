@@ -51,7 +51,6 @@ class TodoRecyclerAdapter(private val items: MutableList<Todo>) :
         notifyItemChanged(position)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setItems(_items: MutableList<Todo>) {
         items.clear()
         items.addAll(_items)
