@@ -1,6 +1,6 @@
-package com.survivalcoding.todolist.domain
+package com.survivalcoding.todolist.domain.repository
 
-import com.survivalcoding.todolist.ToDo
+import com.survivalcoding.todolist.domain.model.ToDo
 import kotlinx.coroutines.flow.StateFlow
 
 interface ToDoRepository {

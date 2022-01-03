@@ -11,11 +11,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
+import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.presentation.createtodo.CreateToDoActivity
+import com.survivalcoding.todolist.presentation.createtodo.CreateToDoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
@@ -27,17 +31,30 @@ class MainActivity : AppCompatActivity() {
     private val adapter: ToDoListAdapter by lazy {
         ToDoListAdapter(
             onItemCheckedChanged = viewModel::changeDoneState,
-            onDeleteButtonClick = viewModel::deleteToDo
+            onDeleteButtonClick = viewModel::deleteToDo,
+            onItemClick = {
+                createToDoActivityResultLauncher.launch(
+                    Intent(this, CreateToDoActivity::class.java).apply {
+                        putExtra(CreateToDoViewModel.TODO, it)
+                    })
+            }
         )
     }
 
     private val createToDoActivityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
         ActivityResultCallback {
-            if (it.resultCode == Activity.RESULT_OK) {
-                viewModel.addToDo(
-                    it.data?.getParcelableExtra(TODO) ?: return@ActivityResultCallback
-                )
+            if (it.resultCode != Activity.RESULT_OK) return@ActivityResultCallback
+
+            val isEdited = it.data?.getBooleanExtra(CreateToDoActivity.EDITED, false)
+                ?: return@ActivityResultCallback
+            val toDo = it.data?.getParcelableExtra<ToDo>(CreateToDoViewModel.TODO)
+                ?: return@ActivityResultCallback
+
+            if (isEdited) {
+                viewModel.updateToDo(toDo.id, toDo)
+            } else {
+                viewModel.addToDo(toDo)
             }
         })
 
@@ -61,10 +78,5 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED, block)
         }
-    }
-
-
-    companion object {
-        const val TODO = "TODO"
     }
 }

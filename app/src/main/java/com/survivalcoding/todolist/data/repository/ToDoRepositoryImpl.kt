@@ -1,10 +1,11 @@
 package com.survivalcoding.todolist.data.repository
 
-import com.survivalcoding.todolist.ToDo
+import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.data.datasource.ToDoLocalDataSource
-import com.survivalcoding.todolist.domain.ToDoRepository
+import com.survivalcoding.todolist.domain.repository.ToDoRepository
+import javax.inject.Inject
 
-class ToDoRepositoryImpl constructor(private val toDoLocalDataSource: ToDoLocalDataSource) :
+class ToDoRepositoryImpl @Inject constructor(private val toDoLocalDataSource: ToDoLocalDataSource) :
     ToDoRepository {
     override val toDoList = toDoLocalDataSource.toDoList
 

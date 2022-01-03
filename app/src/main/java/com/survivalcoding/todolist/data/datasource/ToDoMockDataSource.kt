@@ -1,10 +1,11 @@
 package com.survivalcoding.todolist.data.datasource
 
-import com.survivalcoding.todolist.ToDo
+import com.survivalcoding.todolist.domain.model.ToDo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class ToDoMockDataSource : ToDoLocalDataSource {
+class ToDoMockDataSource @Inject constructor() : ToDoLocalDataSource {
     private val _toDoList = MutableStateFlow(
         (0L..30L).map {
             ToDo(
