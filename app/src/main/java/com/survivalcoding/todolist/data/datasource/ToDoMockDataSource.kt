@@ -1,6 +1,6 @@
 package com.survivalcoding.todolist.data.datasource
 
-import com.survivalcoding.todolist.ToDo
+import com.survivalcoding.todolist.domain.model.ToDo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

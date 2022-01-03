@@ -1,8 +1,8 @@
 package com.survivalcoding.todolist.data.repository
 
-import com.survivalcoding.todolist.ToDo
+import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.data.datasource.ToDoLocalDataSource
-import com.survivalcoding.todolist.domain.ToDoRepository
+import com.survivalcoding.todolist.domain.repository.ToDoRepository
 
 class ToDoRepositoryImpl constructor(private val toDoLocalDataSource: ToDoLocalDataSource) :
     ToDoRepository {

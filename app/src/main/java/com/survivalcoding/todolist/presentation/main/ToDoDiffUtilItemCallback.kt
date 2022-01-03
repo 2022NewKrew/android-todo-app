@@ -1,7 +1,7 @@
 package com.survivalcoding.todolist.presentation.main
 
 import androidx.recyclerview.widget.DiffUtil
-import com.survivalcoding.todolist.ToDo
+import com.survivalcoding.todolist.domain.model.ToDo
 
 class ToDoDiffUtilItemCallback: DiffUtil.ItemCallback<ToDo>() {
 
