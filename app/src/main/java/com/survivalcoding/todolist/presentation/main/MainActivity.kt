@@ -26,9 +26,14 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // 작성하기 화면에서 돌아왔을 때
             if (it.resultCode == RESULT_OK && it.data != null) {
+                // 할 일 변경
                 it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
                     ?.let { todo ->
                         viewModel.updateItem(todo)
+
+                        // 할 일 삭제
+                        it.data?.extras?.getBoolean(REMOVE_STATUS_KEY)
+                            ?.let { viewModel.deleteItem(todo) }
                     }
             }
         }
@@ -64,5 +69,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TODO_EXTRA_KEY = "todo"
+        const val REMOVE_STATUS_KEY = "remove status"
     }
 }

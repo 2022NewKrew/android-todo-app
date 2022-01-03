@@ -24,4 +24,9 @@ class MainViewModel : ViewModel() {
         repository.updateItem(todo)
         _todoList.value = repository.todoList
     }
+
+    fun deleteItem(todo: Todo) {
+        repository.deleteItem(todo)
+        _todoList.value = repository.todoList
+    }
 }

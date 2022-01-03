@@ -25,4 +25,10 @@ class TodoRepository {
             else it
         }
     }
+
+    fun deleteItem(todo: Todo) {
+        val newList = todoList.toMutableList()
+        newList.remove(todo)
+        todoList = newList.toList()
+    }
 }
