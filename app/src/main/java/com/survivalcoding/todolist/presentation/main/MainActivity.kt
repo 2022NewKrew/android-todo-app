@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
                         // 할 일 삭제
                         it.data?.extras?.getBoolean(REMOVE_STATUS_KEY)
-                            ?.let { viewModel.deleteItem(todo) }
+                            ?.let { removeStatus -> if(removeStatus) viewModel.deleteItem(todo) }
                     }
             }
         }
