@@ -4,16 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.add.AddActivity">
+    tools:context=".presentation.add.AddActivity"
+    android:padding="16dp">
 
-    <Button
-        android:id="@+id/finishBt"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/titleEv"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="FINISH"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="24sp"
+        android:hint="Title" />
+
+    <EditText
+        android:id="@+id/contentEv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/titleEv"
+        app:layout_constraintBottom_toTopOf="@id/timestampTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        android:hint="Add Todo" />
+
+    <TextView
+        android:id="@+id/timestampTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="end"
+        android:text="YYYY.MM.DD"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

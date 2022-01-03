@@ -4,7 +4,9 @@ import com.survivalcoding.todolist.model.Todo
 
 class TodoRepository {
 
-    private var _todos = (1..30).map {
+    private var nextId = 31L
+
+    private var _todos = (1 until nextId).map {
         Todo(
             it.toLong(),
             "Title #${it}",
@@ -15,6 +17,11 @@ class TodoRepository {
     }
 
     val todos get() = _todos.map { it.copy() }
+
+    fun insertTodo(newTodo: Todo) {
+        _todos = _todos + listOf(newTodo.copy(id = nextId))
+        nextId += 1
+    }
 
     fun toggleTodo(id: Long) {
         todos.find { it.id == id }?.run {

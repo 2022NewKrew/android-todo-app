@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
+import com.survivalcoding.todolist.model.Todo
 import com.survivalcoding.todolist.presentation.add.AddActivity
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
@@ -22,7 +23,15 @@ class MainActivity : AppCompatActivity() {
     private val pingPongAddActivity =
         registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Result OK", Toast.LENGTH_SHORT).show()
+                when(result.data?.action) {
+                    Intent.ACTION_INSERT -> {
+                        val newTodo = result.data?.getParcelableExtra<Todo>(AddActivity.NEW_TODO)!!
+                        viewModel.insertTodo(newTodo)
+                    }
+                    else -> {
+                        Toast.makeText(this, "Unknown Action", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 

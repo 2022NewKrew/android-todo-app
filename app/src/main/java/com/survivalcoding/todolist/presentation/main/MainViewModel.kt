@@ -13,6 +13,11 @@ class MainViewModel: ViewModel() {
     private val _todos = MutableLiveData(todoRepository.todos)
     val todos: LiveData<List<Todo>> = _todos
 
+    fun insertTodo(newTodo: Todo) {
+        todoRepository.insertTodo(newTodo)
+        _todos.value = todoRepository.todos
+    }
+
     fun toggleTodos(id: Long) {
         todoRepository.toggleTodo(id)
         _todos.value = todoRepository.todos
