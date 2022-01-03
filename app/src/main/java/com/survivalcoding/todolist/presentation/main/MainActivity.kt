@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
                 it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
                     ?.let { todo ->
                         viewModel.addItem(todo)
-                        adapter.submitList(viewModel.todoList.value)
                     }
             }
         }

@@ -6,15 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".presentation.add.AddActivity">
 
-    <EditText
-        android:id="@+id/add_et_title"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/add_iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/back_icon"
+        android:padding="8dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/add_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/add_title"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_iv_back" />
+
+    <TextView
+        android:id="@+id/add_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/task_name"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_tv_title" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/add_cv_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/add_todo_hint"
-        android:importantForAutofill="no"
-        android:inputType="textImeMultiLine"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_tv_name">
+
+        <EditText
+            android:id="@+id/add_et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@null"
+            android:hint="@string/add_todo_hint"
+            android:importantForAutofill="no"
+            android:inputType="textImeMultiLine"
+            android:textSize="14dp" />
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_fab_complete"

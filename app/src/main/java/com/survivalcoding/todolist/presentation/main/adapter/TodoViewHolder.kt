@@ -1,6 +1,8 @@
 package com.survivalcoding.todolist.presentation.main.adapter
 
+import android.graphics.Paint
 import androidx.recyclerview.widget.RecyclerView
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.model.Todo
 
@@ -10,9 +12,18 @@ class TodoViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(todo: Todo) {
-        binding.todoCheckbox.isChecked = todo.isDone
-        binding.todoCheckbox.text = todo.title
+        binding.todoTvTitle.text = todo.title
 
-        binding.todoCheckbox.setOnClickListener { itemClickListener(todo) }
+        if (todo.isDone) {
+            binding.todoIvCheck.setImageResource(R.drawable.ic_checked)
+            binding.todoTvTitle.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            binding.todoTvTitle.setTextColor(binding.todoTvTitle.context.getColor(R.color.gray))
+        } else {
+            binding.todoIvCheck.setImageResource(R.drawable.ic_unchecked)
+            binding.todoTvTitle.paintFlags = 0
+            binding.todoTvTitle.setTextColor(binding.todoTvTitle.context.getColor(R.color.black))
+        }
+
+        binding.todoIvCheck.setOnClickListener { itemClickListener(todo) }
     }
 }

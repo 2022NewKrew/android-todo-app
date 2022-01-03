@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">todolist</string>
     <string name="main_add_button">todo 추가 버튼</string>
+    <string name="main_list_icon">리스트 아이콘</string>
+    <string name="main_title">TODO</string>
     <string name="add_complete_button">todo 작성 완료 버튼</string>
-    <string name="add_todo_hint">할 일을 입력하세요.</string>
+    <string name="add_todo_hint">Example : Wake up</string>
+    <string name="add_todo_empty">할 일을 입력하세요.</string>
+    <string name="back_icon">뒤로가기 버튼</string>
+    <string name="add_title">Add new task</string>
+    <string name="task_name">Task Name</string>
+    <string name="todo_check_icon">체크 아이콘</string>
 </resources>

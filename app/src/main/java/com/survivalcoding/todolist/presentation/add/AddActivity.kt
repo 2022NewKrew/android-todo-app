@@ -19,13 +19,14 @@ class AddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.addIvBack.setOnClickListener { finish() }
         // 작성 완료 버튼 클릭 시
         binding.addFabComplete.setOnClickListener {
-            val title = binding.addEtTitle.text.toString().trim()
+            val title = binding.addEtName.text.toString().trim()
 
             // 할 일을 입력하지 않은 경우
             if (title.isEmpty()) {
-                Toast.makeText(this, getString(R.string.add_todo_hint), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.add_todo_empty), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
