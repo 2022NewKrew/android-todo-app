@@ -3,9 +3,13 @@ package com.survivalcoding.todolist.presentation.todo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ActivityTodoBinding
 import com.survivalcoding.todolist.model.Todo
 import com.survivalcoding.todolist.toTimestampString
@@ -21,11 +25,13 @@ class TodoActivity : AppCompatActivity() {
         ActivityTodoBinding.inflate(layoutInflater)
     }
 
+    private val todo by lazy { intent.getParcelableExtra<Todo>(TODO) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val todo = intent.getParcelableExtra<Todo>(TODO)?.also {
+        todo?.also {
             binding.apply {
                 isDoneCb.visibility = View.VISIBLE
                 isDoneCb.isChecked = it.isDone
@@ -53,6 +59,32 @@ class TodoActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_todo, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.delete -> {
+                if(todo == null) {
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
+                } else {
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_DELETE
+                        putExtra(TODO, todo)
+                    }
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            }
+            else -> return false
+        }
+        return true
     }
 
     private fun getTimestamp(todo: Todo): Long {

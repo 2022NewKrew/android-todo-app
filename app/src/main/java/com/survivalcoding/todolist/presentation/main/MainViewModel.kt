@@ -17,4 +17,9 @@ class MainViewModel: ViewModel() {
         todoRepository.upsertTodo(todo)
         _todos.value = todoRepository.todos
     }
+
+    fun deleteTodo(todo: Todo) {
+        todoRepository.deleteTodo(todo)
+        _todos.value = todoRepository.todos
+    }
 }

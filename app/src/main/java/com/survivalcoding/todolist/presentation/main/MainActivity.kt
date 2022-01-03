@@ -23,10 +23,13 @@ class MainActivity : AppCompatActivity() {
     private val startTodoActivity =
         registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                val todo = result.data?.getParcelableExtra<Todo>(TodoActivity.TODO)!!
                 when (result.data?.action) {
                     TodoActivity.ACTION_UPSERT -> {
-                        val newTodo = result.data?.getParcelableExtra<Todo>(TodoActivity.TODO)!!
-                        viewModel.upsertTodo(newTodo)
+                        viewModel.upsertTodo(todo)
+                    }
+                    Intent.ACTION_DELETE -> {
+                        viewModel.deleteTodo(todo)
                     }
                     else -> {
                         Toast.makeText(this, "Unknown Action", Toast.LENGTH_SHORT).show()

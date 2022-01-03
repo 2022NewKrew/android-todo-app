@@ -11,7 +11,7 @@ class TodoRepository {
             it.toLong(),
             "Title #${it}",
             "Content #$it",
-            0L,
+            System.currentTimeMillis(),
             false
         )
     }
@@ -26,12 +26,6 @@ class TodoRepository {
         }
     }
 
-    fun toggleTodo(id: Long) {
-        todos.find { it.id == id }?.run {
-            updateTodo(copy(isDone = !isDone))
-        }
-    }
-
     fun insertTodo(newTodo: Todo) {
         _todos = _todos + listOf(newTodo.copy(id = nextId))
         nextId += 1
@@ -41,5 +35,9 @@ class TodoRepository {
         _todos = _todos.map {
             if(it.id == todo.id) todo else it
         }
+    }
+
+    fun deleteTodo(todo: Todo) {
+        _todos = _todos.filter { it.id != todo.id }
     }
 }
