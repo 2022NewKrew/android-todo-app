@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
     )
     val todos: LiveData<List<Todo>> = _todos
 
-    fun toggleTodo(todo: Todo) { // 하나만 업데이트
+    fun toggleTodo(todo: Todo) { // 하나만 isDone을 변경
         todoListRepository.updateTodo(todo.copy(isDone = !todo.isDone))
         _todos.value = todoListRepository.getTodos()
     }

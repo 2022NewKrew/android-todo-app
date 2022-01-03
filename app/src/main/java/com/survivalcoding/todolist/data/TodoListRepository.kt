@@ -9,7 +9,7 @@ object TodoListRepository {
         val today = Calendar.getInstance()
         today.add(Calendar.DATE, num)
         Todo(num.toLong(), "# $num", today.timeInMillis, "${num}번째 내용입니다")
-    }.toMutableList()
+    }
 
     fun getTodos(): List<Todo> = todos
     fun getTodoByIndex(pos: Int): Todo = todos[pos]
@@ -19,11 +19,10 @@ object TodoListRepository {
             if (origin.id == todo.id)
                 todo
             else origin
-        }.toMutableList()
+        }
     }
 
-    //todo를 업데이트 하는 방법
     fun addTodo(todo: Todo){
-        todos = todos.plus(todo).toMutableList()
+        todos = todos.plus(todo)
     }
 }

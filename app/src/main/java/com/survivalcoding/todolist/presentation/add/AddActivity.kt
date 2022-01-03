@@ -27,8 +27,7 @@ class AddActivity : AppCompatActivity() {
         val calendar = binding.calendarText
 
         addViewModel.todo.observe(this) { task ->
-            /*  EditView는 작동하지 않음
-
+            /*  EditView는 작동하지 않음, Spannable이 String으로 캐스팅 불가한다고 뜬다.
             title.setText(task.title)
             content.setText(task.content)
              */
@@ -38,7 +37,7 @@ class AddActivity : AppCompatActivity() {
         content.setText(addViewModel.getTodo().content)
         title.setText(addViewModel.getTodo().title)
 
-        //EditText에 대한 데이터 변경을 알림
+        //EditText에 대한 데이터 변경을 알려줌
         title.doAfterTextChanged {
             addViewModel.updateTitle(it.toString())
         }
