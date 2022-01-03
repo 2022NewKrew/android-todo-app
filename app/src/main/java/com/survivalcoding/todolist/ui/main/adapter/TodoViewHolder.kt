@@ -1,6 +1,7 @@
 package com.survivalcoding.todolist.ui.main.adapter
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -11,15 +12,14 @@ class TodoViewHolder(private val binding: ItemTodoBinding) : ViewHolder(binding.
 
     fun bind(
         item: Todo,
-        position: Int,
-        onItemClicked: (Int) -> Unit,
+        onItemClicked: (Todo) -> Unit,
     ) {
         binding.todoTextview.text = item.title
-        if (item.isDone) binding.todoCardView.setBackgroundColor(Color.RED)
-        else binding.todoCardView.setBackgroundColor(Color.TRANSPARENT)
-
+        Log.d(item.title, item.isDone.toString())
+        if (item.isDone) binding.todoCardView.setCardBackgroundColor(Color.RED)
+        else binding.todoCardView.setCardBackgroundColor(Color.WHITE)
         binding.todoTextview.setOnClickListener {
-            onItemClicked(position)
+            onItemClicked(item)
         }
     }
 

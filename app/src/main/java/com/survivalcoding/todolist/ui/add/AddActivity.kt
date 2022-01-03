@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import com.survivalcoding.todolist.databinding.ActivityAddBinding
 import com.survivalcoding.todolist.ui.main.MainActivity
+import kotlin.concurrent.thread
+
 
 class AddActivity : AppCompatActivity() {
     private val binding: ActivityAddBinding by lazy {
@@ -18,10 +20,9 @@ class AddActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.addEditText.requestFocus()
-/*      포커스에 시간이 필요한 것으로 보임
-        val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.showSoftInput(binding.addEditText, 0)
-        */
+        //포커스에 시간이 필요한 것으로 보임
+        //val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        //manager.showSoftInput(binding.addEditText, 0)
 
 
         binding.addButton.setOnClickListener {
@@ -34,6 +35,11 @@ class AddActivity : AppCompatActivity() {
             finish()
         }
 
+    }
 
+    override fun onResume() {
+        super.onResume()
+        val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.showSoftInput(binding.addEditText, 0)
     }
 }
