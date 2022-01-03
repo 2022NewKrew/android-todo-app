@@ -1,15 +1,12 @@
 package com.survivalcoding.todolist.ui.add
 
 import androidx.lifecycle.ViewModel
-import com.survivalcoding.todolist.data.TaskRepository
 import com.survivalcoding.todolist.databinding.ActivityAddListBinding
-import com.survivalcoding.todolist.model.Task
+import com.survivalcoding.todolist.domain.entity.Task
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddViewModel : ViewModel() {
-    val taskRepository = TaskRepository
-
     fun makeTask(binding: ActivityAddListBinding): Task {
         val taskName = binding.taskNameInput.text.toString().trim()
         return Task(

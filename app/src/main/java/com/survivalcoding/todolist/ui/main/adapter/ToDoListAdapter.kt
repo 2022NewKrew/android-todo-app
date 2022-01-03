@@ -2,18 +2,17 @@ package com.survivalcoding.todolist.ui.main.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.survivalcoding.todolist.model.Task
+import com.survivalcoding.todolist.domain.entity.Task
 
-class ToDoListAdapter : ListAdapter<Task, ToDoListHolder>(DiffUtilCallBack) {
-    var clickEvent: (id: Long) -> Unit = { }
-    var longClickEvent: (id: Long) -> Boolean = { true }
-
+class ToDoListAdapter(
+    private val clickEvent: OnClickEvent
+) : ListAdapter<Task, ToDoListHolder>(DiffUtilCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoListHolder {
         return ToDoListHolder(parent)
     }
 
     override fun onBindViewHolder(holder: ToDoListHolder, position: Int) {
-        holder.binding(getItem(position), clickEvent, longClickEvent)
+        holder.binding(getItem(position), clickEvent)
     }
 }
 
