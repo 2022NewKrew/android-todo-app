@@ -14,6 +14,10 @@ class MainViewModel : ViewModel() {
         toDoRepository.updateItem(toDo.id, toDo.copy(isDone = isDone))
     }
 
+    fun updateToDo(id: Long, toDo: ToDo) {
+        toDoRepository.updateItem(id, toDo.copy(id = id))
+    }
+
     fun deleteToDo(toDo: ToDo) {
         toDoRepository.deleteItem(toDo.id)
     }

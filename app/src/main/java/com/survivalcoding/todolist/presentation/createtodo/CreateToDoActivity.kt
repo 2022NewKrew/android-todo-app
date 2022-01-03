@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.survivalcoding.todolist.databinding.ActivityCreateToDoBinding
-import com.survivalcoding.todolist.presentation.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -29,20 +28,32 @@ class CreateToDoActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             viewModel.createNewToDo(binding.newToDoEditText.text.toString())
         }
+        binding.newToDoEditText.setText(viewModel.prevToDo?.title ?: "")
 
         collect()
     }
 
     private fun collect() {
-        repeatOnStart { viewModel.newToDoCreatedEvent.collect {
-            setResult(Activity.RESULT_OK, Intent().putExtra(MainActivity.TODO, it))
-            finish()
-        } }
+        repeatOnStart {
+            viewModel.newToDoCreatedEvent.collect {
+                val resultIntent = Intent().apply {
+                    putExtra(CreateToDoViewModel.TODO, it.toDo)
+                    putExtra(EDITED, it.editedFlag)
+                }
+
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }
+        }
     }
 
     private fun repeatOnStart(block: suspend CoroutineScope.() -> Unit) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED, block)
         }
+    }
+
+    companion object {
+        const val EDITED = "EDITED"
     }
 }
