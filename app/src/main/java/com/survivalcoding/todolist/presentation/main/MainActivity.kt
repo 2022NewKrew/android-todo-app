@@ -30,11 +30,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.todoListRv.adapter =
-            TodoListAdapter {
-                viewModel.toggleTodos(it)
-                submitList(viewModel.todos)
-            }.apply { submitList(viewModel.todos) }
+        val adapter = TodoListAdapter { viewModel.toggleTodos(it) }
+        binding.todoListRv.adapter = adapter
+        viewModel.todos.observe(this) { adapter.submitList(it) }
 
         binding.fab.setOnClickListener {
             pingPongAddActivity.launch(Intent(this, AddActivity::class.java))

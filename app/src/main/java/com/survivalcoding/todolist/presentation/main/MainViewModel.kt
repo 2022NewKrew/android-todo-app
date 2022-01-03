@@ -1,15 +1,20 @@
 package com.survivalcoding.todolist.presentation.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.data.TodoRepository
+import com.survivalcoding.todolist.model.Todo
 
 class MainViewModel: ViewModel() {
 
     private val todoRepository = TodoRepository()
 
-    val todos get() = todoRepository.todos
+    private val _todos = MutableLiveData(todoRepository.todos)
+    val todos: LiveData<List<Todo>> = _todos
 
     fun toggleTodos(id: Long) {
         todoRepository.toggleTodo(id)
+        _todos.value = todoRepository.todos
     }
 }
