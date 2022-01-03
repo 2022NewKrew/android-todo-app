@@ -1,10 +1,9 @@
 package com.survivalcoding.todolist.presentation.main.adapter
 
-import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.model.Todo
 import java.text.SimpleDateFormat
 import java.util.*
 

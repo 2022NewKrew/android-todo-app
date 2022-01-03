@@ -3,12 +3,11 @@ package com.survivalcoding.todolist.presentation.add
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.survivalcoding.todolist.databinding.ActivityAddBinding
-import com.survivalcoding.todolist.presentation.main.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,16 +23,31 @@ class AddActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val title = binding.titleEditText
-        title.setText(addViewModel.todo.title)
         val content = binding.contentEditText
-        content.setText(addViewModel.todo.content)
         val calendar = binding.calendarText
-        calendar.text =
-            SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(addViewModel.todo.date)
+
+        addViewModel.todo.observe(this) { task ->
+            /*  EditView는 작동하지 않음, Spannable이 String으로 캐스팅 불가한다고 뜬다.
+            title.setText(task.title)
+            content.setText(task.content)
+             */
+            calendar.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(task.date)
+        }
+        //따로 설정 - EditText만의 특이점이 있는 모양
+        content.setText(addViewModel.getTodo().content)
+        title.setText(addViewModel.getTodo().title)
+
+        //EditText에 대한 데이터 변경을 알려줌
+        title.doAfterTextChanged {
+            addViewModel.updateTitle(it.toString())
+        }
+        content.doAfterTextChanged {
+            addViewModel.updateContent(it.toString())
+        }
 
         //calendar 터치 이벤트 구현
         val cal = Calendar.getInstance()
-        cal.timeInMillis = addViewModel.todo.date
+        cal.timeInMillis = addViewModel.todo.value!!.date
         calendar.setOnClickListener {
             DatePickerDialog(
                 this,
@@ -41,11 +55,11 @@ class AddActivity : AppCompatActivity() {
                     cal.set(Calendar.YEAR, year)
                     cal.set(Calendar.MONTH, monthOfYear)
                     cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    addViewModel.setDate(cal.timeInMillis)
+                    addViewModel.updateDate(cal.timeInMillis)
                     calendar.text = SimpleDateFormat(
                         "yy/MM/dd",
                         Locale.getDefault()
-                    ).format(addViewModel.todo.date)
+                    ).format(cal.timeInMillis)
                 },
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
@@ -53,28 +67,24 @@ class AddActivity : AppCompatActivity() {
             ).show()
         }
 
+
         val addButton = binding.addButton
         addButton.setOnClickListener {
-            if(title.text.isBlank()){
+            if (title.text.isBlank()) {
                 Toast.makeText(this, "제목을 입력하시오", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            addViewModel.updateTodo(
-                title.text.toString(),
-                addViewModel.todo.date,
-                content.text.toString()
-            )
+
             val finIntent = Intent()
-            finIntent.putExtra("result", "성공")
+            finIntent.putExtra("data", addViewModel.getTodo())
+            finIntent.putExtra("isModifying", addViewModel.getIsModifying())
             setResult(RESULT_OK, finIntent)
             finish()
         }
 
         val exitButton = binding.exitButton
         exitButton.setOnClickListener {
-            val finIntent = Intent()
-            finIntent.putExtra("result", "돌아감")
-            setResult(RESULT_OK, finIntent)
+            setResult(RESULT_OK)
             finish()
         }
     }

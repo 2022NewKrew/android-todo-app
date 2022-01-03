@@ -2,13 +2,13 @@ package com.survivalcoding.todolist.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.survivalcoding.todolist.presentation.add.AddActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
+import com.survivalcoding.todolist.domain.model.Todo
+import com.survivalcoding.todolist.presentation.add.AddActivity
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val adapter = TodoListAdapter()
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,32 +30,35 @@ class MainActivity : AppCompatActivity() {
         val resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    val data = result.data
-                    Toast.makeText(this, data!!.extras!!.getString("result"), Toast.LENGTH_SHORT)
-                        .show()
-                    adapter.submitList(mainViewModel.todos)
+
+                    //let을 2개 써서 더러워보임, 뭔가 멋있는 방법이 없나?
+                    result.data?.extras?.getParcelable<Todo>("data")?.let { todo ->
+                        result.data?.extras!!.getBoolean("isModifying").let { isModifying ->
+                            if (isModifying) mainViewModel.updateTodo(todo)
+                            else mainViewModel.addTodo(todo)
+                        }
+                    }
                 }
             }
 
+        val adapter = TodoListAdapter(onChangeIsDone = { modify ->
+            mainViewModel.toggleTodo(modify)
+        }, onModifyTodo = {
+            val intent = Intent(this, AddActivity::class.java)
+            intent.putExtra("modify", it)
+            resultLauncher.launch(intent)
+        })
 
         val recyclerView = binding.todoRecyclerView
+
         recyclerView.adapter = adapter
         // RecyclerView에 layoutManager 지정으로 설정 가능
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // ItemClickListener를 지정
-        adapter.onChangeIsDone = { modify ->
-            mainViewModel.toggleTodo(modify)
-            adapter.submitList(mainViewModel.todos)
+        //UI를 변경하는 부분을 관찰할 수 있게 확인
+        mainViewModel.todos.observe(this) { todos ->
+            adapter.submitList(todos)
         }
-
-        adapter.onModifyTodo = {
-            val intent = Intent(this, AddActivity::class.java)
-            intent.putExtra("modify", it)
-            resultLauncher.launch(intent)
-        }
-
-        adapter.submitList(mainViewModel.todos)
 
         //Add Button을 통해 다른 액티비티로 이동
         val addButton = binding.addButton
