@@ -31,10 +31,9 @@ class AddActivity : AppCompatActivity() {
             binding.addIvDelete.visibility = View.VISIBLE
         }
 
-        val todo = intent.getParcelableExtra(TODO_EXTRA_KEY)
-            ?: Todo((viewModel.todoList.value?.last()?.id ?: 0) + 1, "")
+        viewModel.setTodo(intent.getParcelableExtra(TODO_EXTRA_KEY))
 
-        binding.addEtName.setText(todo.title)
+        binding.addEtName.setText(viewModel.todo.value?.title)
         binding.addIvBack.setOnClickListener { finish() }
 
         // 작성 완료 버튼 클릭 시
@@ -48,10 +47,7 @@ class AddActivity : AppCompatActivity() {
             }
 
             val intent = Intent()
-            intent.putExtra(
-                TODO_EXTRA_KEY,
-                todo.copy(id = todo.id, title = title, isDone = todo.isDone)
-            )
+            intent.putExtra(TODO_EXTRA_KEY, viewModel.getUpdateTodo(title))
             setResult(RESULT_OK, intent)
             finish()
         }
@@ -59,7 +55,7 @@ class AddActivity : AppCompatActivity() {
         // 삭제 버튼 클릭 시
         binding.addIvDelete.setOnClickListener {
             val intent = Intent()
-            intent.putExtra(TODO_EXTRA_KEY, todo)
+            intent.putExtra(TODO_EXTRA_KEY, viewModel.todo.value)
             intent.putExtra(REMOVE_STATUS_KEY, true)
             setResult(RESULT_OK, intent)
             finish()
