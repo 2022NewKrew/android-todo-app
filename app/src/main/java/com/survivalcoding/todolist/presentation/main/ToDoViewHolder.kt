@@ -1,6 +1,6 @@
 package com.survivalcoding.todolist.presentation.main
 
-import android.graphics.Color
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +10,17 @@ import com.survivalcoding.todolist.databinding.ToDoListItemLayoutBinding
 class ToDoViewHolder private constructor(
     private val binding: ToDoListItemLayoutBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+
+    private val doneTextColor: Int by lazy {
+        val typedValue = TypedValue()
+        itemView.context.theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true)
+        typedValue.data
+    }
+    private val defaultTextColor: Int by lazy {
+        val typedValue = TypedValue()
+        itemView.context.theme.resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)
+        typedValue.data
+    }
 
     fun bind(
         toDo: ToDo,
@@ -29,7 +40,7 @@ class ToDoViewHolder private constructor(
     }
 
     private fun getTextColor(isDone: Boolean) =
-        if (isDone) TEXT_COLOR_DONE else TEXT_COLOR_DEFAULT
+        if (isDone) doneTextColor else defaultTextColor
 
     private fun bindCheckBox(
         toDo: ToDo,
@@ -62,8 +73,5 @@ class ToDoViewHolder private constructor(
                 )
             )
         }
-
-        private const val TEXT_COLOR_DONE = Color.LTGRAY
-        private const val TEXT_COLOR_DEFAULT = Color.BLACK
     }
 }
