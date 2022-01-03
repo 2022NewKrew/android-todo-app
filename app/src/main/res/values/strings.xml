@@ -8,6 +8,7 @@
     <string name="add_todo_empty">할 일을 입력하세요.</string>
     <string name="back_icon">뒤로가기 버튼</string>
     <string name="add_title">Add new task</string>
+    <string name="edit_title">Edit task</string>
     <string name="task_name">Task Name</string>
     <string name="todo_check_icon">체크 아이콘</string>
 </resources>

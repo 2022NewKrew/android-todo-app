@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.ListAdapter
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.model.Todo
 
-class TodoListAdapter(private val itemClickListener: (Todo) -> Unit) :
+class TodoListAdapter(
+    private val checkClickListener: (Todo) -> Unit,
+    private val itemClickListener: (Todo) -> Unit
+) :
     ListAdapter<Todo, TodoViewHolder>(TodoDiffItemCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -15,7 +18,7 @@ class TodoListAdapter(private val itemClickListener: (Todo) -> Unit) :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), itemClickListener
+            ), checkClickListener, itemClickListener
         )
     }
 

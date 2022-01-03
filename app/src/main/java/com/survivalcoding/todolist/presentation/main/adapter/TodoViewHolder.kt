@@ -8,6 +8,7 @@ import com.survivalcoding.todolist.model.Todo
 
 class TodoViewHolder(
     private val binding: ItemTodoBinding,
+    private val checkClickListener: (Todo) -> Unit,
     private val itemClickListener: (Todo) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -24,6 +25,7 @@ class TodoViewHolder(
             binding.todoTvTitle.setTextColor(binding.todoTvTitle.context.getColor(R.color.black))
         }
 
-        binding.todoIvCheck.setOnClickListener { itemClickListener(todo) }
+        binding.todoIvCheck.setOnClickListener { checkClickListener(todo) }
+        binding.root.setOnClickListener { itemClickListener(todo) }
     }
 }

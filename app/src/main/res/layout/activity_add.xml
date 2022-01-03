@@ -30,6 +30,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_iv_back" />
 
+    <ImageView
+        android:id="@+id/add_iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/back_icon"
+        android:padding="8dp"
+        android:src="@drawable/ic_trash"
+        app:layout_constraintBottom_toBottomOf="@id/add_iv_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/add_iv_back" />
+
     <TextView
         android:id="@+id/add_tv_name"
         android:layout_width="wrap_content"

@@ -18,4 +18,11 @@ class TodoRepository {
         newList.add(todo)
         todoList = newList.toList()
     }
+
+    fun updateItem(todo: Todo) {
+        todoList = todoList.toMutableList().map {
+            if (it.id == todo.id) todo
+            else it
+        }
+    }
 }

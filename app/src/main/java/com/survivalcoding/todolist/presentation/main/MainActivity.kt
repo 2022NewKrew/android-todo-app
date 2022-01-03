@@ -15,7 +15,23 @@ class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val viewModel by viewModels<MainViewModel>()
-    private val adapter by lazy { TodoListAdapter { todo -> viewModel.updateList(todo) } }
+    private val adapter by lazy {
+        TodoListAdapter({ todo -> viewModel.updateList(todo) }, { todo ->
+            val intent = Intent(this, AddActivity::class.java)
+            intent.putExtra(TODO_EXTRA_KEY, todo)
+            editTodo.launch(intent)
+        })
+    }
+    private val editTodo: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // 작성하기 화면에서 돌아왔을 때
+            if (it.resultCode == RESULT_OK && it.data != null) {
+                it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
+                    ?.let { todo ->
+                        viewModel.updateItem(todo)
+                    }
+            }
+        }
     private val addTodo: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // 작성하기 화면에서 돌아왔을 때

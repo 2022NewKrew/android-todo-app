@@ -19,4 +19,9 @@ class MainViewModel : ViewModel() {
         repository.addItem(todo)
         _todoList.value = repository.todoList
     }
+
+    fun updateItem(todo: Todo) {
+        repository.updateItem(todo)
+        _todoList.value = repository.todoList
+    }
 }
