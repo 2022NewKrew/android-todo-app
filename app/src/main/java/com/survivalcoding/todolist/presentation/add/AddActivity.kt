@@ -2,36 +2,61 @@ package com.survivalcoding.todolist.presentation.add
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ActivityAddBinding
 import com.survivalcoding.todolist.model.Todo
-import com.survivalcoding.todolist.presentation.main.MainActivity
+import com.survivalcoding.todolist.presentation.main.MainActivity.Companion.REMOVE_STATUS_KEY
+import com.survivalcoding.todolist.presentation.main.MainActivity.Companion.TODO_EXTRA_KEY
 
 class AddActivity : AppCompatActivity() {
 
     private val binding: ActivityAddBinding by lazy {
         ActivityAddBinding.inflate(layoutInflater)
     }
+    private val viewModel by viewModels<AddViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        if (intent.getParcelableExtra<Todo>(TODO_EXTRA_KEY) == null) {
+            binding.addTvTitle.text = getString(R.string.add_title)
+            binding.addIvDelete.visibility = View.INVISIBLE
+        } else {
+            binding.addTvTitle.text = getString(R.string.edit_title)
+            binding.addIvDelete.visibility = View.VISIBLE
+        }
+
+        viewModel.setTodo(intent.getParcelableExtra(TODO_EXTRA_KEY))
+
+        binding.addEtName.setText(viewModel.todo.value?.title)
+        binding.addIvBack.setOnClickListener { finish() }
+
         // 작성 완료 버튼 클릭 시
         binding.addFabComplete.setOnClickListener {
-            val title = binding.addEtTitle.text.toString().trim()
+            val title = binding.addEtName.text.toString().trim()
 
             // 할 일을 입력하지 않은 경우
             if (title.isEmpty()) {
-                Toast.makeText(this, getString(R.string.add_todo_hint), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.add_todo_empty), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val intent = Intent()
-            // TODO 중복되지 않는 id로 설정
-            intent.putExtra(MainActivity.TODO_EXTRA_KEY, Todo(1, title))
+            intent.putExtra(TODO_EXTRA_KEY, viewModel.getUpdateTodo(title))
+            setResult(RESULT_OK, intent)
+            finish()
+        }
+
+        // 삭제 버튼 클릭 시
+        binding.addIvDelete.setOnClickListener {
+            val intent = Intent()
+            intent.putExtra(TODO_EXTRA_KEY, viewModel.todo.value)
+            intent.putExtra(REMOVE_STATUS_KEY, true)
             setResult(RESULT_OK, intent)
             finish()
         }

@@ -16,17 +16,27 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val viewModel by viewModels<MainViewModel>()
     private val adapter by lazy {
-        TodoListAdapter().apply {
-            // 초기 데이터 설정
-            submitList(viewModel.todoList)
+        TodoListAdapter({ todo -> viewModel.updateList(todo) }, { todo ->
+            val intent = Intent(this, AddActivity::class.java)
+            intent.putExtra(TODO_EXTRA_KEY, todo)
+            editTodo.launch(intent)
+        })
+    }
+    private val editTodo: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // 작성하기 화면에서 돌아왔을 때
+            if (it.resultCode == RESULT_OK && it.data != null) {
+                // 할 일 변경
+                it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
+                    ?.let { todo ->
+                        viewModel.updateItem(todo)
 
-            // 클릭 리스너 설정
-            itemClickListener = { todo ->
-                viewModel.updateList(todo)
-                submitList(viewModel.todoList)
+                        // 할 일 삭제
+                        it.data?.extras?.getBoolean(REMOVE_STATUS_KEY)
+                            ?.let { removeStatus -> if(removeStatus) viewModel.deleteItem(todo) }
+                    }
             }
         }
-    }
     private val addTodo: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // 작성하기 화면에서 돌아왔을 때
@@ -34,7 +44,6 @@ class MainActivity : AppCompatActivity() {
                 it.data?.extras?.getParcelable<Todo>(TODO_EXTRA_KEY)
                     ?.let { todo ->
                         viewModel.addItem(todo)
-                        adapter.submitList(viewModel.todoList)
                     }
             }
         }
@@ -51,9 +60,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddActivity::class.java)
             addTodo.launch(intent)
         }
+
+        // todolist 업데이트 관찰
+        viewModel.todoList.observe(this) { list ->
+            adapter.submitList(list)
+        }
     }
 
     companion object {
         const val TODO_EXTRA_KEY = "todo"
+        const val REMOVE_STATUS_KEY = "remove status"
     }
 }
