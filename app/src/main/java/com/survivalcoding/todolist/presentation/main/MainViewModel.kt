@@ -2,11 +2,11 @@ package com.survivalcoding.todolist.presentation.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.survivalcoding.todolist.data.TodoRepository
+import com.survivalcoding.todolist.data.repository.TodoRepositoryImp
 import com.survivalcoding.todolist.model.Todo
 
 class MainViewModel : ViewModel() {
-    private val repository = TodoRepository()
+    private val repository = TodoRepositoryImp()
     private val _todoList = MutableLiveData(repository.todoList)
     val todoList get() = _todoList
 
