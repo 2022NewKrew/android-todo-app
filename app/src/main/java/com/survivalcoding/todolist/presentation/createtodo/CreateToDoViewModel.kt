@@ -4,12 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.model.ToDo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class CreateToDoViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+@HiltViewModel
+class CreateToDoViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private val _newToDoCreatedEvent = MutableSharedFlow<CreateToDoEvent>()
     val newToDoCreatedEvent = _newToDoCreatedEvent.asSharedFlow()

@@ -14,10 +14,12 @@ import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.presentation.createtodo.CreateToDoActivity
 import com.survivalcoding.todolist.presentation.createtodo.CreateToDoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()

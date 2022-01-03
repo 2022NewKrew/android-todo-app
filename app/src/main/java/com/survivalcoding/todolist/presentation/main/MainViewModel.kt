@@ -2,12 +2,14 @@ package com.survivalcoding.todolist.presentation.main
 
 import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.domain.model.ToDo
-import com.survivalcoding.todolist.data.datasource.ToDoMockDataSource
-import com.survivalcoding.todolist.data.repository.ToDoRepositoryImpl
 import com.survivalcoding.todolist.domain.repository.ToDoRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-    private val toDoRepository: ToDoRepository = ToDoRepositoryImpl(ToDoMockDataSource())
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val toDoRepository: ToDoRepository
+) : ViewModel() {
     val toDoList = toDoRepository.toDoList
 
     fun changeDoneState(toDo: ToDo, isDone: Boolean) {
