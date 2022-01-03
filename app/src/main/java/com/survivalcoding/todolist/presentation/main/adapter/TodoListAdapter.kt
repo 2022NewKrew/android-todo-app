@@ -4,8 +4,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.survivalcoding.todolist.model.Todo
 
-class TodoListAdapter : ListAdapter<Todo, TodoViewHolder>(TodoDiffItemCallback) {
-    var onItemClicked: (Todo) -> Unit = {}
+class TodoListAdapter(
+    private val onItemClicked: (Todo) -> Unit = {}
+) : ListAdapter<Todo, TodoViewHolder>(TodoDiffItemCallback) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         return TodoViewHolder(parent, onItemClicked)

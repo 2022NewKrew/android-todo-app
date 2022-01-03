@@ -19,15 +19,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val adapter = TodoListAdapter()
-        adapter.onItemClicked = { todo ->
+        val adapter = TodoListAdapter { todo ->
             viewModel.toggleTodo(todo)
-            adapter.submitList(viewModel.todos)
         }
 
         binding.todoRecyclerView.adapter = adapter
 
-        adapter.submitList(viewModel.todos)
+        viewModel.todos.observe(this) { todos ->
+            adapter.submitList(null)
+            adapter.submitList(todos)
+        }
     }
 
 }
