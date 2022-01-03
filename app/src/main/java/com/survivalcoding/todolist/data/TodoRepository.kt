@@ -18,15 +18,23 @@ class TodoRepository {
 
     val todos get() = _todos.map { it.copy() }
 
-    fun insertTodo(newTodo: Todo) {
-        _todos = _todos + listOf(newTodo.copy(id = nextId))
-        nextId += 1
+    fun upsertTodo(todo: Todo) {
+        if (todo.id < 0) {
+            insertTodo(todo)
+        } else {
+            updateTodo(todo)
+        }
     }
 
     fun toggleTodo(id: Long) {
         todos.find { it.id == id }?.run {
-            updateTodo(copy(hasHighlight = !hasHighlight))
+            updateTodo(copy(isDone = !isDone))
         }
+    }
+
+    fun insertTodo(newTodo: Todo) {
+        _todos = _todos + listOf(newTodo.copy(id = nextId))
+        nextId += 1
     }
 
     fun updateTodo(todo: Todo) {

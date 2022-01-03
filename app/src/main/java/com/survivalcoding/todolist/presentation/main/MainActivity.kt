@@ -9,8 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.model.Todo
-import com.survivalcoding.todolist.presentation.add.AddActivity
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
+import com.survivalcoding.todolist.presentation.todo.TodoActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,13 +20,13 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    private val pingPongAddActivity =
+    private val startTodoActivity =
         registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                when(result.data?.action) {
-                    Intent.ACTION_INSERT -> {
-                        val newTodo = result.data?.getParcelableExtra<Todo>(AddActivity.NEW_TODO)!!
-                        viewModel.insertTodo(newTodo)
+                when (result.data?.action) {
+                    TodoActivity.ACTION_UPSERT -> {
+                        val newTodo = result.data?.getParcelableExtra<Todo>(TodoActivity.TODO)!!
+                        viewModel.upsertTodo(newTodo)
                     }
                     else -> {
                         Toast.makeText(this, "Unknown Action", Toast.LENGTH_SHORT).show()
@@ -39,12 +39,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val adapter = TodoListAdapter { viewModel.toggleTodos(it) }
+        val adapter = TodoListAdapter { id ->
+            viewModel.todos.value?.find { it.id == id }?.let { selectedTodo ->
+                val intent = Intent(this@MainActivity, TodoActivity::class.java)
+                    .apply { putExtra(TodoActivity.TODO, selectedTodo) }
+                startTodoActivity.launch(intent)
+            }
+        }
+
         binding.todoListRv.adapter = adapter
         viewModel.todos.observe(this) { adapter.submitList(it) }
 
         binding.fab.setOnClickListener {
-            pingPongAddActivity.launch(Intent(this, AddActivity::class.java))
+            startTodoActivity.launch(Intent(this, TodoActivity::class.java))
         }
     }
 }
