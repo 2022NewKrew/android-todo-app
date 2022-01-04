@@ -1,8 +1,8 @@
 package com.survivalcoding.todolist.ui.main
 
 import androidx.recyclerview.widget.RecyclerView
-import com.survivalcoding.todolist.data.model.TodoItem
 import com.survivalcoding.todolist.databinding.TodoListItemBinding
+import com.survivalcoding.todolist.domain.models.TodoItem
 
 class TodoViewHolder(val binding: TodoListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {

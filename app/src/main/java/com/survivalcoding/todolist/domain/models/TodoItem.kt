@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.data.model
+package com.survivalcoding.todolist.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

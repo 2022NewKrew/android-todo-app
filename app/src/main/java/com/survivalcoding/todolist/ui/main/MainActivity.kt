@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.survivalcoding.todolist.data.model.TodoItem
+import com.survivalcoding.todolist.domain.models.TodoItem
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity
 import com.survivalcoding.todolist.ui.write.SimpleTodoWriteActivity.Companion.NEW_TODO
