@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.survivalcoding.todolist.data.TodoListRepository
 import com.survivalcoding.todolist.data.UpsertRepository
 import com.survivalcoding.todolist.domain.model.Todo
-import com.survivalcoding.todolist.presentation.main.MainFragment.Companion.NEW
-import com.survivalcoding.todolist.presentation.main.MainFragment.Companion.POSITION
+import com.survivalcoding.todolist.presentation.main.MainFragment.Companion.MODIFY
 
 //SavedStateHandle 사용하면 bundle에서 값을 여기에 저장시킨다.
 class UpsertViewModel(handle: SavedStateHandle) : ViewModel() {
@@ -20,12 +18,10 @@ class UpsertViewModel(handle: SavedStateHandle) : ViewModel() {
     private var isModifying = false
 
     init {
-        handle.get<Int>(POSITION)?.let {
-            if (it != NEW) {
-                isModifying = true
-                upsertRepository.updateTodo(TodoListRepository.getTodoByIndex(it))
-                _todo.value = upsertRepository.getTodo()
-            }
+        handle.get<Todo>(MODIFY)?.let {
+            isModifying = true
+            upsertRepository.updateTodo(it)
+            _todo.value = upsertRepository.getTodo()
         }
     }
 

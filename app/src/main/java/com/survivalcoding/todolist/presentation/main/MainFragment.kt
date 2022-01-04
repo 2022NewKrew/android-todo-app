@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
-import com.survivalcoding.todolist.presentation.upsert.UpsertFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
+import com.survivalcoding.todolist.presentation.upsert.UpsertFragment
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -62,7 +62,8 @@ class MainFragment : Fragment() {
             .replace(
                 R.id.fragment_container_view,
                 UpsertFragment().apply {
-                    this.arguments = bundleOf(POSITION to pos)
+                    if (pos != NEW) this.arguments =
+                        bundleOf(MODIFY to viewModel.getTodoByIndex(pos))
                 })
             .commit()
     }
@@ -74,6 +75,6 @@ class MainFragment : Fragment() {
 
     companion object {
         const val NEW = -1
-        const val POSITION = "position"
+        const val MODIFY = "modify"
     }
 }
