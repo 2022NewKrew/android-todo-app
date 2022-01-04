@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat
 
 class TodoViewHolder(private val binding: ItemTodoBinding) : ViewHolder(binding.root) {
 
-    @SuppressLint("SetTextI18n")
     fun bind(
         item: Todo,
         onItemClicked: (Todo) -> Unit,
@@ -24,7 +23,7 @@ class TodoViewHolder(private val binding: ItemTodoBinding) : ViewHolder(binding.
 
         val pattern = "yyyy-MM-dd HH:mm";
         val formatter = SimpleDateFormat(pattern)
-        val date = "set : " + formatter.format(Timestamp(item.timestamp));
+        val date = "set : " + formatter.format(item.timestamp);
 
         binding.deadlineTextview.text = date
         if (item.isDone) {
