@@ -8,4 +8,12 @@
         android:font="@font/hs_uji"
         android:fontStyle="normal"
         android:fontWeight="400" />
+    <font
+        android:font="@font/railway"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+    <font
+        android:font="@font/rubik"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
 </font-family>
