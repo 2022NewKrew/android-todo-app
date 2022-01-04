@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.data.TodoRepository
 import com.survivalcoding.todolist.model.Todo
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val todoRepository = TodoRepository()
 

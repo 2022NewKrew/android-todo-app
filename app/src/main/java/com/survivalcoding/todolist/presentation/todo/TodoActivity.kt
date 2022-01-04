@@ -51,7 +51,7 @@ class TodoActivity : AppCompatActivity() {
                         binding.titleEv.text.toString(),
                         binding.contentEv.text.toString(),
                         todo?.let { getTimestamp(it) } ?: System.currentTimeMillis(),
-                        binding.isDoneCb.isChecked ?: false
+                        binding.isDoneCb.isChecked
                     )
                 )
             }
@@ -68,9 +68,9 @@ class TodoActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.delete -> {
-                if(todo == null) {
+                if (todo == null) {
                     setResult(Activity.RESULT_CANCELED)
                     finish()
                 } else {

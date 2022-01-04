@@ -10,4 +10,4 @@ data class Todo(
     val content: String,
     val timestamp: Long,
     val isDone: Boolean,
-): Parcelable
+) : Parcelable

@@ -33,7 +33,7 @@ class TodoRepository {
 
     fun updateTodo(todo: Todo) {
         _todos = _todos.map {
-            if(it.id == todo.id) todo else it
+            if (it.id == todo.id) todo else it
         }
     }
 
