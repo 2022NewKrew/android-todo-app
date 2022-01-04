@@ -14,7 +14,7 @@ object TodoListRepository {
     fun getTodos(): List<Todo> = todos
     fun getTodoByIndex(pos: Int): Todo = todos[pos]
 
-    fun updateTodo(todo: Todo){
+    fun updateTodo(todo: Todo) {
         todos = todos.map { origin ->
             if (origin.id == todo.id)
                 todo
@@ -22,7 +22,7 @@ object TodoListRepository {
         }
     }
 
-    fun addTodo(todo: Todo){
+    fun addTodo(todo: Todo) {
         todos = todos.plus(todo)
     }
 }

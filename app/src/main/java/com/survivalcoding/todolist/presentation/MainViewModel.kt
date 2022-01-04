@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.main
+package com.survivalcoding.todolist.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
