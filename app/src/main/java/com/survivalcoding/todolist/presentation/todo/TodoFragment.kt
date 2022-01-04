@@ -31,10 +31,12 @@ class TodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.selectedTodo?.also {
             binding.apply {
+                titleIv.visibility = View.INVISIBLE
                 isDoneCb.visibility = View.VISIBLE
                 isDoneCb.isChecked = it.isDone
                 titleEv.setText(it.title)
                 contentEv.setText(it.content)
+                timestampIv.visibility = View.VISIBLE
                 timestampTv.visibility = View.VISIBLE
                 timestampTv.text = it.timestamp.toTimestampString()
             }

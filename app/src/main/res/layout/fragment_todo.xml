@@ -14,7 +14,18 @@
         app:layout_constraintTop_toTopOf="@id/titleEv"
         app:layout_constraintBottom_toBottomOf="@id/titleEv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/titleEv" />
+        app:layout_constraintEnd_toStartOf="@id/titleEv"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/titleIv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/titleEv"
+        app:layout_constraintTop_toTopOf="@+id/titleEv"
+        app:layout_constraintStart_toEndOf="@id/isDoneCb"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_baseline_title_24" />
 
     <EditText
         android:id="@+id/titleEv"
@@ -25,6 +36,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="24sp"
         android:hint="Title" />
+
+    <ImageView
+        android:id="@+id/contentIv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/contentEv"
+        app:layout_constraintTop_toTopOf="@+id/contentEv"
+        app:layout_constraintStart_toEndOf="@id/isDoneCb"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_baseline_text_snippet_24" />
 
     <EditText
         android:id="@+id/contentEv"
@@ -38,6 +59,18 @@
         android:gravity="top|start"
         android:hint="Add Todo" />
 
+    <ImageView
+        android:id="@+id/timestampIv"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/timestampTv"
+        app:layout_constraintTop_toTopOf="@+id/timestampTv"
+        app:layout_constraintStart_toEndOf="@id/isDoneCb"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_baseline_access_time_24"
+        android:visibility="invisible"
+        tools:visibility="visible"/>
+
     <TextView
         android:id="@+id/timestampTv"
         android:layout_width="0dp"
@@ -47,6 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="end"
         android:text="YYYY.MM.DD HH:mm"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
