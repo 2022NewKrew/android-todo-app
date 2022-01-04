@@ -6,7 +6,7 @@ class TodoRepository {
 
     private var nextId = 31L
 
-    private var _todos = (1 until nextId).map {
+    private val _todos = (1 until nextId).map {
         Todo(
             it.toLong(),
             "Title #${it}",
@@ -14,9 +14,9 @@ class TodoRepository {
             false,
             System.currentTimeMillis()
         )
-    }
+    }.toMutableList()
 
-    val todos get() = _todos.map { it.copy() }
+    val todos get() = _todos.toList()
 
     fun upsertTodo(todo: Todo) {
         if (todo.id < 0) {
@@ -27,17 +27,15 @@ class TodoRepository {
     }
 
     fun insertTodo(newTodo: Todo) {
-        _todos = _todos + listOf(newTodo.copy(id = nextId))
+        _todos.add(newTodo.copy(id = nextId))
         nextId += 1
     }
 
     fun updateTodo(todo: Todo) {
-        _todos = _todos.map {
-            if (it.id == todo.id) todo else it
-        }
+        _todos[_todos.indexOfFirst { it.id == todo.id }] = todo.copy()
     }
 
     fun deleteTodo(todo: Todo) {
-        _todos = _todos.filter { it.id != todo.id }
+        _todos.removeAt(_todos.indexOfFirst { it.id == todo.id })
     }
 }
