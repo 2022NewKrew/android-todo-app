@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.survivalcoding.todolist.databinding.FragmentCreateToDoBinding
 import com.survivalcoding.todolist.domain.model.ToDo
+import com.survivalcoding.todolist.presentation.main.MainActivity
 import com.survivalcoding.todolist.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +42,11 @@ class CreateToDoFragment : Fragment() {
             viewModel.createNewToDo(binding?.newToDoEditText?.text.toString())
         }
         binding?.newToDoEditText?.setText(viewModel.prevToDo?.title)
+        binding?.newToDoEditText?.let {
+            if (activity is MainActivity) {
+                (activity as MainActivity).showKeyboard(it)
+            }
+        }
 
         collect()
     }

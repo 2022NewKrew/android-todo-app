@@ -47,7 +47,9 @@ class ToDoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.toDoListRecyclerView?.adapter = adapter
         binding?.createButton?.setOnClickListener {
-            (activity as MainActivity).navigateToCreateToDo()
+            if (activity is MainActivity) {
+                (activity as MainActivity).navigateToCreateToDo()
+            }
         }
 
         collect()
