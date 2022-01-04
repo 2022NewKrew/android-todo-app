@@ -11,7 +11,7 @@ class TodoViewHolder(private val listItemTodoBinding: ListItemTodoBinding) :
     fun bind(todo: Todo, onClick: (Long) -> Unit) {
         listItemTodoBinding.apply {
             todoListItemTitleTv.text = todo.title
-            root.setBackgroundColor(if(todo.isDone) Color.RED else Color.TRANSPARENT)
+            root.setBackgroundColor(if (todo.isDone) Color.RED else Color.TRANSPARENT)
             root.setOnClickListener { onClick(todo.id) }
         }
     }

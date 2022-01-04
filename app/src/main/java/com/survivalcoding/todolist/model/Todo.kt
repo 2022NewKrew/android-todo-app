@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Todo(
-    val id: Long,
+    val id: Long = -1L,
     val title: String,
     val content: String,
-    val timestamp: Long,
-    val isDone: Boolean,
-): Parcelable
+    val isDone: Boolean = false,
+    val timestamp: Long = System.currentTimeMillis(),
+) : Parcelable
