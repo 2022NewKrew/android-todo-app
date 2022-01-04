@@ -1,7 +1,5 @@
 package com.survivalcoding.todolist.data
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
 

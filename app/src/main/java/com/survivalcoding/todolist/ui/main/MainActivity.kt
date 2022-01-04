@@ -5,10 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.ui.add.AddActivity
 import com.survivalcoding.todolist.ui.main.adapter.TodoListAdapter
@@ -41,24 +44,22 @@ class MainActivity : AppCompatActivity() {
             todoListAdapter.submitList(todos)
         })
 
-
-        // to add activity
-        val activityResult =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
-                    it.data?.let { intent ->
-                        intent.getStringExtra(NEW_TODO_ITEM_CODE)?.let { title ->
-                            mainViewModel.addTodo(title)
-                        }
-                    }
-                }
-            }
-
-        binding.fab.setOnClickListener {
-            activityResult.launch(Intent(this, AddActivity::class.java))
-        }
-
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_meun, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.add_todo_menu -> {
+                true
+            }
+            R.id.search_todo_menu -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
