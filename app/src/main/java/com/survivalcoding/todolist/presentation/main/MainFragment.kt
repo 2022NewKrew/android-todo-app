@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
+import com.survivalcoding.todolist.presentation.add.UpsertFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainFragment : Fragment() {
@@ -30,8 +33,8 @@ class MainFragment : Fragment() {
 
         val adapter = TodoListAdapter(onChangeIsDone = { modify ->
             viewModel.toggleTodo(modify)
-        }, onModifyTodo = {
-            //Todo: 다른 프래그먼트로 교체 작업
+        }, onModifyTodo = { pos ->
+            moveToAddFragment(pos)
         })
 
         val recyclerView = binding.todoRecyclerView
@@ -47,12 +50,28 @@ class MainFragment : Fragment() {
         //Add Button을 통해 다른 액티비티로 이동
         val addButton = binding.addButton
         addButton.setOnClickListener {
-            //Todo: 다른 프래그먼트로 교체 작업
+            moveToAddFragment()
         }
+    }
+
+    private fun moveToAddFragment(pos: Int = NEW) {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fragment_container_view,
+                UpsertFragment().apply {
+                this.arguments = bundleOf(POSITION to pos)
+            })
+            .commit()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val NEW = -1
+        const val POSITION = "position"
     }
 }
