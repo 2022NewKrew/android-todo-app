@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.createtodo
+package com.survivalcoding.todolist.presentation.main.createtodo
 
 import android.os.Bundle
 import android.view.LayoutInflater

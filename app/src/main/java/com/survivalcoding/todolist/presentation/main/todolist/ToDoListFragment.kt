@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.todolist
+package com.survivalcoding.todolist.presentation.main.todolist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.survivalcoding.todolist.databinding.FragmentToDoListBinding
 import com.survivalcoding.todolist.presentation.main.MainActivity
 import com.survivalcoding.todolist.presentation.main.MainViewModel
-import com.survivalcoding.todolist.presentation.todolist.adapter.ToDoListAdapter
-import com.survivalcoding.todolist.presentation.todolist.adapter.ToDoListFooterAdapter
+import com.survivalcoding.todolist.presentation.main.todolist.adapter.ToDoListAdapter
+import com.survivalcoding.todolist.presentation.main.todolist.adapter.ToDoListFooterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest

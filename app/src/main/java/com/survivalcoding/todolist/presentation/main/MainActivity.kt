@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.domain.model.ToDo
-import com.survivalcoding.todolist.presentation.createtodo.CreateToDoFragment
-import com.survivalcoding.todolist.presentation.todolist.ToDoListFragment
+import com.survivalcoding.todolist.presentation.main.createtodo.CreateToDoFragment
+import com.survivalcoding.todolist.presentation.main.todolist.ToDoListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
