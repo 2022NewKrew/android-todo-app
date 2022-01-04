@@ -30,4 +30,9 @@ class MainViewModel : ViewModel() {
         todoListRepository.addTodo(todo)
         _todos.value = todoListRepository.getTodos()
     }
+
+    fun deleteTodo(todo: Int) { // 하나만 업데이트
+        todoListRepository.deleteTodo(todo)
+        _todos.value = todoListRepository.getTodos()
+    }
 }

@@ -14,6 +14,10 @@ object TodoListRepository {
     fun getTodos(): List<Todo> = todos
     fun getTodoByIndex(pos: Int): Todo = todos[pos]
 
+    fun addTodo(todo: Todo) {
+        todos = todos.plus(todo)
+    }
+
     fun updateTodo(todo: Todo) {
         todos = todos.map { origin ->
             if (origin.id == todo.id)
@@ -22,7 +26,8 @@ object TodoListRepository {
         }
     }
 
-    fun addTodo(todo: Todo) {
-        todos = todos.plus(todo)
+    fun deleteTodo(pos: Int) {
+        //todo: 삭제 구현
+        todos = todos.minus(getTodoByIndex(pos))
     }
 }

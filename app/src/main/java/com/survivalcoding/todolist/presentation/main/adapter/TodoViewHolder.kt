@@ -9,8 +9,9 @@ import java.util.*
 
 class TodoViewHolder(
     itemView: View,
-    val onChangeIsDone: (Todo) -> Unit,
-    val onModifyTodo: (Int) -> Unit,
+    val onClickCheckBox: (Todo) -> Unit,
+    val onClickViewShort: (Int) -> Unit,
+    val onClickViewLong: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ItemTodoBinding.bind(itemView)
 
@@ -21,11 +22,16 @@ class TodoViewHolder(
         binding.isDone.isChecked = todo.isDone
 
         binding.isDone.setOnClickListener {
-            onChangeIsDone(todo)
+            onClickCheckBox(todo)
         }
 
         itemView.setOnClickListener {
-            onModifyTodo(adapterPosition)
+            onClickViewShort(adapterPosition)
+        }
+
+        binding.root.setOnLongClickListener {
+            onClickViewLong(adapterPosition)
+            true
         }
     }
 }

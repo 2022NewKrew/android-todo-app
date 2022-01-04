@@ -1,11 +1,11 @@
 package com.survivalcoding.todolist.presentation.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.R
@@ -31,10 +31,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = TodoListAdapter(onChangeIsDone = { modify ->
+        val adapter = TodoListAdapter(onClickCheckBox = { modify ->
             viewModel.toggleTodo(modify)
-        }, onModifyTodo = { pos ->
+        }, onClickViewShort = { pos ->
             moveToAddFragment(pos)
+        }, onClickViewLong = { pos ->
+            viewModel.deleteTodo(pos)
         })
 
         val recyclerView = binding.todoRecyclerView
@@ -60,8 +62,8 @@ class MainFragment : Fragment() {
             .replace(
                 R.id.fragment_container_view,
                 UpsertFragment().apply {
-                this.arguments = bundleOf(POSITION to pos)
-            })
+                    this.arguments = bundleOf(POSITION to pos)
+                })
             .commit()
     }
 
