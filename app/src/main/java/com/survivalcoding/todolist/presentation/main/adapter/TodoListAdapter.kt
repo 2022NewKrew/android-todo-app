@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.model.Todo
 
 class TodoListAdapter(
     private val checkClickListener: (Todo) -> Unit,
