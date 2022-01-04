@@ -21,21 +21,43 @@
     app:cardCornerRadius="5dp"
     >
 
-
-    <TextView
-        android:id="@+id/todo_textview"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="5dp"
-        android:layout_marginStart="5dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:text="item_todo"
-        android:contentDescription="item todo"
-        />
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/todo_textview"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/deadline_textview"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="item_todo"
+            android:contentDescription="item todo"
+            />
+
+        <TextView
+            android:id="@+id/deadline_textview"
+            app:layout_constraintTop_toBottomOf="@id/todo_textview"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="yyyy-MM-dd : hh:mm"
+            android:contentDescription="deadline_textview"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.cardview.widget.CardView>
