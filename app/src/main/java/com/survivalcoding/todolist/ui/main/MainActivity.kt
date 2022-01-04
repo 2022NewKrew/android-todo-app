@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerViewTodoList.adapter = adapter
 
         viewModel.data.observe(this) { todos ->
-            adapter.submitList(null)
             adapter.submitList(todos)
         }
 

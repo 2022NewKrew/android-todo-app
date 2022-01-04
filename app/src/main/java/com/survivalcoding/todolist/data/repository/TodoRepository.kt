@@ -3,7 +3,7 @@ package com.survivalcoding.todolist.data.repository
 import com.survivalcoding.todolist.data.model.TodoItem
 
 object TodoRepository {
-    private val data = (1..30.toLong()).map {
+    private var data = (1..30.toLong()).map {
         TodoItem(
             id = it,
             title = "title ${it.toInt()}",
@@ -14,11 +14,11 @@ object TodoRepository {
     fun getTodos(): List<TodoItem> = data
 
     fun removeAllData() {
-        data.removeAll { true }
+        data = mutableListOf()
     }
 
     fun addAllData(targetData: List<TodoItem>) {
-        data.addAll(targetData)
+        data = targetData.toMutableList()
     }
 
     fun findDataById(id: Long): TodoItem {
@@ -30,6 +30,6 @@ object TodoRepository {
     }
 
     fun addData(todoItem: TodoItem) {
-        data.add(todoItem)
+        data = data.plus(todoItem).toMutableList()
     }
 }

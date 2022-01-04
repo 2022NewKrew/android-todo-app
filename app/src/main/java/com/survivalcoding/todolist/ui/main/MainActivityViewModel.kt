@@ -15,14 +15,17 @@ class MainActivityViewModel : ViewModel() {
         val newData =
             prevData.copy(isDone = !prevData.isDone)
         TodoRepository.updateDataByIndex(TodoRepository.getTodos().indexOf(prevData), newData)
+        _data.value = TodoRepository.getTodos()
     }
 
     fun setTodos(todos: List<TodoItem>) {
         TodoRepository.removeAllData()
         TodoRepository.addAllData(todos)
+        _data.value = TodoRepository.getTodos()
     }
 
     fun addTodo(todoItem: TodoItem) {
         TodoRepository.addData(todoItem)
+        _data.value = TodoRepository.getTodos()
     }
 }
