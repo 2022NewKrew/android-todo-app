@@ -1,9 +1,12 @@
-package com.survivalcoding.todolist.presentation.main
+package com.survivalcoding.todolist.presentation.main.todolist.adapter
 
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.ViewGroup
+import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.databinding.ToDoListItemLayoutBinding
 
@@ -25,13 +28,38 @@ class ToDoViewHolder private constructor(
     fun bind(
         toDo: ToDo,
         onItemCheckedChanged: (ToDo, Boolean) -> Unit,
-        onDeleteButtonClick: (ToDo) -> Unit,
-        onItemClick: (ToDo) -> Unit
+        onDeleteClick: (ToDo) -> Unit,
+        onModifyClick: (ToDo) -> Unit
     ) {
-        itemView.setOnClickListener { onItemClick(toDo) }
+        setContextMenu(toDo, onModifyClick, onDeleteClick)
+        itemView.setOnClickListener { binding.checkBox.performClick() }
         bindTextView(toDo)
         bindCheckBox(toDo, onItemCheckedChanged)
-        bindDeleteButton(toDo, onDeleteButtonClick)
+    }
+
+    private fun setContextMenu(
+        toDo: ToDo,
+        onModifyButtonClick: (ToDo) -> Unit,
+        onDeleteButtonClick: (ToDo) -> Unit
+    ) {
+        itemView.setOnCreateContextMenuListener { menu, v, menuInfo ->
+            MenuInflater(itemView.context).inflate(
+                R.menu.to_do_list_item_menu,
+                menu
+            )
+            menu.forEach {
+                when (it.itemId) {
+                    R.id.menu_modify -> it.setOnMenuItemClickListener {
+                        onModifyButtonClick(toDo)
+                        true
+                    }
+                    R.id.menu_delete -> it.setOnMenuItemClickListener {
+                        onDeleteButtonClick(toDo)
+                        true
+                    }
+                }
+            }
+        }
     }
 
     private fun bindTextView(toDo: ToDo) {
@@ -50,15 +78,6 @@ class ToDoViewHolder private constructor(
         binding.checkBox.isChecked = toDo.isDone
         binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             onItemCheckedChanged(toDo, isChecked)
-        }
-    }
-
-    private fun bindDeleteButton(
-        toDo: ToDo,
-        onDeleteButtonClick: (ToDo) -> Unit
-    ) {
-        binding.deleteButton.setOnClickListener {
-            onDeleteButtonClick(toDo)
         }
     }
 

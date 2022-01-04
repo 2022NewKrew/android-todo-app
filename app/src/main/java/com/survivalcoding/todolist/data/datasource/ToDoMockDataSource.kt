@@ -33,7 +33,6 @@ class ToDoMockDataSource @Inject constructor() : ToDoLocalDataSource {
     }
 
     override fun addItem(newItem: ToDo) {
-        val tmpToDoList = _toDoList.value.toMutableList().apply { add(newItem) }
-        _toDoList.value = tmpToDoList
+        _toDoList.value = _toDoList.value.plus(newItem)
     }
 }
