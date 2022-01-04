@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
@@ -32,9 +34,20 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val todoListAdapter = TodoListAdapter { item ->
-            mainViewModel.toggleIsDone(item)
-        }
+        val todoListAdapter = TodoListAdapter(
+            onItemClicked = { item ->
+                mainViewModel.toggleIsDone(item)
+            },
+            onLongClicked = { item ->
+                mainViewModel.todoNeedChanged.value = item
+                mainViewModel.isUpdate.value = true
+                parentFragmentManager.commit {
+                    replace<EditFragment>(R.id.fragment_container_view)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+            }
+        )
 
         // enroll listAdapter
         binding.recyclerview.adapter = todoListAdapter

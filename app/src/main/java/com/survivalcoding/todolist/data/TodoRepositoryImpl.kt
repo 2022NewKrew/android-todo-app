@@ -2,6 +2,7 @@ package com.survivalcoding.todolist.data
 
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
+import java.util.*
 
 class TodoRepositoryImpl : TodoRepository {
     private var todos =
@@ -15,6 +16,16 @@ class TodoRepositoryImpl : TodoRepository {
         todos = todos.map {
             if (it.id == oldItem.id)
                 oldItem.copy(isDone = !oldItem.isDone)
+            else
+                it
+
+        }.toMutableList()
+    }
+
+    override fun upDateTitle(title: String, id: Long) {
+        todos = todos.map {
+            if (it.id == id)
+                it.copy(id = id, title = title, isDone = it.isDone, timestamp = Date().time)
             else
                 it
 
