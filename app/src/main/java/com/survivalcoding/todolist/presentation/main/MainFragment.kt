@@ -65,6 +65,7 @@ class MainFragment : Fragment() {
                     if (pos != NEW) this.arguments =
                         bundleOf(MODIFY to viewModel.getTodoByIndex(pos))
                 })
+            .addToBackStack(null)
             .commit()
     }
 
