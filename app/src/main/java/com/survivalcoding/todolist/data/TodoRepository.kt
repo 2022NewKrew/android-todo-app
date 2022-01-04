@@ -11,8 +11,8 @@ class TodoRepository {
             it.toLong(),
             "Title #${it}",
             "Content #$it",
-            System.currentTimeMillis(),
-            false
+            false,
+            System.currentTimeMillis()
         )
     }
 

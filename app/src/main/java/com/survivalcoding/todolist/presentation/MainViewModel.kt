@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.main
+package com.survivalcoding.todolist.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +12,8 @@ class MainViewModel : ViewModel() {
 
     private val _todos = MutableLiveData(todoRepository.todos)
     val todos: LiveData<List<Todo>> = _todos
+
+    var selectedTodo: Todo? = null
 
     fun upsertTodo(todo: Todo) {
         todoRepository.upsertTodo(todo)
