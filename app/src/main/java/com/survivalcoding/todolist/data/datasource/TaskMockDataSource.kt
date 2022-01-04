@@ -13,7 +13,7 @@ class TaskMockDataSource : TaskLocalDataSource {
             )
         }.toMutableList()
 
-    override val tasks: List<Task> = _tasks
+    override val tasks: List<Task> get() = _tasks
 
     override fun updateTask(id: Long) {
         _tasks = _tasks.map { task ->

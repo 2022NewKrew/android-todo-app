@@ -5,7 +5,7 @@ import com.survivalcoding.todolist.domain.entity.Task
 class TaskInMemoryDataSource : TaskLocalDataSource {
     private var _tasks = mutableListOf<Task>()
 
-    override val tasks: List<Task> = _tasks
+    override val tasks: List<Task> get() = _tasks
 
     override fun updateTask(id: Long) {
         _tasks = _tasks.map { task ->
@@ -20,7 +20,7 @@ class TaskInMemoryDataSource : TaskLocalDataSource {
     }
 
     override fun insertTask(newTask: Task) {
-        val tmpTasks = _tasks.apply { add(newTask) }
+        val tmpTasks = _tasks.toMutableList().apply { add(0, newTask) }
         _tasks = tmpTasks
     }
 }

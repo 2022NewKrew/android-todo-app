@@ -8,12 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Todolist">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name="com.survivalcoding.todolist.ui.add.AddListActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.survivalcoding.todolist.ui.main.MainActivity"
+            android:name="com.survivalcoding.todolist.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,7 +6,7 @@ import com.survivalcoding.todolist.domain.repository.TaskRepository
 
 class TaskRepositoryImpl constructor(private val taskLocalDataSource: TaskLocalDataSource) :
     TaskRepository {
-    override val tasks: List<Task> = taskLocalDataSource.tasks
+    override val tasks: List<Task> get() = taskLocalDataSource.tasks
 
     override fun update(id: Long) {
         taskLocalDataSource.updateTask(id)
