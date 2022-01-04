@@ -1,7 +1,7 @@
 package com.survivalcoding.todolist.data.repository
 
+import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
-import com.survivalcoding.todolist.model.Todo
 
 class TodoRepositoryImpl: TodoRepository {
     var todoList: List<Todo> =

@@ -4,7 +4,7 @@ import android.graphics.Paint
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ItemTodoBinding
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.model.Todo
 
 class TodoViewHolder(
     private val binding: ItemTodoBinding,

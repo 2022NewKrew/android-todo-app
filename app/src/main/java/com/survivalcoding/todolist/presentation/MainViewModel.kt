@@ -3,7 +3,7 @@ package com.survivalcoding.todolist.presentation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.data.repository.TodoRepositoryImpl
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.model.Todo
 
 class MainViewModel : ViewModel() {
     private val repository = TodoRepositoryImpl()
