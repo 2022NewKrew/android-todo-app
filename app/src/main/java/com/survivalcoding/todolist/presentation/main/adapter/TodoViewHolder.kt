@@ -11,7 +11,8 @@ import com.survivalcoding.todolist.domain.model.Todo
 class TodoViewHolder(
     parent: ViewGroup,
     val onItemClicked: (Todo) -> Unit,
-    val onItemLongClicked: (Todo) -> Unit = {},
+    val onItemLongClicked: (Todo) -> Unit,
+    val onCheckClicked: (Todo) -> Unit,
 ) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context)
         .inflate(R.layout.item_todo, parent, false)
@@ -34,6 +35,10 @@ class TodoViewHolder(
         binding.root.setOnLongClickListener {
             onItemLongClicked(todo)
             true
+        }
+
+        binding.checkBox.setOnClickListener {
+            onCheckClicked(todo)
         }
     }
 }

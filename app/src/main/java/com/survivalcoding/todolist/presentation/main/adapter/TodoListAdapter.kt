@@ -7,11 +7,17 @@ import com.survivalcoding.todolist.domain.model.Todo
 class TodoListAdapter(
     private val onItemClicked: (Todo) -> Unit = {},
     private val onItemLongClicked: (Todo) -> Unit = {},
+    private val onCheckClicked: (Todo) -> Unit = {},
 ) : ListAdapter<Todo, TodoViewHolder>(TodoDiffItemCallback) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
-        return TodoViewHolder(parent, onItemClicked, onItemLongClicked)
+        return TodoViewHolder(
+            parent,
+            onItemClicked,
+            onItemLongClicked,
+            onCheckClicked
+        )
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {

@@ -8,6 +8,8 @@ class TodoRepository {
 
     fun getTodos(): List<Todo> = todos
 
+    fun getTodoById(id: Int): Todo? = todos.find { it.id == id }
+
     fun insert(todo: Todo) {
         todos = todos.toMutableList()
             .apply { add(todo) }

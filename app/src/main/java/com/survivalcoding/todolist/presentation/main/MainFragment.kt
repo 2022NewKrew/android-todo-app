@@ -4,9 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
+import com.survivalcoding.todolist.presentation.MainViewModel
+import com.survivalcoding.todolist.presentation.add.AddEditFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainFragment : Fragment() {
@@ -31,12 +37,34 @@ class MainFragment : Fragment() {
         // View가 완성된 직후
         val adapter = TodoListAdapter(
             onItemClicked = { todo ->
-                viewModel.toggleTodo(todo)
+                parentFragmentManager.commit {
+                    replace<AddEditFragment>(
+                        R.id.fragment_container_view,
+                        args = bundleOf(
+                            "todo" to todo
+                        )
+                    )
+                    setReorderingAllowed(true)
+                    addToBackStack(null) // name can b
+                }
             },
             onItemLongClicked = { todo ->
                 viewModel.deleteTodo(todo)
+            },
+            onCheckClicked = { todo ->
+                viewModel.toggleTodo(todo)
             }
         )
+
+        binding.addFab.setOnClickListener {
+            parentFragmentManager.commit {
+                replace<AddEditFragment>(
+                    R.id.fragment_container_view,
+                )
+                setReorderingAllowed(true)
+                addToBackStack(null) // name can b
+            }
+        }
 
         binding.todoRecyclerView.adapter = adapter
 
