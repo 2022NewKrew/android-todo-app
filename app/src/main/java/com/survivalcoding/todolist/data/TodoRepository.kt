@@ -1,24 +1,20 @@
 package com.survivalcoding.todolist.data
 
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.domain.model.Todo
 
 class TodoRepository {
     // 변경 안되는 리스트
-    private var todos = (0..5).map { num ->
-        Todo(
-            id = num.toLong(),
-            title = "청소 $num",
-        )
-    }.toMutableList()
+    private var todos = mutableListOf<Todo>()
 
     fun getTodos(): List<Todo> = todos
 
     fun insert(todo: Todo) {
-        todos.add(todo)
+        todos = todos.toMutableList()
+            .apply { add(todo) }
     }
 
     fun delete(todo: Todo) {
-        todos.remove(todo)
+        todos = todos.filter { it.id != todo.id }.toMutableList()
     }
 
     fun update(todo: Todo) {
