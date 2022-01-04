@@ -30,8 +30,8 @@ class ToDoListFragment : Fragment() {
     private val toDoListBodyAdapter: ToDoListAdapter by lazy {
         ToDoListAdapter(
             onItemCheckedChanged = viewModel::changeDoneState,
-            onDeleteButtonClick = viewModel::deleteToDo,
-            onItemClick = {
+            onDeleteClick = viewModel::deleteToDo,
+            onModifyClick = {
                 (activity as MainActivity).navigateToCreateToDo(it)
             }
         )

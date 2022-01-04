@@ -3,4 +3,5 @@
     <string name="delete">delete</string>
     <string name="save">save</string>
     <string name="create">create</string>
+    <string name="modify">modify</string>
 </resources>
