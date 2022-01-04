@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 it.data?.getParcelableExtra<TodoItem>(NEW_TODO)
-                    ?.let { content -> viewModel.data.add(content) }
+                    ?.let { content -> viewModel.addTodo(content) }
             }
         }
 
@@ -42,11 +42,15 @@ class MainActivity : AppCompatActivity() {
         val adapter = TodoAdapter(viewModel::toggleTodoDone)
 
         binding.recyclerViewTodoList.adapter = adapter
-        adapter.submitList(viewModel.data)
+
+        viewModel.data.observe(this) { todos ->
+            adapter.submitList(null)
+            adapter.submitList(todos)
+        }
 
         binding.fab.setOnClickListener {
             val intent = Intent(this, SimpleTodoWriteActivity::class.java)
-            intent.putExtra(NEW_ID, viewModel.data.size)
+            intent.putExtra(NEW_ID, viewModel.data.value?.size)
             getResult.launch(intent)
         }
     }
