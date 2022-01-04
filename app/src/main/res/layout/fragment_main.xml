@@ -6,13 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/todo_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_todo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

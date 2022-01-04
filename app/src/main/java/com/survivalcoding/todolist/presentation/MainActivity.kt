@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.main
+package com.survivalcoding.todolist.presentation
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,36 +6,28 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
+import com.survivalcoding.todolist.presentation.add.AddEditFragment
+import com.survivalcoding.todolist.presentation.main.MainFragment
+import com.survivalcoding.todolist.presentation.main.MainViewModel
 
 
 class MainActivity : AppCompatActivity() {
-
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
-    }
 
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-        val adapter = TodoListAdapter(
-            onItemClicked = { todo ->
-                viewModel.toggleTodo(todo)
-            },
-            onItemLongClicked = { todo ->
-                viewModel.deleteTodo(todo)
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                replace<MainFragment>(R.id.fragment_container_view)
+                setReorderingAllowed(true)
+                addToBackStack(null) // name can be null
             }
-        )
-
-        binding.todoRecyclerView.adapter = adapter
-
-        viewModel.todos.observe(this) { todos ->
-            adapter.submitList(todos)
         }
     }
 
@@ -53,7 +45,11 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_delete -> {
-
+                supportFragmentManager.commit {
+                    replace<AddEditFragment>(R.id.fragment_container_view)
+                    setReorderingAllowed(true)
+                    addToBackStack(null) // name can be null
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
