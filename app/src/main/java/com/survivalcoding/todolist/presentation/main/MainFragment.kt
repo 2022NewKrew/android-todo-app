@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
-import com.survivalcoding.todolist.presentation.add.UpsertFragment
+import com.survivalcoding.todolist.presentation.upsert.UpsertFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 
 class MainFragment : Fragment() {
