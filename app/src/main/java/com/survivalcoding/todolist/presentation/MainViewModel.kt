@@ -37,11 +37,13 @@ class MainViewModel : ViewModel() {
     }
 
     // currentTodo가 null인 경우 new task 만들기
-    fun getUpdateTodo(title: String): Todo = (currentTodo.value ?: newTodo()).copy(
-        id = currentTodo.value?.id ?: 1,
-        title = title,
-        isDone = currentTodo.value?.isDone ?: false
-    )
+    fun upsertItem(title: String) {
+        var todo: Todo = currentTodo.value ?: newTodo()
+        todo = todo.copy(id = todo.id, title = title, isDone = todo.isDone)
+
+        if (currentTodo.value == null) addItem(todo)
+        else updateItem(todo)
+    }
 
     private fun newTodo(): Todo = Todo((todoList.value?.last()?.id ?: 0) + 1, "")
 }

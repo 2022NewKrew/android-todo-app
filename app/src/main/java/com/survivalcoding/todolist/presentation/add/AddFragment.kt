@@ -51,9 +51,7 @@ class AddFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (viewModel.currentTodo.value == null) viewModel.addItem(viewModel.getUpdateTodo(title))
-            else viewModel.updateItem(viewModel.getUpdateTodo(title))
-
+            viewModel.upsertItem(title)
             parentFragmentManager.popBackStack()
         }
 
