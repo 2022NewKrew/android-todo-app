@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val viewModel by viewModels<MainViewModel>()
     private val adapter by lazy {
-        TodoListAdapter({ todo -> viewModel.updateList(todo) }, { todo ->
+        TodoListAdapter({ todo -> viewModel.updateIsDone(todo) }, { todo ->
             val intent = Intent(this, AddActivity::class.java)
             intent.putExtra(TODO_EXTRA_KEY, todo)
             editTodo.launch(intent)
