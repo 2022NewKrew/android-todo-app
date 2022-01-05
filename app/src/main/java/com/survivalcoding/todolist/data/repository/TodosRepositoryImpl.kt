@@ -1,10 +1,11 @@
-package com.survivalcoding.todolist.data
+package com.survivalcoding.todolist.data.repository
 
 import com.survivalcoding.todolist.domain.model.Todo
+import com.survivalcoding.todolist.domain.repository.TodosRepository
 import java.util.*
 
 // 데이터 관리 공간
-class TodosRepository {
+class TodosRepositoryImpl : TodosRepository{
     private var todos = (1..5).map { num ->
         val today = Calendar.getInstance()
         today.add(Calendar.DATE, num)
@@ -12,15 +13,15 @@ class TodosRepository {
     }
     private var nextId = todos.size + 1
 
-    fun getTodos(): List<Todo> = todos
-    fun getTodoByIndex(pos: Int): Todo = todos[pos]
+    override fun getTodos(): List<Todo> = todos
+    override fun getTodoByIndex(pos: Int): Todo = todos[pos]
 
-    fun addTodo(todo: Todo) {
+    override fun addTodo(todo: Todo) {
         todos = todos.plus(todo.copy(id = nextId.toLong()))
         nextId += 1
     }
 
-    fun updateTodos(todo: Todo) {
+    override fun updateTodos(todo: Todo) {
         todos = todos.map { origin ->
             if (origin.id == todo.id)
                 todo
@@ -28,7 +29,7 @@ class TodosRepository {
         }
     }
 
-    fun deleteTodo(pos: Int) {
+    override fun deleteTodo(pos: Int) {
         todos = todos.toMutableList().apply {
             removeAt(pos)
         }
