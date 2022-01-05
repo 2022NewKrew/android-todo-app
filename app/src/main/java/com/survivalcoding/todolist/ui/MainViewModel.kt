@@ -1,10 +1,10 @@
-package com.survivalcoding.todolist.presentation
+package com.survivalcoding.todolist.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.data.TodoRepository
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.data.model.Todo
 
 class MainViewModel : ViewModel() {
 

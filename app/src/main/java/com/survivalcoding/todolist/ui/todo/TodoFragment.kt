@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.todo
+package com.survivalcoding.todolist.ui.todo
 
 import android.os.Bundle
 import android.view.*
@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentTodoBinding
-import com.survivalcoding.todolist.model.Todo
-import com.survivalcoding.todolist.presentation.MainViewModel
+import com.survivalcoding.todolist.data.model.Todo
+import com.survivalcoding.todolist.ui.MainViewModel
 import com.survivalcoding.todolist.toTimestampString
 
 class TodoFragment : Fragment() {

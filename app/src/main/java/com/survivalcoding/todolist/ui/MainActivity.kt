@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation
+package com.survivalcoding.todolist.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,7 +6,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import com.survivalcoding.todolist.presentation.main.MainFragment
+import com.survivalcoding.todolist.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
