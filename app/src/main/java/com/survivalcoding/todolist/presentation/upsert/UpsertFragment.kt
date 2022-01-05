@@ -11,10 +11,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentAddBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
-import com.survivalcoding.todolist.presentation.main.MainFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,10 +40,10 @@ class UpsertFragment : Fragment() {
         val calendar = binding.calendarText
 
         upsertViewModel.todo.observe(this) { task ->
-            calendar.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(task.date)
+            calendar.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(task.dueDate)
 
             val cal = Calendar.getInstance()
-            cal.timeInMillis = task.date
+            cal.timeInMillis = task.dueDate
             calendar.setOnClickListener {
                 DatePickerDialog(
                     requireContext(),
@@ -95,10 +93,7 @@ class UpsertFragment : Fragment() {
     }
 
     private fun goBackToMainFragment() {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_view, MainFragment())
-            .commit()
+        parentFragmentManager.popBackStack()
     }
 
     override fun onDestroyView() {

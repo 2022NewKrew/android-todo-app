@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +36,8 @@ class MainFragment : Fragment() {
             viewModel.toggleTodo(modify)
         }, onClickViewShort = { pos ->
             moveToAddFragment(pos)
-        }, onClickViewLong = { pos ->
-            viewModel.deleteTodo(pos)
+        }, onClickViewLong = { delete ->
+            viewModel.deleteTodo(delete)
         })
 
         val recyclerView = binding.todoRecyclerView
@@ -47,6 +48,11 @@ class MainFragment : Fragment() {
         //UI를 변경하는 부분을 관찰할 수 있게 확인
         viewModel.todos.observe(this) { todos ->
             adapter.submitList(todos)
+        }
+
+        val filter = binding.filterText
+        filter.doAfterTextChanged {
+            viewModel.filterTodos(it.toString())
         }
 
         //Add Button을 통해 다른 액티비티로 이동

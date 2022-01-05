@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.commit {
                 replace<MainFragment>(R.id.fragment_container_view)
                 setReorderingAllowed(true)
-                addToBackStack(null) // name can be null
             }
         }
     }
