@@ -1,15 +1,16 @@
 package com.survivalcoding.todolist.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.survivalcoding.todolist.data.repository.TodosRepositoryImpl
 import com.survivalcoding.todolist.domain.model.Todo
 
 // ViewModel: View로부터 독립적인 데이터 저장
 // Activity가 완전히 종료할 때까지 데이터를 계속 가지고 있음
-class MainViewModel : ViewModel() {
-    private val todoListRepository = TodosRepositoryImpl()
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+    private val todoListRepository = TodosRepositoryImpl(application)
 
     private var _todos = MutableLiveData(
         todoListRepository.getTodos()
@@ -33,7 +34,7 @@ class MainViewModel : ViewModel() {
         _todos.value = todoListRepository.getTodos()
     }
 
-    fun deleteTodo(todo: Int) { // 하나만 업데이트
+    fun deleteTodo(todo: Todo) { // 하나만 업데이트
         todoListRepository.deleteTodo(todo)
         _todos.value = todoListRepository.getTodos()
     }

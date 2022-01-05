@@ -35,8 +35,8 @@ class MainFragment : Fragment() {
             viewModel.toggleTodo(modify)
         }, onClickViewShort = { pos ->
             moveToAddFragment(pos)
-        }, onClickViewLong = { pos ->
-            viewModel.deleteTodo(pos)
+        }, onClickViewLong = { delete ->
+            viewModel.deleteTodo(delete)
         })
 
         val recyclerView = binding.todoRecyclerView

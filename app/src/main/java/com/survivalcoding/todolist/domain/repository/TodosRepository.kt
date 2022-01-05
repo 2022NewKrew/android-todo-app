@@ -7,5 +7,5 @@ interface TodosRepository {
     fun getTodoByIndex(pos: Int): Todo
     fun addTodo(todo: Todo)
     fun updateTodos(todo: Todo)
-    fun deleteTodo(pos: Int)
+    fun deleteTodo(todo: Todo)
 }
