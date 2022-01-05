@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentToDoListBinding
-import com.survivalcoding.todolist.presentation.main.MainViewModel
 import com.survivalcoding.todolist.presentation.main.createtodo.CreateToDoViewModel
 import com.survivalcoding.todolist.presentation.main.todolist.adapter.ToDoListAdapter
 import com.survivalcoding.todolist.presentation.main.todolist.adapter.ToDoListFooterAdapter
@@ -26,7 +25,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ToDoListFragment : Fragment() {
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: ToDoListViewModel by viewModels()
 
     private var binding: FragmentToDoListBinding? = null
 
