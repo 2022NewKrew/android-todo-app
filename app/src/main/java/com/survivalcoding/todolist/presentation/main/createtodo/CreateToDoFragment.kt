@@ -5,25 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentCreateToDoBinding
-import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.presentation.main.MainActivity
-import com.survivalcoding.todolist.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CreateToDoFragment : Fragment() {
 
     private val viewModel: CreateToDoViewModel by viewModels()
-    private val activityViewModel: MainViewModel by activityViewModels()
 
     private var binding: FragmentCreateToDoBinding? = null
 
@@ -40,6 +32,7 @@ class CreateToDoFragment : Fragment() {
 
         binding?.saveButton?.setOnClickListener {
             viewModel.createNewToDo(binding?.newToDoEditText?.text.toString())
+            findNavController().navigate(R.id.action_createToDoFragment_to_toDoListFragment)
         }
         binding?.newToDoEditText?.setText(viewModel.prevToDo?.title)
         binding?.newToDoEditText?.let {
@@ -47,41 +40,10 @@ class CreateToDoFragment : Fragment() {
                 (activity as MainActivity).showKeyboard(it)
             }
         }
-
-        collect()
-    }
-
-    private fun collect() {
-        repeatOnStart {
-            viewModel.newToDoCreatedEvent.collect {
-                if (it.editedFlag) {
-                    activityViewModel.updateToDo(it.toDo.id, it.toDo)
-                } else {
-                    activityViewModel.addToDo(it.toDo)
-                }
-
-                parentFragmentManager.popBackStack()
-            }
-        }
-    }
-
-    private fun repeatOnStart(block: suspend CoroutineScope.() -> Unit) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED, block)
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(toDo: ToDo?) = CreateToDoFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable(CreateToDoViewModel.TODO, toDo)
-            }
-        }
     }
 }
