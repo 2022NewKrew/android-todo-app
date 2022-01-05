@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.todo
+package com.survivalcoding.todolist.ui.todo
 
 import android.os.Bundle
 import android.view.*
@@ -6,10 +6,11 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.data.model.Todo
 import com.survivalcoding.todolist.databinding.FragmentTodoBinding
-import com.survivalcoding.todolist.model.Todo
-import com.survivalcoding.todolist.presentation.MainViewModel
 import com.survivalcoding.todolist.toTimestampString
+import com.survivalcoding.todolist.ui.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 class TodoFragment : Fragment() {
 
@@ -44,10 +45,10 @@ class TodoFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             val todo = Todo(
-                viewModel.selectedTodo?.id ?: -1,
+                viewModel.selectedTodo?.id ?: 0,
                 binding.titleEv.text.toString(),
                 binding.contentEv.text.toString(),
-                binding.isDoneCb.isChecked ?: false,
+                binding.isDoneCb.isChecked,
                 viewModel.selectedTodo?.let { getTimestamp(it) } ?: System.currentTimeMillis()
             )
             viewModel.upsertTodo(todo)

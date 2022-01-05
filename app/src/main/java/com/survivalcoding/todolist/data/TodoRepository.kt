@@ -1,41 +1,29 @@
 package com.survivalcoding.todolist.data
 
-import com.survivalcoding.todolist.model.Todo
+import com.survivalcoding.todolist.data.model.Todo
+import javax.inject.Inject
 
-class TodoRepository {
+class TodoRepository @Inject constructor(private val todoDao: TodoDao) {
 
-    private var nextId = 31L
-
-    private val _todos = (1 until nextId).map {
-        Todo(
-            it.toLong(),
-            "Title #${it}",
-            "Content #$it",
-            false,
-            System.currentTimeMillis()
-        )
-    }.toMutableList()
-
-    val todos get() = _todos.toList()
+    val todos = todoDao.selectAll()
 
     fun upsertTodo(todo: Todo) {
-        if (todo.id < 0) {
+        if (todo.id == 0) {
             insertTodo(todo)
         } else {
             updateTodo(todo)
         }
     }
 
-    fun insertTodo(newTodo: Todo) {
-        _todos.add(newTodo.copy(id = nextId))
-        nextId += 1
+    private fun insertTodo(newTodo: Todo) {
+        todoDao.insert(newTodo)
     }
 
-    fun updateTodo(todo: Todo) {
-        _todos[_todos.indexOfFirst { it.id == todo.id }] = todo.copy()
+    private fun updateTodo(todo: Todo) {
+        todoDao.update(todo)
     }
 
     fun deleteTodo(todo: Todo) {
-        _todos.removeAt(_todos.indexOfFirst { it.id == todo.id })
+        todoDao.delete(todo)
     }
 }

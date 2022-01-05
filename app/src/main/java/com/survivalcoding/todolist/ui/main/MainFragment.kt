@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.main
+package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
-import com.survivalcoding.todolist.model.Todo
-import com.survivalcoding.todolist.presentation.MainViewModel
-import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
-import com.survivalcoding.todolist.presentation.todo.TodoFragment
+import com.survivalcoding.todolist.data.model.Todo
+import com.survivalcoding.todolist.ui.MainViewModel
+import com.survivalcoding.todolist.ui.main.adapter.TodoListAdapter
+import com.survivalcoding.todolist.ui.todo.TodoFragment
 
 class MainFragment: Fragment() {
 
