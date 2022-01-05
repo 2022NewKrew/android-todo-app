@@ -35,12 +35,13 @@ class MainFragment : Fragment() {
     }
 
     val clickEvent = object : OnClickEvent {
-        override fun clickEvent(id: Long) {
-            viewModel.updateTask(id)
+        override fun clickEvent(task: Task) {
+            val newTask = task.copy(isDone = !task.isDone)
+            viewModel.upsertTask(newTask)
         }
 
-        override fun longClickEvent(id: Long): Boolean {
-            viewModel.deleteTask(id)
+        override fun longClickEvent(task: Task): Boolean {
+            viewModel.deleteTask(task)
             return true
         }
     }
@@ -58,12 +59,18 @@ class MainFragment : Fragment() {
         setTitleTime()
 
         binding.tvAddTask.setOnClickListener {
+            viewModel.upsertTask(Task(
+                id = Date().time,
+                taskName = "id = $id",
+                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
+                isDone = false,
+            ))
             (requireActivity() as MainActivity).replaceFragment(AddEditFragment.newInstance())
         }
 
         binding.rvTaskList.adapter = adapter
 
-        viewModel.tasks.observe(this) { tasks ->
+        viewModel.getTasks().observe(this) { tasks ->
             adapter.submitList(tasks)
         }
 

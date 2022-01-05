@@ -46,12 +46,12 @@ class ToDoListHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
 
 
         binding.ivCheckButton.setOnClickListener {
-            clickEvent.clickEvent(currentTask.id)
+            clickEvent.clickEvent(currentTask)
         }
 
 
         itemView.setOnLongClickListener {
-            clickEvent.longClickEvent(currentTask.id)
+            clickEvent.longClickEvent(currentTask)
         }
     }
 
