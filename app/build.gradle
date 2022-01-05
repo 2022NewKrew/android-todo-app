@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id "kotlin-parcelize"
+    id "kotlin-kapt"
 }
 
 android {
@@ -51,4 +52,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.fragment:fragment-ktx:1.4.0")
+    // room
+    kapt("androidx.room:room-compiler:2.4.0")
+    implementation("androidx.room:room-ktx:2.4.0")
 }
