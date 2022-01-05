@@ -1,9 +1,7 @@
 package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,8 +21,9 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -37,7 +36,6 @@ class MainFragment : Fragment() {
             },
             onLongClicked = { item ->
                 mainViewModel.todoNeedChanged.value = item
-                mainViewModel.isUpdate.value = true
                 parentFragmentManager.commit {
                     replace<EditFragment>(R.id.fragment_container_view)
                     setReorderingAllowed(true)
@@ -55,6 +53,28 @@ class MainFragment : Fragment() {
         })
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_meun, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.add_todo_menu -> {
+                parentFragmentManager.commit {
+                    replace<EditFragment>(R.id.fragment_container_view)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+                true
+            }
+            R.id.search_todo_menu -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

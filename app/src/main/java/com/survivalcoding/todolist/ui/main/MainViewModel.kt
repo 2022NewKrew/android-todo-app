@@ -14,24 +14,21 @@ class MainViewModel : ViewModel() {
     private val getTodosUseCase = GetTodosUseCase(todoRepositoryImpl)
     private val _todos = MutableLiveData(getTodosUseCase())
     val todos: LiveData<List<Todo>> = _todos
-    var todoNeedChanged = MutableLiveData<Todo>(null)
-    var isUpdate = MutableLiveData<Boolean>(false)
-
+    private val _todoNeedChanged = MutableLiveData<Todo?>(null)
+    val todoNeedChanged get() = _todoNeedChanged
 
     fun toggleIsDone(item: Todo) {
         todoRepositoryImpl.upDateIsDone(item)
         _todos.value = todoRepositoryImpl.getTodos()
     }
 
-    fun addTodo(title: String) {
-        todoRepositoryImpl.insert(title)
+    fun upsertTodo(title: String) {
+        _todoNeedChanged.value?.let {
+            todoRepositoryImpl.upDateTitle(title, it.id)
+        } ?: todoRepositoryImpl.insert(title)
+
         _todos.value = todoRepositoryImpl.getTodos()
     }
 
-    fun updateTodo(title: String, id: Long) {
-        if (id == -1L) return
-        todoRepositoryImpl.upDateTitle(title, id)
-        _todos.value = todoRepositoryImpl.getTodos()
-    }
 
 }
