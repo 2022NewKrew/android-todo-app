@@ -29,7 +29,10 @@ class TodoViewHolder(private val binding: ItemTodoBinding) : ViewHolder(binding.
         if (item.isDone) {
             binding.todoTextview.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             binding.todoTextview.setTextColor(Color.GRAY)
-        } else binding.todoTextview.paintFlags = 0
+        } else {
+            binding.todoTextview.paintFlags = 0
+            binding.todoTextview.setTextColor(Color.BLACK)
+        }
         binding.root.setOnClickListener {
             onItemClicked(item)
         }

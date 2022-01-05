@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao {
-    @Query("SELECT * FROM TODO_TB")
+    @Query("SELECT * FROM TODO_TB SOR")
     fun getAll(): Flow<List<TodoModel>>
 
     @Update

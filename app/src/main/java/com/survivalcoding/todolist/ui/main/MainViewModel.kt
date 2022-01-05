@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val todoRepositoryImpl = TodoRepositoryImpl(application.applicationContext)
-    private val getTodosUseCase = GetTodosUseCase(todoRepositoryImpl)
+    //private val getTodosUseCase = GetTodosUseCase(todoRepositoryImpl)
     ///private var _todos: List<Todo>? = null
     val todos: LiveData<List<Todo>> = todoRepositoryImpl.getTodos().asLiveData()
     private val _todoNeedChanged = MutableLiveData<Todo?>(null)

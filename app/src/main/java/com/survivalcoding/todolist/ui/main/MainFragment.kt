@@ -50,7 +50,7 @@ class MainFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         mainViewModel.todos.observe(this, { todos ->
-            todoListAdapter.submitList(todos)
+            todoListAdapter.submitList(todos.sortedBy { it.isDone })
         })
 
     }
