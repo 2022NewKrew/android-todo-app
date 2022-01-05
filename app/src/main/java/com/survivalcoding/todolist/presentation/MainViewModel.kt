@@ -24,18 +24,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _todos.value = todoListRepository.getTodos()
     }
 
-    fun updateTodo(todo: Todo) { // 하나만 업데이트
+    fun updateTodo(todo: Todo) { // 업데이
         todoListRepository.updateTodos(todo)
         _todos.value = todoListRepository.getTodos()
     }
 
-    fun addTodo(todo: Todo) { // 하나만 업데이트
+    fun addTodo(todo: Todo) { // 추가
         todoListRepository.addTodo(todo)
         _todos.value = todoListRepository.getTodos()
     }
 
-    fun deleteTodo(todo: Todo) { // 하나만 업데이트
+    fun deleteTodo(todo: Todo) { // 삭제
         todoListRepository.deleteTodo(todo)
+        _todos.value = todoListRepository.getTodos()
+    }
+
+    fun filterTodos(filter: String) { // 필터링 기능
+        todoListRepository.filterTodos(filter)
         _todos.value = todoListRepository.getTodos()
     }
 }

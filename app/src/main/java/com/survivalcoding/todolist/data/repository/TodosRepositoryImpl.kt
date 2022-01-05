@@ -34,7 +34,14 @@ class TodosRepositoryImpl(application: Application) : TodosRepository {
         db.todoDao().delete(todo)
     }
 
-    private fun getSorted(todos: List<Todo>): List<Todo> {
-        return todos.sortedWith(compareBy({ it.isDone }, { it.date }))
+    fun filterTodos(filter: String) {
+        val allData = db.todoDao().getAll()
+        todos = getSorted(allData.filter {
+            it.title.contains(filter, ignoreCase = true)
+        })
+    }
+
+    private fun getSorted(todos: List<Todo>): List<Todo> { // 정렬을 isDone, dueDate, createDate(내림차순)으로 진행
+        return todos.sortedWith(compareBy({ it.isDone }, { it.dueDate }, { -it.createDate }))
     }
 }

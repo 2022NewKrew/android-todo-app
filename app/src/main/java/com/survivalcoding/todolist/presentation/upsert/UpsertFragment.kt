@@ -40,10 +40,10 @@ class UpsertFragment : Fragment() {
         val calendar = binding.calendarText
 
         upsertViewModel.todo.observe(this) { task ->
-            calendar.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(task.date)
+            calendar.text = SimpleDateFormat("yy/MM/dd", Locale.getDefault()).format(task.dueDate)
 
             val cal = Calendar.getInstance()
-            cal.timeInMillis = task.date
+            cal.timeInMillis = task.dueDate
             calendar.setOnClickListener {
                 DatePickerDialog(
                     requireContext(),

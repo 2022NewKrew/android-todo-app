@@ -11,7 +11,8 @@ import java.util.*
 data class Todo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String = "",
-    val date: Long = Date().time,
+    val createDate: Long = Date().time,
+    val dueDate: Long = createDate - createDate % 86400000, // hour 이전 데이터 삭제 위한 야매 방법
     val content: String = "",
     val isDone: Boolean = false
 ) : Parcelable

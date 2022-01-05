@@ -28,7 +28,7 @@ class UpsertViewModel(handle: SavedStateHandle) : ViewModel() {
     fun isEditing(): Boolean = editedFlag
 
     fun updateDate(date: Long) {
-        upsertTodo = upsertTodo.copy(date = date)
+        upsertTodo = upsertTodo.copy(dueDate = date)
         _todo.value = upsertTodo
     }
 
