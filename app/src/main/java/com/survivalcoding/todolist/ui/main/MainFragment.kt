@@ -20,6 +20,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainFragment : Fragment() {
+    companion object {
+        const val ADD_MODE = true
+        const val EDIT_MODE = false
+    }
+
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -35,8 +40,16 @@ class MainFragment : Fragment() {
         }
 
         override fun longClickEvent(task: Task): Boolean {
-            viewModel.deleteTask(task)
+            viewModel.setMode(EDIT_MODE)
+            viewModel.setTask(task)
+
+            (requireActivity() as MainActivity).replaceFragment(AddEditFragment())
             return true
+        }
+
+        override fun expandClickEvent(task: Task) {
+            val newTask = task.copy(isExpanded = !task.isExpanded)
+            viewModel.upsertTask(newTask)
         }
     }
 
@@ -63,7 +76,8 @@ class MainFragment : Fragment() {
         makeBackPressedCallback()
 
         binding.tvAddTask.setOnClickListener {
-            (requireActivity() as MainActivity).replaceFragment(AddEditFragment.newInstance())
+            viewModel.setMode(ADD_MODE)
+            (requireActivity() as MainActivity).replaceFragment(AddEditFragment())
         }
         binding.rvTaskList.adapter = adapter
 
@@ -121,9 +135,5 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance(): MainFragment = MainFragment()
     }
 }

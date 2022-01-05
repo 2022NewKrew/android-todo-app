@@ -91,7 +91,7 @@
         android:background="@drawable/half_circle"
         android:gravity="center"
         android:text="+"
-        android:textColor="@color/white"
+        android:textColor="@color/tier2"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

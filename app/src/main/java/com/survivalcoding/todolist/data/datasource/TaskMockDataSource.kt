@@ -3,6 +3,7 @@ package com.survivalcoding.todolist.data.datasource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.survivalcoding.todolist.domain.entity.Task
+import java.util.*
 
 class TaskMockDataSource : TaskLocalDataSource {
     private var _tasks =
@@ -10,7 +11,8 @@ class TaskMockDataSource : TaskLocalDataSource {
             Task(
                 id = it,
                 taskName = "$it 번째 일",
-                date = "2022-01-03",
+                taskInfo = "empty info \nempty info",
+                date = Date().time,
                 isDone = false
             )
         }.toMutableList()

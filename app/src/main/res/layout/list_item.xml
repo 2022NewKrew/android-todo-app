@@ -7,14 +7,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@drawable/shape_to_do_item"
-    android:paddingHorizontal="15dp"
-    android:paddingVertical="5dp"
     app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp">
+        android:paddingVertical="5dp">
 
         <ImageView
             android:id="@+id/iv_check_button"
@@ -24,7 +22,6 @@
             android:padding="10dp"
             android:src="@drawable/ic_baseline_radio_button_unchecked_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_task_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,27 +30,45 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/railway"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="1"
+            android:textColor="@color/tier4"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_task_info"
+            app:layout_constraintEnd_toStartOf="@+id/tv_task_date"
             app:layout_constraintStart_toEndOf="@+id/iv_check_button"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="temp" />
 
         <TextView
-            android:id="@+id/tv_task_date"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_task_info"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/railway_italic"
-            android:paddingStart="4dp"
-            android:textSize="15sp"
+            android:textColor="@color/tier3"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_task_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_task_name"
-            tools:text="tempDate"
-            tools:ignore="RtlSymmetry" />
+            app:layout_constraintEnd_toEndOf="parent"
+
+            tools:ignore="RtlSymmetry"
+            tools:text="tempDate" />
+
+        <TextView
+            android:id="@+id/tv_task_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/railway_italic"
+            android:textColor="@color/tier3"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry"
+            tools:text="tempDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

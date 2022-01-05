@@ -10,13 +10,15 @@ import kotlinx.parcelize.Parcelize
 data class Task(
     @PrimaryKey val id: Long,
     val taskName: String,
-    val date: String,
+    val taskInfo: String,
+    val date: Long,
     val isDone: Boolean = false,
+    val isExpanded: Boolean = false,
 ) : Parcelable
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task ORDER BY isDone, date DESC")
     fun getAll(): LiveData<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
