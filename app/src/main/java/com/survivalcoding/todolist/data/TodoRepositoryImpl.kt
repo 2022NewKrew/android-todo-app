@@ -1,39 +1,42 @@
 package com.survivalcoding.todolist.data
 
+import android.content.Context
+import androidx.room.Room
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
-import java.util.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class TodoRepositoryImpl : TodoRepository {
-    private var todos =
-        (0..5).map { Todo(id = it.toLong(), title = "title $it") }.toMutableList()
+class TodoRepositoryImpl(private val context: Context) : TodoRepository {
+
+    private val db = Room.databaseBuilder(
+        context,
+        TodoRoomDataBase::class.java, TodoRoomDataBase.DATABASE_NAME
+    ).allowMainThreadQueries().build()
+
+    private val todoDao: TodoDao = db.todoDao()
+
+    override fun getTodos(): Flow<List<Todo>> =
+        todoDao.getAll().map { todoModels -> todoModels.map { TodoMapper.toEntity(it) } }
 
 
-    override fun getTodos(): List<Todo> = todos.sortedBy { it.timestamp }
+    init {
+
+    }
+
+
+    override fun update(todo: Todo) {
+        todoDao.updateTodo(TodoMapper.toModel(todo))
+    }
+
+    override fun insert(todo: Todo) {
+        todoDao.insertTodo(TodoMapper.toModel(todo))
+    }
+
+    override fun delete(todo: Todo) {
+        todoDao.delete(TodoMapper.toModel(todo))
+    }
 
     // ++ diff util이 list의 참조 주소값만을 비교하는 것으로 판단되어 todos 전체를 바꾸는것으로 해야 한다.
-    override fun upDateIsDone(oldItem: Todo) {
-        todos = todos.map {
-            if (it.id == oldItem.id)
-                oldItem.copy(isDone = !oldItem.isDone)
-            else
-                it
-
-        }.toMutableList()
-    }
-
-    override fun upDateTitle(title: String, id: Long) {
-        todos = todos.map {
-            if (it.id == id)
-                it.copy(id = id, title = title, isDone = it.isDone, timestamp = Date().time)
-            else
-                it
-
-        }.toMutableList()
-    }
-
-    override fun insert(title: String) {
-        todos.add(Todo(id = todos.size.toLong(), title = title))
-    }
 
 }

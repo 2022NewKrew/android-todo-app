@@ -1,17 +1,13 @@
 package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.ui.main.adapter.TodoListAdapter
 
@@ -26,8 +22,9 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -36,11 +33,10 @@ class MainFragment : Fragment() {
 
         val todoListAdapter = TodoListAdapter(
             onItemClicked = { item ->
-                mainViewModel.toggleIsDone(item)
+                mainViewModel.toggleIsDone(item.copy(isDone = !item.isDone))
             },
             onLongClicked = { item ->
                 mainViewModel.todoNeedChanged.value = item
-                mainViewModel.isUpdate.value = true
                 parentFragmentManager.commit {
                     replace<EditFragment>(R.id.fragment_container_view)
                     setReorderingAllowed(true)
@@ -54,10 +50,32 @@ class MainFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         mainViewModel.todos.observe(this, { todos ->
-            todoListAdapter.submitList(todos)
+            todoListAdapter.submitList(todos.sortedBy { it.isDone })
         })
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_meun, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.add_todo_menu -> {
+                parentFragmentManager.commit {
+                    replace<EditFragment>(R.id.fragment_container_view)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+                true
+            }
+            R.id.search_todo_menu -> {
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

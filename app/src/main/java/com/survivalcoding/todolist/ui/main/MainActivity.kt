@@ -31,25 +31,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_meun, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.add_todo_menu -> {
-                supportFragmentManager.commit {
-                    replace<EditFragment>(R.id.fragment_container_view)
-                    setReorderingAllowed(true)
-                    addToBackStack(null)
-                }
-                true
-            }
-            R.id.search_todo_menu -> {
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 }

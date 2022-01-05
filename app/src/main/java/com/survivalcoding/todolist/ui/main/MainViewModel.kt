@@ -1,37 +1,32 @@
 package com.survivalcoding.todolist.ui.main
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.survivalcoding.todolist.data.TodoRepositoryImpl
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.usecase.GetTodosUseCase
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val todoRepositoryImpl = TodoRepositoryImpl()
-    private val getTodosUseCase = GetTodosUseCase(todoRepositoryImpl)
-    private val _todos = MutableLiveData(getTodosUseCase())
-    val todos: LiveData<List<Todo>> = _todos
-    var todoNeedChanged = MutableLiveData<Todo>(null)
-    var isUpdate = MutableLiveData<Boolean>(false)
+    private val todoRepositoryImpl = TodoRepositoryImpl(application.applicationContext)
+    //private val getTodosUseCase = GetTodosUseCase(todoRepositoryImpl)
+    ///private var _todos: List<Todo>? = null
+    val todos: LiveData<List<Todo>> = todoRepositoryImpl.getTodos().asLiveData()
+    private val _todoNeedChanged = MutableLiveData<Todo?>(null)
+    val todoNeedChanged get() = _todoNeedChanged
 
 
-    fun toggleIsDone(item: Todo) {
-        todoRepositoryImpl.upDateIsDone(item)
-        _todos.value = todoRepositoryImpl.getTodos()
+    fun toggleIsDone(todo: Todo) {
+        todoRepositoryImpl.update(todo)
     }
 
-    fun addTodo(title: String) {
-        todoRepositoryImpl.insert(title)
-        _todos.value = todoRepositoryImpl.getTodos()
+    fun upsertTodo(title: String) {
+        _todoNeedChanged.value?.let {
+            todoRepositoryImpl.update(it.copy(title = title))
+        } ?: todoRepositoryImpl.insert(Todo(title = title))
     }
 
-    fun updateTodo(title: String, id: Long) {
-        if (id == -1L) return
-        todoRepositoryImpl.upDateTitle(title, id)
-        _todos.value = todoRepositoryImpl.getTodos()
-    }
 
 }
