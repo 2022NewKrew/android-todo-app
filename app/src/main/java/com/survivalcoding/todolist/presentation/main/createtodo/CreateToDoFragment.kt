@@ -10,8 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentCreateToDoBinding
-import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.presentation.main.MainActivity
 import com.survivalcoding.todolist.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +61,7 @@ class CreateToDoFragment : Fragment() {
                     activityViewModel.addToDo(it.toDo)
                 }
 
-                parentFragmentManager.popBackStack()
+                findNavController().navigate(R.id.action_createToDoFragment_to_toDoListFragment)
             }
         }
     }
@@ -74,14 +75,5 @@ class CreateToDoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(toDo: ToDo?) = CreateToDoFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable(CreateToDoViewModel.TODO, toDo)
-            }
-        }
     }
 }

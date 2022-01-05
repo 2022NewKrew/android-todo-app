@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
+import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentToDoListBinding
-import com.survivalcoding.todolist.presentation.main.MainActivity
 import com.survivalcoding.todolist.presentation.main.MainViewModel
+import com.survivalcoding.todolist.presentation.main.createtodo.CreateToDoViewModel
 import com.survivalcoding.todolist.presentation.main.todolist.adapter.ToDoListAdapter
 import com.survivalcoding.todolist.presentation.main.todolist.adapter.ToDoListFooterAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +35,11 @@ class ToDoListFragment : Fragment() {
             onItemCheckedChanged = viewModel::changeDoneState,
             onDeleteClick = viewModel::deleteToDo,
             onModifyClick = {
-                (activity as MainActivity).navigateToCreateToDo(it)
+                findNavController().navigate(
+                    R.id.action_toDoListFragment_to_createToDoFragment, bundleOf(
+                        CreateToDoViewModel.TODO to it
+                    )
+                )
             }
         )
     }
@@ -55,9 +62,7 @@ class ToDoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.toDoListRecyclerView?.adapter = toDoListConcatAdapter
         binding?.createButton?.setOnClickListener {
-            if (activity is MainActivity) {
-                (activity as MainActivity).navigateToCreateToDo()
-            }
+            findNavController().navigate(R.id.action_toDoListFragment_to_createToDoFragment)
         }
 
         collect()
@@ -76,12 +81,5 @@ class ToDoListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = ToDoListFragment().apply {
-            arguments = Bundle().apply {}
-        }
     }
 }
