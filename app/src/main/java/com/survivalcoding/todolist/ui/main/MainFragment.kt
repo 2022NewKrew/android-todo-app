@@ -25,16 +25,10 @@ class MainFragment : Fragment() {
 
     private val viewModel by activityViewModels<MainViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private var clickTime = -1L
+    private var toast: Toast? = null
 
-    val clickEvent = object : OnClickEvent {
+    private val clickEvent = object : OnClickEvent {
         override fun clickEvent(task: Task) {
             val newTask = task.copy(isDone = !task.isDone)
             viewModel.upsertTask(newTask)
@@ -44,6 +38,15 @@ class MainFragment : Fragment() {
             viewModel.deleteTask(task)
             return true
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,28 +60,32 @@ class MainFragment : Fragment() {
         }
 
         setTitleTime()
+        makeBackPressedCallback()
 
         binding.tvAddTask.setOnClickListener {
-            viewModel.upsertTask(Task(
-                id = Date().time,
-                taskName = "id = $id",
-                date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
-                isDone = false,
-            ))
             (requireActivity() as MainActivity).replaceFragment(AddEditFragment.newInstance())
         }
-
         binding.rvTaskList.adapter = adapter
 
-        viewModel.getTasks().observe(this) { tasks ->
-            adapter.submitList(tasks)
-        }
+        viewModel.getTasks().observe(this) { adapter.submitList(it) }
+    }
 
+    private fun makeBackPressedCallback() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            with(requireActivity() as MainActivity) {
-                Toast.makeText(this, "back button pressed", Toast.LENGTH_SHORT).show()
+            with(requireActivity()) {
+                val curClickTime = Date().time
+                when {
+                    clickTime != -1L && curClickTime - clickTime < 1200 -> {
+                        toast?.cancel()
+                        finish()
+                    }
+                    else -> {
+                        clickTime = curClickTime
+                        toast = Toast.makeText(this, "종료하려면 한번 더 눌러주세요.", Toast.LENGTH_SHORT)
+                        toast?.show()
+                    }
+                }
             }
-            parentFragmentManager.popBackStack()
         }
     }
 
