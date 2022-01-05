@@ -1,6 +1,9 @@
 package com.survivalcoding.todolist.data.datasource
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.survivalcoding.todolist.domain.entity.Task
+import java.util.*
 
 class TaskMockDataSource : TaskLocalDataSource {
     private var _tasks =
@@ -8,27 +11,28 @@ class TaskMockDataSource : TaskLocalDataSource {
             Task(
                 id = it,
                 taskName = "$it 번째 일",
-                date = "2022-01-03",
+                taskInfo = "empty info \nempty info",
+                date = Date().time,
                 isDone = false
             )
         }.toMutableList()
 
-    override val tasks: List<Task> get() = _tasks
-
-    override fun updateTask(id: Long) {
-        _tasks = _tasks.map { task ->
-            if (task.id == id) task.copy(isDone = !task.isDone) else task
-        }.toMutableList()
+    override fun getTasksLive(): LiveData<List<Task>> {
+        return MutableLiveData(_tasks)
     }
 
-    override fun deleteTask(id: Long) {
-        _tasks = _tasks.filter { task ->
-            task.id != id
-        }.toMutableList()
+    override fun getTasksList(): List<Task> {
+        return _tasks
     }
 
-    override fun insertTask(newTask: Task) {
-        val tmpTasks = _tasks.plus(newTask).toMutableList()
-        _tasks = tmpTasks
+    override fun deleteTask(newTask: Task) {
+        _tasks.remove(newTask)
+    }
+
+    override fun upsertTask(newTask: Task) {
+        _tasks = _tasks.map {
+            if (newTask.id == it.id) newTask
+            else it
+        }.toMutableList()
     }
 }

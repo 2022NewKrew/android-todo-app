@@ -1,23 +1,27 @@
 package com.survivalcoding.todolist.data.repository
 
+import androidx.lifecycle.LiveData
 import com.survivalcoding.todolist.data.datasource.TaskLocalDataSource
 import com.survivalcoding.todolist.domain.entity.Task
 import com.survivalcoding.todolist.domain.repository.TaskRepository
 
-class TaskRepositoryImpl constructor(private val taskLocalDataSource: TaskLocalDataSource) :
-    TaskRepository {
-    override val tasks: List<Task> get() = taskLocalDataSource.tasks
-
-    override fun update(id: Long) {
-        taskLocalDataSource.updateTask(id)
+class TaskRepositoryImpl(
+    private val taskLocalDataSource: TaskLocalDataSource
+) : TaskRepository {
+    override fun getTasksLive(): LiveData<List<Task>> {
+        return taskLocalDataSource.getTasksLive()
     }
 
-    override fun insert(task: Task) {
-        taskLocalDataSource.insertTask(task)
+    override fun getTasksList(): List<Task> {
+        return taskLocalDataSource.getTasksList()
     }
 
-    override fun delete(id: Long) {
-        taskLocalDataSource.deleteTask(id)
+    override fun upsert(task: Task) {
+        taskLocalDataSource.upsertTask(task)
+    }
+
+    override fun delete(task: Task) {
+        taskLocalDataSource.deleteTask(task)
     }
 
 }

@@ -1,6 +1,9 @@
 package com.survivalcoding.todolist.ui.main.adapter
 
+import com.survivalcoding.todolist.domain.entity.Task
+
 interface OnClickEvent {
-    fun clickEvent(id: Long)
-    fun longClickEvent(id: Long): Boolean
+    fun clickEvent(task: Task)
+    fun longClickEvent(task: Task): Boolean
+    fun expandClickEvent(task: Task)
 }

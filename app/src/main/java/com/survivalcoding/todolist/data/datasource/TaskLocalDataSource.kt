@@ -1,11 +1,11 @@
 package com.survivalcoding.todolist.data.datasource
 
+import androidx.lifecycle.LiveData
 import com.survivalcoding.todolist.domain.entity.Task
 
 interface TaskLocalDataSource {
-    val tasks: List<Task>
-
-    fun updateTask(id: Long)
-    fun deleteTask(id: Long)
-    fun insertTask(newTask: Task)
+    fun getTasksLive(): LiveData<List<Task>>
+    fun deleteTask(newTask: Task)
+    fun upsertTask(newTask: Task)
+    fun getTasksList(): List<Task>
 }

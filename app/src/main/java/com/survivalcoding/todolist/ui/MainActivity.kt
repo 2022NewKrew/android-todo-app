@@ -17,17 +17,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.commit {
                 replace<MainFragment>(R.id.fragment_container_view)
                 setReorderingAllowed(true)
-                addToBackStack(null)
             }
         }
     }
 
     fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_view, fragment)
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        supportFragmentManager.commit {
+            replace(R.id.fragment_container_view, fragment)
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
     }
 }

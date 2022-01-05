@@ -1,11 +1,11 @@
 package com.survivalcoding.todolist.domain.repository
 
+import androidx.lifecycle.LiveData
 import com.survivalcoding.todolist.domain.entity.Task
 
 interface TaskRepository {
-    val tasks: List<Task>
-
-    fun update(id: Long)
-    fun insert(task: Task)
-    fun delete(id: Long)
+    fun getTasksLive(): LiveData<List<Task>>
+    fun getTasksList(): List<Task>
+    fun upsert(task: Task)
+    fun delete(task: Task)
 }

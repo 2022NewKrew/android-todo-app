@@ -1,26 +1,37 @@
 package com.survivalcoding.todolist.data.datasource
 
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.room.Room
 import com.survivalcoding.todolist.domain.entity.Task
+import com.survivalcoding.todolist.domain.entity.TaskDatabase
 
-class TaskInMemoryDataSource : TaskLocalDataSource {
-    private var _tasks = mutableListOf<Task>()
+class TaskInMemoryDataSource(val context: Context) : TaskLocalDataSource {
+    private val db = Room.databaseBuilder(
+        context,
+        TaskDatabase::class.java,
+        "taskDB"
+    ).allowMainThreadQueries().build()
 
-    override val tasks: List<Task> get() = _tasks
+    private val _tasks
+        get() = db.taskDao().getAllLive()
 
-    override fun updateTask(id: Long) {
-        _tasks = _tasks.map { task ->
-            if (task.id == id) task.copy(isDone = !task.isDone) else task
-        }.toMutableList()
+    private val _tasksList
+        get() = db.taskDao().getAllList()
+
+    override fun getTasksLive(): LiveData<List<Task>> {
+        return _tasks
     }
 
-    override fun deleteTask(id: Long) {
-        _tasks = _tasks.filter { task ->
-            task.id != id
-        }.toMutableList()
+    override fun deleteTask(newTask: Task) {
+        db.taskDao().delete(newTask)
     }
 
-    override fun insertTask(newTask: Task) {
-        val tmpTasks = _tasks.toMutableList().apply { add(0, newTask) }
-        _tasks = tmpTasks
+    override fun upsertTask(newTask: Task) {
+        db.taskDao().insert(newTask)
+    }
+
+    override fun getTasksList(): List<Task> {
+        return _tasksList
     }
 }
