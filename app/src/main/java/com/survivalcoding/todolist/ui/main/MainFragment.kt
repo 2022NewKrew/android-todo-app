@@ -2,11 +2,12 @@ package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.databinding.ActivityMainBinding
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.ui.main.adapter.TodoListAdapter
 
@@ -32,7 +33,7 @@ class MainFragment : Fragment() {
 
         val todoListAdapter = TodoListAdapter(
             onItemClicked = { item ->
-                mainViewModel.toggleIsDone(item)
+                mainViewModel.toggleIsDone(item.copy(isDone = !item.isDone))
             },
             onLongClicked = { item ->
                 mainViewModel.todoNeedChanged.value = item

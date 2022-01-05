@@ -1,20 +1,25 @@
 package com.survivalcoding.todolist.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.survivalcoding.todolist.domain.entity.Todo
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface TodoDao {
     @Query("SELECT * FROM TODO_TB")
-    fun getAll(): List<Todo>
+    fun getAll(): Flow<List<TodoModel>>
 
     @Update
-    fun updateTodo(todo: Todo)
+    fun updateTodo(todo: TodoModel)
 
-    @Insert
-    fun  insertTodos(vararg: Todo)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTodo(todo: TodoModel)
 
     @Delete
-    fun delete(todo: Todo)
+    fun delete(todo: TodoModel)
+
+    @Query("SELECT * FROM TODO_TB WHERE title = :title COLLATE NOCASE")
+    fun search(title: String): LiveData<List<TodoModel>>
+
 }
