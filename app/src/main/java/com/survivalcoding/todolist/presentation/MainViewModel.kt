@@ -22,13 +22,7 @@ class MainViewModel(private val repository: TodoRepository) : ViewModel() {
 
     fun updateIsDone(todo: Todo) {
         viewModelScope.launch {
-            repository.updateItem(
-                todo.copy(
-                    id = todo.id,
-                    title = todo.title,
-                    isDone = !todo.isDone
-                )
-            )
+            repository.updateItem(todo.copy(isDone = !todo.isDone))
         }
     }
 
@@ -57,7 +51,7 @@ class MainViewModel(private val repository: TodoRepository) : ViewModel() {
     // currentTodo가 null인 경우 new task 만들기
     fun upsertItem(title: String) {
         var todo: Todo = currentTodo.value ?: newTodo()
-        todo = todo.copy(id = todo.id, title = title, isDone = todo.isDone)
+        todo = todo.copy(title = title)
 
         if (currentTodo.value == null) addItem(todo)
         else updateItem(todo)
