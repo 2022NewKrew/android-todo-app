@@ -21,7 +21,7 @@ class AddEditFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddEditBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -30,6 +30,11 @@ class AddEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

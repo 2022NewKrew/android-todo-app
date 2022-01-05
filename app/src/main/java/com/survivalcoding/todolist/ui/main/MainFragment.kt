@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +19,7 @@ import com.survivalcoding.todolist.ui.main.adapter.ToDoListAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainFragment : Fragment(), OnClickEvent {
+class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -26,16 +29,27 @@ class MainFragment : Fragment(), OnClickEvent {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    val clickEvent = object : OnClickEvent {
+        override fun clickEvent(id: Long) {
+            viewModel.updateTask(id)
+        }
+
+        override fun longClickEvent(id: Long): Boolean {
+            viewModel.deleteTask(id)
+            return true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter by lazy {
-            ToDoListAdapter(this).apply {
+            ToDoListAdapter(clickEvent).apply {
                 stateRestorationPolicy =
                     RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
@@ -44,21 +58,20 @@ class MainFragment : Fragment(), OnClickEvent {
         setTitleTime()
 
         binding.tvAddTask.setOnClickListener {
-            viewModel.insertTask(
-                Task(
-                    id = Date().time,
-                    taskName = "temp task",
-                    date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
-                    isDone = false,
-                )
-            )
-            (activity as MainActivity).replaceFragment(AddEditFragment.newInstance())
+            (requireActivity() as MainActivity).replaceFragment(AddEditFragment.newInstance())
         }
 
         binding.rvTaskList.adapter = adapter
 
         viewModel.tasks.observe(this) { tasks ->
             adapter.submitList(tasks)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            with(requireActivity() as MainActivity) {
+                Toast.makeText(this, "back button pressed", Toast.LENGTH_SHORT).show()
+            }
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -94,15 +107,6 @@ class MainFragment : Fragment(), OnClickEvent {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun clickEvent(id: Long) {
-        viewModel.updateTask(id)
-    }
-
-    override fun longClickEvent(id: Long): Boolean {
-        viewModel.deleteTask(id)
-        return true
     }
 
     companion object {
