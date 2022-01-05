@@ -1,19 +1,25 @@
 package com.survivalcoding.todolist.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.survivalcoding.todolist.data.TodoRepository
+import androidx.room.Room
+import com.survivalcoding.todolist.data.data_source.local.AppDatabase
+import com.survivalcoding.todolist.data.repository.TodoRoomRepository
 import com.survivalcoding.todolist.domain.model.Todo
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     var currentTodo: Todo? = null
 
-    private val currentId = AtomicInteger(0)
-
-    private val todoRepository = TodoRepository()
+//    private val todoRepository = TodoInMemoryRepository()
+    private val todoRepository = TodoRoomRepository(
+        Room.databaseBuilder(
+            application.applicationContext,
+            AppDatabase::class.java, "todo-db"
+        ).allowMainThreadQueries().build().todoDao()
+    )
 
     private val _todos = MutableLiveData(
         todoRepository.getTodos()
@@ -39,7 +45,6 @@ class MainViewModel : ViewModel() {
         } else {
             todoRepository.insert(
                 Todo(
-                    id = currentId.getAndIncrement(),
                     title = title
                 )
             )
