@@ -2,34 +2,52 @@ package com.survivalcoding.todolist.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.survivalcoding.todolist.data.repository.TodoRepositoryImpl
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.model.Todo
+import com.survivalcoding.todolist.domain.repository.TodoRepository
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private val repository = TodoRepositoryImpl()
-    private val _todoList = MutableLiveData(repository.todoList)
+class MainViewModel(private val repository: TodoRepository) : ViewModel() {
+    private val _todoList = MutableLiveData<List<Todo>>()
     val todoList get() = _todoList
     private val _currentTodo = MutableLiveData<Todo?>()
     val currentTodo get() = _currentTodo
 
+    fun getTodoList() {
+        viewModelScope.launch {
+            _todoList.postValue(repository.getTodoList())
+        }
+    }
+
     fun updateIsDone(todo: Todo) {
-        repository.updateItem(todo.copy(id = todo.id, title = todo.title, isDone = !todo.isDone))
-        _todoList.value = repository.todoList
+        viewModelScope.launch {
+            repository.updateItem(
+                todo.copy(
+                    id = todo.id,
+                    title = todo.title,
+                    isDone = !todo.isDone
+                )
+            )
+        }
     }
 
-    fun addItem(todo: Todo) {
-        repository.addItem(todo)
-        _todoList.value = repository.todoList
+    private fun addItem(todo: Todo) {
+        viewModelScope.launch {
+            repository.insertItem(todo)
+        }
     }
 
-    fun updateItem(todo: Todo) {
-        repository.updateItem(todo)
-        _todoList.value = repository.todoList
+    private fun updateItem(todo: Todo) {
+        viewModelScope.launch {
+            repository.updateItem(todo)
+        }
     }
 
     fun deleteItem(todo: Todo) {
-        repository.deleteItem(todo)
-        _todoList.value = repository.todoList
+        viewModelScope.launch {
+            repository.deleteItem(todo)
+        }
     }
 
     fun setTodo(todo: Todo?) {
@@ -45,5 +63,16 @@ class MainViewModel : ViewModel() {
         else updateItem(todo)
     }
 
-    private fun newTodo(): Todo = Todo((todoList.value?.last()?.id ?: 0) + 1, "")
+    private fun newTodo(): Todo = Todo(null, "")
+}
+
+@Suppress("UNCHECKED_CAST")
+class MainViewModelFactory(
+    private val repository: TodoRepository
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java))
+            return MainViewModel(repository) as T
+        else throw IllegalArgumentException()
+    }
 }

@@ -9,16 +9,30 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.data.datasource.TodoLocalDataSource
+import com.survivalcoding.todolist.data.local.TodoDatabase
+import com.survivalcoding.todolist.data.repository.TodoRepositoryImpl
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
+import com.survivalcoding.todolist.presentation.MainViewModelFactory
 import com.survivalcoding.todolist.presentation.add.AddFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
+import kotlinx.coroutines.Dispatchers
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by activityViewModels<MainViewModel> {
+        MainViewModelFactory(
+            TodoRepositoryImpl(
+                TodoLocalDataSource(
+                    TodoDatabase.getDatabase(context!!).todoDao(),
+                    Dispatchers.IO
+                )
+            )
+        )
+    }
     private val adapter by lazy {
         TodoListAdapter({ todo -> viewModel.updateIsDone(todo) }, { todo ->
             viewModel.setTodo(todo)
@@ -48,6 +62,9 @@ class MainFragment : Fragment() {
         viewModel.todoList.observe(this) { list ->
             adapter.submitList(list)
         }
+
+        // 할일 목록 조회
+        viewModel.getTodoList()
     }
 
     override fun onDestroyView() {
