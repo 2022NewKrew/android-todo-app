@@ -4,7 +4,7 @@ import com.survivalcoding.todolist.domain.model.Todo
 import java.util.*
 
 // 데이터 관리 공간
-class TodoListRepository {
+class TodosRepository {
     private var todos = (1..5).map { num ->
         val today = Calendar.getInstance()
         today.add(Calendar.DATE, num)
@@ -20,7 +20,7 @@ class TodoListRepository {
         nextId += 1
     }
 
-    fun updateTodo(todo: Todo) {
+    fun updateTodos(todo: Todo) {
         todos = todos.map { origin ->
             if (origin.id == todo.id)
                 todo
