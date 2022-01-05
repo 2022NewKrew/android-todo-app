@@ -1,27 +1,32 @@
 package com.survivalcoding.todolist.ui
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.data.TodoRepository
 import com.survivalcoding.todolist.data.model.Todo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val todoRepository: TodoRepository) : ViewModel() {
 
-    private val todoRepository = TodoRepository()
-
-    private val _todos = MutableLiveData(todoRepository.todos)
-    val todos: LiveData<List<Todo>> = _todos
+    val todos: LiveData<List<Todo>> = todoRepository.todos.asLiveData(Dispatchers.IO)
 
     var selectedTodo: Todo? = null
 
     fun upsertTodo(todo: Todo) {
-        todoRepository.upsertTodo(todo)
-        _todos.value = todoRepository.todos
+        viewModelScope.launch(Dispatchers.IO) {
+            todoRepository.upsertTodo(todo)
+        }
     }
 
     fun deleteTodo(todo: Todo) {
-        todoRepository.deleteTodo(todo)
-        _todos.value = todoRepository.todos
+        viewModelScope.launch(Dispatchers.IO) {
+            todoRepository.deleteTodo(todo)
+        }
     }
 }
