@@ -1,9 +1,7 @@
 package com.survivalcoding.todolist.presentation.main.todolist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -49,6 +47,11 @@ class ToDoListFragment : Fragment() {
         ConcatAdapter(toDoListBodyAdapter, toDoListFooterAdapter)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,5 +83,22 @@ class ToDoListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.to_do_list_order_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val toDoListOrder = when (item.itemId) {
+            R.id.time_asc -> OrderBy.TIME_ASC
+            R.id.time_desc -> OrderBy.TIME_DESC
+            R.id.title_asc -> OrderBy.TITLE_ASC
+            R.id.title_desc -> OrderBy.TITLE_DESC
+            else -> OrderBy.TIME_ASC
+        }
+        viewModel.setOrder(toDoListOrder)
+
+        return true
     }
 }
