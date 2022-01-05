@@ -7,6 +7,7 @@ import com.survivalcoding.todolist.data.TodoRepositoryImpl
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.usecase.GetTodosUseCase
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -24,8 +25,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun upsertTodo(title: String) {
         _todoNeedChanged.value?.let {
-            todoRepositoryImpl.update(it.copy(title = title))
+            todoRepositoryImpl.update(it.copy(title = title, timestamp = Date().time))
         } ?: todoRepositoryImpl.insert(Todo(title = title))
+    }
+
+    fun removeTodo(todo: Todo) {
+        todoRepositoryImpl.delete(todo)
     }
 
 

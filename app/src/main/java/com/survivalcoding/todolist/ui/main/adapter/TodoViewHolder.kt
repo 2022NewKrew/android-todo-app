@@ -11,6 +11,7 @@ import com.survivalcoding.todolist.databinding.ItemTodoBinding
 import com.survivalcoding.todolist.domain.entity.Todo
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
+import java.util.*
 
 class TodoViewHolder(private val binding: ItemTodoBinding) : ViewHolder(binding.root) {
 
@@ -21,9 +22,9 @@ class TodoViewHolder(private val binding: ItemTodoBinding) : ViewHolder(binding.
     ) {
         binding.todoTextview.text = item.title
 
-        val pattern = "yyyy-MM-dd HH:mm";
-        val formatter = SimpleDateFormat(pattern)
-        val date = "set : " + formatter.format(item.timestamp);
+        val pattern = "yyyy-MM-dd HH:mm:ss"
+        val formatter = SimpleDateFormat(pattern, Locale.getDefault())
+        val date = "set : " + formatter.format(item.timestamp)
 
         binding.deadlineTextview.text = date
         if (item.isDone) {

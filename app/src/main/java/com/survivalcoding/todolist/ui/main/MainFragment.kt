@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.ui.main.adapter.TodoListAdapter
+import com.survivalcoding.todolist.ui.main.adapter.TodoSwipeHandler
 
 
 class MainFragment : Fragment() {
@@ -42,8 +44,15 @@ class MainFragment : Fragment() {
                     setReorderingAllowed(true)
                     addToBackStack(null)
                 }
+            },
+            onLeftSwiped = { todo ->
+                mainViewModel.removeTodo(todo)
             }
         )
+
+        val callback: ItemTouchHelper.Callback = TodoSwipeHandler(todoListAdapter)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(binding.recyclerview)
 
         // enroll listAdapter
         binding.recyclerview.adapter = todoListAdapter
