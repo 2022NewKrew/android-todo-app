@@ -5,7 +5,7 @@ import com.survivalcoding.todolist.domain.entity.Todo
 
 
 @Dao
-interface TodoDAO {
+interface TodoDao {
     @Query("SELECT * FROM TODO_TB")
     fun getAll(): List<Todo>
 
