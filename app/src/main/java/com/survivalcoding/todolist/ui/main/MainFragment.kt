@@ -1,11 +1,12 @@
 package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,7 +17,6 @@ import com.survivalcoding.todolist.ui.MainActivity
 import com.survivalcoding.todolist.ui.add.AddEditFragment
 import com.survivalcoding.todolist.ui.main.adapter.OnClickEvent
 import com.survivalcoding.todolist.ui.main.adapter.ToDoListAdapter
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainFragment : Fragment() {
@@ -81,7 +81,35 @@ class MainFragment : Fragment() {
         }
         binding.rvTaskList.adapter = adapter
 
-        viewModel.getTasks().observe(this) { adapter.submitList(it) }
+        viewModel.getTasksLive().observe(this) { adapter.submitList(it) }
+
+        var preText = ""
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                preText = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString() == preText) return
+                if (binding.etSearch.isFocusable && s.toString() != "") {
+                    val tasks = searchResultTasks(s.toString())
+                    adapter.submitList(tasks)
+                } else {
+                    adapter.submitList(viewModel.getTasksList())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+
+    private fun searchResultTasks(text: String): List<Task>? {
+        val tasks = viewModel.getTasksList().filter {
+            it.taskName.lowercase().replace(" ", "").contains(text)
+        }
+        return tasks
     }
 
     private fun makeBackPressedCallback() {

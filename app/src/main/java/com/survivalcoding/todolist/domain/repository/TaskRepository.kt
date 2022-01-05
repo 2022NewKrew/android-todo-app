@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import com.survivalcoding.todolist.domain.entity.Task
 
 interface TaskRepository {
-    fun getTasks(): LiveData<List<Task>>
+    fun getTasksLive(): LiveData<List<Task>>
+    fun getTasksList(): List<Task>
     fun upsert(task: Task)
     fun delete(task: Task)
 }

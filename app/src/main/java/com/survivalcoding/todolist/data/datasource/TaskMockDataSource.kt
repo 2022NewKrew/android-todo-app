@@ -17,8 +17,12 @@ class TaskMockDataSource : TaskLocalDataSource {
             )
         }.toMutableList()
 
-    override fun getTasks(): LiveData<List<Task>> {
+    override fun getTasksLive(): LiveData<List<Task>> {
         return MutableLiveData(_tasks)
+    }
+
+    override fun getTasksList(): List<Task> {
+        return _tasks
     }
 
     override fun deleteTask(newTask: Task) {

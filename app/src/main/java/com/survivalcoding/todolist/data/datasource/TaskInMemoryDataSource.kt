@@ -14,9 +14,12 @@ class TaskInMemoryDataSource(val context: Context) : TaskLocalDataSource {
     ).allowMainThreadQueries().build()
 
     private val _tasks
-        get() = db.taskDao().getAll()
+        get() = db.taskDao().getAllLive()
 
-    override fun getTasks(): LiveData<List<Task>> {
+    private val _tasksList
+        get() = db.taskDao().getAllList()
+
+    override fun getTasksLive(): LiveData<List<Task>> {
         return _tasks
     }
 
@@ -26,5 +29,9 @@ class TaskInMemoryDataSource(val context: Context) : TaskLocalDataSource {
 
     override fun upsertTask(newTask: Task) {
         db.taskDao().insert(newTask)
+    }
+
+    override fun getTasksList(): List<Task> {
+        return _tasksList
     }
 }

@@ -19,7 +19,10 @@ data class Task(
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM task ORDER BY isDone, date DESC")
-    fun getAll(): LiveData<List<Task>>
+    fun getAllLive(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task ORDER BY isDone, date DESC")
+    fun getAllList(): List<Task>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg tasks: Task)

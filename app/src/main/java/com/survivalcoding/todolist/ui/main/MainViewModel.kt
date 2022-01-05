@@ -11,7 +11,8 @@ import java.util.*
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val taskRepository =
         TaskRepositoryImpl(TaskInMemoryDataSource(application))
-    private val _tasks get() = taskRepository.getTasks()
+    private val _tasksLive get() = taskRepository.getTasksLive()
+    private val _tasksList get() = taskRepository.getTasksList()
 
     private var mode = false
     private var task = Task(Date().time, "empty", "empty", Date().time, false)
@@ -26,7 +27,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         task = selectedTask
     }
 
-    fun getTasks(): LiveData<List<Task>> = _tasks
+    fun getTasksLive(): LiveData<List<Task>> = _tasksLive
+
+    fun getTasksList(): List<Task> = _tasksList
 
     fun upsertTask(task: Task) {
         taskRepository.upsert(task)

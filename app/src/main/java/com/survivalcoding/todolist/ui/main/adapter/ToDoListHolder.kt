@@ -76,6 +76,11 @@ class ToDoListHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         itemView.setOnLongClickListener {
             clickEvent.longClickEvent(currentTask)
         }
+
+        binding.ivCheckButton.setOnLongClickListener { clickEvent.longClickEvent(currentTask) }
+        binding.tvTaskName.setOnLongClickListener { clickEvent.longClickEvent(currentTask) }
+        binding.tvTaskInfo.setOnLongClickListener { clickEvent.longClickEvent(currentTask) }
+        binding.tvTaskDate.setOnLongClickListener { clickEvent.longClickEvent(currentTask) }
     }
 
     private fun displayDate(dateTime: Long): String {
