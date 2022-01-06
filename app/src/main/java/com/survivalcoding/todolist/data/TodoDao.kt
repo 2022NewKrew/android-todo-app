@@ -9,12 +9,9 @@ interface TodoDao {
     @Query("SELECT * FROM todo")
     fun selectAll(): Flow<List<Todo>>
 
-    @Insert
-    fun insert(todo: Todo)
-
-    @Update
-    fun update(todo: Todo)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(todo: Todo)
 
     @Delete
-    fun delete(todo: Todo)
+    suspend fun delete(todo: Todo)
 }
