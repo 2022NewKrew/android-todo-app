@@ -6,42 +6,37 @@ import com.survivalcoding.todolist.domain.interfaces.TodoRepository
 import com.survivalcoding.todolist.domain.models.TodoItem
 
 class TodoRepositoryImpl(private val dataSource: TodoDataSource) : TodoRepository {
-    private var data = dataSource.getData().toMutableList()
+    suspend fun getTodos(): List<TodoItem> = dataSource.getData()
 
-    fun getTodos(): List<TodoItem> = data
-
-    fun setData(targetData: List<TodoItem>) {
-        data = targetData.toMutableList()
+    suspend fun setData(targetData: List<TodoItem>) {
+        dataSource.deleteAll()
+        dataSource.setData(targetData.toMutableList())
     }
 
-    override fun insert(item: TodoItem): Boolean {
-        data = data.plus(item).toMutableList()
+    override suspend fun insert(item: TodoItem): Boolean {
+        dataSource.setData(dataSource.getData().plus(item))
+
         if (dataSource is TodoRoomDataSource) {
             dataSource.insert(item)
         }
         return true
     }
 
-    override fun select(id: Long): TodoItem {
-        return data.first { it.id == id }
+    override suspend fun select(id: Long): TodoItem {
+        return dataSource.getData().first { it.id == id }
     }
 
-    override fun update(id: Long, item: TodoItem): Boolean {
-        val idx = data.indexOfFirst { it.id == id }
-        data[idx] = item
-        if (dataSource is TodoRoomDataSource) {
-            dataSource.update(item)
-        }
-        data = data.toMutableList()
+    override suspend fun update(id: Long, item: TodoItem): Boolean {
+        dataSource.update(item)
         return true
     }
 
-    override fun delete(id: Long): Boolean {
+    override suspend fun delete(id: Long): Boolean {
         TODO("Not yet implemented")
         return true
     }
 
-    override fun clear() {
-        data = mutableListOf()
+    override suspend fun clear() {
+        dataSource.deleteAll()
     }
 }

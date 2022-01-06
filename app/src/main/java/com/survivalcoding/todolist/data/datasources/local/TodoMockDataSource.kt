@@ -12,15 +12,24 @@ class TodoMockDataSource : TodoDataSource {
         )
     }.toMutableList()
 
-    override fun getData(): List<TodoItem> = data
-    override fun getById(id: Long) = data.first { it.id == id }
+    override suspend fun getData(): List<TodoItem> = data
+    override suspend fun setData(list: List<TodoItem>) {
+        data.clear()
+        data.addAll(list)
+    }
 
-    override fun insert(todoItem: TodoItem) {
+    override suspend fun getById(id: Long) = data.first { it.id == id }
+
+    override suspend fun insert(todoItem: TodoItem) {
         data.add(todoItem)
     }
 
-    override fun update(todoItem: TodoItem) {
+    override suspend fun update(todoItem: TodoItem) {
         val idx = data.indexOfFirst { it.id == todoItem.id }
         data[idx] = todoItem
+    }
+
+    override suspend fun deleteAll() {
+        data.clear()
     }
 }
