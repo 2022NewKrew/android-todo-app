@@ -12,4 +12,6 @@ class TodoRepositoryImpl(private val todoDataSource: TodoLocalDataSource) : Todo
     override suspend fun updateItem(todo: Todo) = todoDataSource.updateItem(todo)
 
     override suspend fun deleteItem(todo: Todo) = todoDataSource.deleteItem(todo)
+
+    override suspend fun search(query: String): List<Todo> = todoDataSource.search(query)
 }

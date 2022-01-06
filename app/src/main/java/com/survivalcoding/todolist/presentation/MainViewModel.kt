@@ -59,6 +59,12 @@ class MainViewModel(private val repository: TodoRepository) : ViewModel() {
     }
 
     private fun newTodo(): Todo = Todo(null, "")
+
+    fun search(query: String) {
+        viewModelScope.launch {
+            _todoList.postValue(repository.search(query))
+        }
+    }
 }
 
 @Suppress("UNCHECKED_CAST")

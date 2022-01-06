@@ -25,4 +25,8 @@ class TodoLocalDataSource(
     override suspend fun deleteItem(todo: Todo) = withContext(ioDispatcher) {
         todoDao.deleteItem(todo)
     }
+
+    override suspend fun search(query: String): List<Todo> = withContext(ioDispatcher) {
+        todoDao.search(query)
+    }
 }
