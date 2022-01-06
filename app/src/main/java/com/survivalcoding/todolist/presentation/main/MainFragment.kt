@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -27,7 +28,7 @@ class MainFragment : Fragment() {
         MainViewModelFactory(
             TodoRepositoryImpl(
                 TodoLocalDataSource(
-                    TodoDatabase.getDatabase(context!!).todoDao(),
+                    TodoDatabase.getDatabase(requireContext()).todoDao(),
                     Dispatchers.IO
                 )
             )
@@ -57,6 +58,15 @@ class MainFragment : Fragment() {
 
         // 작성하기 화면으로 이동
         binding.mainFabAdd.setOnClickListener { moveToAdd() }
+
+        // 할 일 검색
+        binding.mainIvSearch.setOnClickListener { viewModel.search(binding.mainEtSearch.text.toString()) }
+        // 검색어 지웠을 때 전체 리스트 조회
+        binding.mainEtSearch.doAfterTextChanged {
+            if (it.isNullOrEmpty()) {
+                viewModel.getTodoList()
+            }
+        }
 
         // todolist 업데이트 관찰
         viewModel.todoList.observe(this) { list ->

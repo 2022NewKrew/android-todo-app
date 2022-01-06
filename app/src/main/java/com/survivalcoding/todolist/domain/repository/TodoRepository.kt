@@ -7,4 +7,5 @@ interface TodoRepository {
     suspend fun insertItem(todo: Todo)
     suspend fun updateItem(todo: Todo)
     suspend fun deleteItem(todo: Todo)
+    suspend fun search(query: String): List<Todo>
 }

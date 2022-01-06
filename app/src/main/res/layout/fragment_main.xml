@@ -5,41 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/main_iv_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/main_list_icon"
-        android:padding="8dp"
-        android:src="@drawable/ic_check_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/main_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/main_title"
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_iv_list" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginTop="16dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_cl_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_tv_title">
+
+        <EditText
+            android:id="@+id/main_et_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/search_hint"
+            android:importantForAutofill="no"
+            android:inputType="textImeMultiLine"
+            android:paddingVertical="8dp"
+            android:paddingStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/main_iv_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/main_iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/search_icon"
+            android:padding="8dp"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="@id/main_et_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/main_et_search" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_rv_todo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:padding="16dp"
+        android:padding="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_tv_title"
+        app:layout_constraintTop_toBottomOf="@id/main_cl_search"
         tools:listitem="@layout/item_todo" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -16,4 +16,7 @@ interface TodoDao {
 
     @Delete
     suspend fun deleteItem(todo: Todo)
+
+    @Query("SELECT * FROM todo WHERE title LIKE '%' || :query || '%'")
+    suspend fun search(query: String): List<Todo>
 }

@@ -11,4 +11,6 @@
     <string name="edit_title">Edit task</string>
     <string name="task_name">Task Name</string>
     <string name="todo_check_icon">체크 아이콘</string>
+    <string name="search_hint">Search…</string>
+    <string name="search_icon">검색 아이콘</string>
 </resources>

@@ -24,7 +24,7 @@ class AddFragment : Fragment() {
         MainViewModelFactory(
             TodoRepositoryImpl(
                 TodoLocalDataSource(
-                    TodoDatabase.getDatabase(context!!).todoDao(),
+                    TodoDatabase.getDatabase(requireContext()).todoDao(),
                     Dispatchers.IO
                 )
             )
