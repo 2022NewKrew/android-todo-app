@@ -14,7 +14,7 @@ class MainViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     private var _tasksList = listOf<Task>()
 
     private var mode = false
-    private var task = Task(Date().time, "empty", "empty", Date().time, false)
+    private var task = Task(Date().time, "", "", Date().time, false)
 
     init {
         viewModelScope.launch {

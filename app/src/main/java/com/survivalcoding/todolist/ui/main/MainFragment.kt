@@ -95,6 +95,7 @@ class MainFragment : Fragment() {
 
         binding.tvAddTask.setOnClickListener {
             viewModel.setMode(ADD_MODE)
+            viewModel.setTask(Task())
             (requireActivity() as MainActivity).replaceFragment(AddEditFragment())
         }
         binding.rvTaskList.adapter = adapter
