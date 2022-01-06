@@ -62,7 +62,7 @@ class ToDoListHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         }
 
         binding.ivCheckButton.setOnClickListener {
-            clickEvent.clickEvent(currentTask)
+            clickEvent.isDoneClickEvent(currentTask)
         }
 
         binding.tvTaskInfo.setOnClickListener {
@@ -84,7 +84,8 @@ class ToDoListHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     }
 
     private fun displayDate(dateTime: Long): String {
-        return when (val timeGap = ((Date().time - dateTime) / 864000000)) {
+        val oneDay = 60L * 60 * 24 * 1000
+        return when (val timeGap = Date().time / oneDay - dateTime / oneDay) {
             0L -> "today"
             1L -> "yesterday"
             else -> "$timeGap days ago"

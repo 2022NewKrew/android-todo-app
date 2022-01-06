@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.survivalcoding.todolist.domain.entity.Task
 import java.util.*
 
-class TaskMockDataSource : TaskLocalDataSource {
+class TaskMockDataSource : TaskDao {
     private var _tasks =
         (0L..30L).map {
             Task(
@@ -17,22 +17,27 @@ class TaskMockDataSource : TaskLocalDataSource {
             )
         }.toMutableList()
 
-    override fun getTasksLive(): LiveData<List<Task>> {
+    override fun getAllLive(): LiveData<List<Task>> {
         return MutableLiveData(_tasks)
     }
 
-    override fun getTasksList(): List<Task> {
+    override suspend fun getAllList(): List<Task> {
         return _tasks
     }
 
-    override fun deleteTask(newTask: Task) {
-        _tasks.remove(newTask)
+    override suspend fun insert(vararg tasks: Task) {
+        tasks.forEach { newTask ->
+            if (_tasks.any { it.id == newTask.id }) {
+                val oldTask = _tasks.filter { it.id == newTask.id }[0]
+                _tasks.remove(oldTask)
+                _tasks.add(newTask)
+            } else {
+                _tasks.add(0, newTask)
+            }
+        }
     }
 
-    override fun upsertTask(newTask: Task) {
-        _tasks = _tasks.map {
-            if (newTask.id == it.id) newTask
-            else it
-        }.toMutableList()
+    override suspend fun delete(task: Task) {
+        _tasks.remove(task)
     }
 }

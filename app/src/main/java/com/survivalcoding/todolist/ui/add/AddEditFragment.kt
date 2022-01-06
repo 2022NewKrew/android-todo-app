@@ -7,10 +7,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.room.Room
+import com.survivalcoding.todolist.data.datasource.TaskDatabase
+import com.survivalcoding.todolist.data.datasource.TaskInMemoryDataSource
+import com.survivalcoding.todolist.data.repository.TaskRepositoryImpl
 import com.survivalcoding.todolist.databinding.FragmentAddEditBinding
 import com.survivalcoding.todolist.domain.entity.Task
 import com.survivalcoding.todolist.ui.main.MainFragment
 import com.survivalcoding.todolist.ui.main.MainViewModel
+import com.survivalcoding.todolist.ui.main.MainViewModelFactory
 import java.util.*
 
 class AddEditFragment : Fragment() {
@@ -18,7 +23,19 @@ class AddEditFragment : Fragment() {
     private var _binding: FragmentAddEditBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by activityViewModels<MainViewModel> {
+        MainViewModelFactory(
+            TaskRepositoryImpl(
+                TaskInMemoryDataSource(
+                    Room.databaseBuilder(
+                        requireContext(),
+                        TaskDatabase::class.java,
+                        "TaskDB"
+                    ).build().taskDao()
+                )
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

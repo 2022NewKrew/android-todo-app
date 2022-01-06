@@ -8,9 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.survivalcoding.todolist.data.datasource.TaskDatabase
+import com.survivalcoding.todolist.data.datasource.TaskInMemoryDataSource
+import com.survivalcoding.todolist.data.repository.TaskRepositoryImpl
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.domain.entity.Task
 import com.survivalcoding.todolist.ui.MainActivity
@@ -28,13 +33,25 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by activityViewModels<MainViewModel> {
+        MainViewModelFactory(
+            TaskRepositoryImpl(
+                TaskInMemoryDataSource(
+                    Room.databaseBuilder(
+                        requireContext(),
+                        TaskDatabase::class.java,
+                        "taskDB"
+                    ).build().taskDao()
+                )
+            )
+        )
+    }
 
     private var clickTime = -1L
     private var toast: Toast? = null
 
     private val clickEvent = object : OnClickEvent {
-        override fun clickEvent(task: Task) {
+        override fun isDoneClickEvent(task: Task) {
             val newTask = task.copy(isDone = !task.isDone)
             viewModel.upsertTask(newTask)
         }
@@ -71,6 +88,7 @@ class MainFragment : Fragment() {
                     RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
         }
+        viewModel.getTasksLive().observe(this) { adapter.submitList(it) }
 
         setTitleTime()
         makeBackPressedCallback()
@@ -80,34 +98,19 @@ class MainFragment : Fragment() {
             (requireActivity() as MainActivity).replaceFragment(AddEditFragment())
         }
         binding.rvTaskList.adapter = adapter
-
-        viewModel.getTasksLive().observe(this) { adapter.submitList(it) }
-
-        var preText = ""
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                preText = s.toString()
+        binding.etSearch.doOnTextChanged { text, _, _, _ ->
+            if (binding.etSearch.isFocusable && text.toString() != "") {
+                val tasks = searchResultTasks(text.toString())
+                adapter.submitList(tasks)
+            } else {
+                adapter.submitList(viewModel.getTasksList())
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.toString() == preText) return
-                if (binding.etSearch.isFocusable && s.toString() != "") {
-                    val tasks = searchResultTasks(s.toString())
-                    adapter.submitList(tasks)
-                } else {
-                    adapter.submitList(viewModel.getTasksList())
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-        })
+        }
     }
 
     private fun searchResultTasks(text: String): List<Task>? {
         val tasks = viewModel.getTasksList().filter {
-            it.taskName.lowercase().replace(" ", "").contains(text)
+            it.taskName.lowercase().replace(" ", "").contains(text.lowercase())
         }
         return tasks
     }
