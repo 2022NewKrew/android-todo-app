@@ -6,9 +6,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
+import com.survivalcoding.todolist.domain.usecase.*
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: TodoRepository) : ViewModel() {
+class MainViewModel(
+    private val getTodoListUseCase: GetTodoListUseCase,
+    private val insertTodoUseCase: InsertTodoUseCase,
+    private val updateTodoUseCase: UpdateTodoUseCase,
+    private val deleteTodoUseCase: DeleteTodoUseCase,
+    private val searchTodoUseCase: SearchTodoUseCase
+) : ViewModel() {
     private val _todoList = MutableLiveData<List<Todo>>()
     val todoList get() = _todoList
     private val _currentTodo = MutableLiveData<Todo?>()
@@ -16,32 +23,32 @@ class MainViewModel(private val repository: TodoRepository) : ViewModel() {
 
     fun getTodoList() {
         viewModelScope.launch {
-            _todoList.postValue(repository.getTodoList())
+            _todoList.postValue(getTodoListUseCase())
         }
     }
 
     fun updateIsDone(todo: Todo) {
         viewModelScope.launch {
-            repository.updateItem(todo.copy(isDone = !todo.isDone))
-            _todoList.postValue(repository.getTodoList())
+            updateTodoUseCase(todo.copy(isDone = !todo.isDone))
+            _todoList.postValue(getTodoListUseCase())
         }
     }
 
     private fun addItem(todo: Todo) {
         viewModelScope.launch {
-            repository.insertItem(todo)
+            insertTodoUseCase(todo)
         }
     }
 
     private fun updateItem(todo: Todo) {
         viewModelScope.launch {
-            repository.updateItem(todo)
+            updateTodoUseCase(todo)
         }
     }
 
     fun deleteItem(todo: Todo) {
         viewModelScope.launch {
-            repository.deleteItem(todo)
+            deleteTodoUseCase(todo)
         }
     }
 
@@ -62,7 +69,7 @@ class MainViewModel(private val repository: TodoRepository) : ViewModel() {
 
     fun search(query: String) {
         viewModelScope.launch {
-            _todoList.postValue(repository.search(query))
+            _todoList.postValue(searchTodoUseCase(query))
         }
     }
 }
@@ -73,7 +80,13 @@ class MainViewModelFactory(
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java))
-            return MainViewModel(repository) as T
+            return MainViewModel(
+                GetTodoListUseCase(repository),
+                InsertTodoUseCase(repository),
+                UpdateTodoUseCase(repository),
+                DeleteTodoUseCase(repository),
+                SearchTodoUseCase(repository)
+            ) as T
         else throw IllegalArgumentException()
     }
 }
