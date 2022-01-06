@@ -1,7 +1,10 @@
 package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -70,33 +73,32 @@ class MainFragment : Fragment() {
         binding.recyclerview.adapter = todoListAdapter
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
 
+        //observe
         mainViewModel.todos.observe(this, { todos ->
             todoListAdapter.submitList(todos.sortedBy { it.isDone })
         })
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_meun, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.add_todo_menu -> {
-                parentFragmentManager.commit {
-                    replace<EditFragment>(R.id.fragment_container_view)
-                    setReorderingAllowed(true)
-                    addToBackStack(null)
-                }
-                true
+        // menu -> button
+        binding.addBtn.setOnClickListener {
+            parentFragmentManager.commit {
+                replace<EditFragment>(R.id.fragment_container_view)
+                setReorderingAllowed(true)
+                addToBackStack(null)
             }
-            R.id.search_todo_menu -> {
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
-    }
 
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filteredList = mainViewModel.searchTodos(newText)
+                todoListAdapter.submitList(filteredList)
+                return false
+            }
+        })
+
+    }
 
     override fun onDestroy() {
         super.onDestroy()

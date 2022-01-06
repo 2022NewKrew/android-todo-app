@@ -1,16 +1,8 @@
 package com.survivalcoding.todolist.ui.main
 
-import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.room.Room
-import com.survivalcoding.todolist.data.TodoRepositoryImpl
-import com.survivalcoding.todolist.data.TodoRoomDataBase
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
-import com.survivalcoding.todolist.domain.usecase.GetTodosUseCase
-import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 import java.util.*
 
 class MainViewModel(private val todoRepositoryImpl: TodoRepository) : ViewModel() {
@@ -32,6 +24,13 @@ class MainViewModel(private val todoRepositoryImpl: TodoRepository) : ViewModel(
 
     fun removeTodo(todo: Todo) {
         todoRepositoryImpl.delete(todo)
+    }
+    fun searchTodos(name: String?) : List<Todo>?{
+        if (name.isNullOrEmpty()) return todos.value
+
+        return todos.value?.filter{
+            name.lowercase() in it.title.lowercase()
+        }
     }
 }
 
