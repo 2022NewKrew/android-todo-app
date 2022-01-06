@@ -7,23 +7,11 @@ class TodoRepository @Inject constructor(private val todoDao: TodoDao) {
 
     val todos = todoDao.selectAll()
 
-    fun upsertTodo(todo: Todo) {
-        if (todo.id == 0) {
-            insertTodo(todo)
-        } else {
-            updateTodo(todo)
-        }
+    suspend fun upsertTodo(todo: Todo) {
+        todoDao.upsert(todo)
     }
 
-    private fun insertTodo(newTodo: Todo) {
-        todoDao.insert(newTodo)
-    }
-
-    private fun updateTodo(todo: Todo) {
-        todoDao.update(todo)
-    }
-
-    fun deleteTodo(todo: Todo) {
+    suspend fun deleteTodo(todo: Todo) {
         todoDao.delete(todo)
     }
 }

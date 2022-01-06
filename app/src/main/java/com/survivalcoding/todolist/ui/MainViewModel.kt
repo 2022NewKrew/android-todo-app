@@ -14,18 +14,18 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val todoRepository: TodoRepository) : ViewModel() {
 
-    val todos: LiveData<List<Todo>> = todoRepository.todos.asLiveData(Dispatchers.IO)
+    val todos: LiveData<List<Todo>> = todoRepository.todos.asLiveData()
 
     var selectedTodo: Todo? = null
 
     fun upsertTodo(todo: Todo) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             todoRepository.upsertTodo(todo)
         }
     }
 
     fun deleteTodo(todo: Todo) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             todoRepository.deleteTodo(todo)
         }
     }
