@@ -1,21 +1,26 @@
 package com.survivalcoding.todolist.ui.main
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.survivalcoding.todolist.data.datasource.TaskInMemoryDataSource
-import com.survivalcoding.todolist.data.repository.TaskRepositoryImpl
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.entity.Task
+import com.survivalcoding.todolist.domain.repository.TaskRepository
+import kotlinx.coroutines.launch
 import java.util.*
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val taskRepository =
-        TaskRepositoryImpl(TaskInMemoryDataSource(application))
+class MainViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     private val _tasksLive get() = taskRepository.getTasksLive()
-    private val _tasksList get() = taskRepository.getTasksList()
+    private var _tasksList = listOf<Task>()
 
     private var mode = false
-    private var task = Task(Date().time, "empty", "empty", Date().time, false)
+    private var task = Task(Date().time, "", "", Date().time, false)
+
+    init {
+        viewModelScope.launch {
+            _tasksList = taskRepository.getTasksList()
+        }
+    }
 
     fun getMode() = mode
     fun setMode(isAddMode: Boolean) {
@@ -29,13 +34,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getTasksLive(): LiveData<List<Task>> = _tasksLive
 
-    fun getTasksList(): List<Task> = _tasksList
+    fun getTasksList(): List<Task> {
+        viewModelScope.launch {
+            _tasksList = taskRepository.getTasksList()
+        }
+        return _tasksList
+    }
 
     fun upsertTask(task: Task) {
-        taskRepository.upsert(task)
+        viewModelScope.launch {
+            taskRepository.upsert(task)
+        }
     }
 
     fun deleteTask(task: Task) {
-        taskRepository.delete(task)
+        viewModelScope.launch {
+            taskRepository.delete(task)
+        }
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+class MainViewModelFactory(
+    private val repository: TaskRepository
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java))
+            return MainViewModel(repository) as T
+        else throw IllegalArgumentException()
     }
 }
