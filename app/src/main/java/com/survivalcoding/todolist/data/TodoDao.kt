@@ -2,13 +2,12 @@ package com.survivalcoding.todolist.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface TodoDao {
-    @Query("SELECT * FROM TODO_TB SOR")
-    fun getAll(): Flow<List<TodoModel>>
+    @Query("SELECT * FROM TODO_TB")
+    fun getAll(): List<TodoModel>
 
     @Update
     fun updateTodo(todo: TodoModel)
