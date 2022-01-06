@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.data.datasource
+package com.survivalcoding.todolist.data.repository
 
 import com.survivalcoding.todolist.domain.model.Todo
 

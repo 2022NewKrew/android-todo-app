@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.survivalcoding.todolist.data.database.AppDatabase
-import com.survivalcoding.todolist.data.datasource.TodosRoomRepository
+import com.survivalcoding.todolist.data.repository.TodosRoomRepository
 import com.survivalcoding.todolist.domain.model.Todo
 import kotlinx.coroutines.launch
 
