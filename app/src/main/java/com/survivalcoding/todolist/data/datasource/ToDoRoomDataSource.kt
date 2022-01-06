@@ -43,6 +43,16 @@ class ToDoRoomDataSource @Inject constructor(toDoDatabase: ToDoDatabase) : ToDoL
         GlobalScope.launch(Dispatchers.IO) { toDoDao.insert(convert(newItem)) }
     }
 
+    override fun searchItem(query: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            toDoDao.search(query).collectLatest {
+                _toDoList.value = it.map { toDoRoomDto ->
+                    convert(toDoRoomDto)
+                }
+            }
+        }
+    }
+
     private fun convert(toDoRoomDto: ToDoRoomDto) = ToDo(
         id = toDoRoomDto.id,
         title = toDoRoomDto.title,

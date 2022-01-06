@@ -35,4 +35,8 @@ class ToDoMockDataSource @Inject constructor() : ToDoLocalDataSource {
     override fun addItem(newItem: ToDo) {
         _toDoList.value = _toDoList.value.plus(newItem)
     }
+
+    override fun searchItem(query: String) {
+        // TODO("Not yet implemented")
+    }
 }

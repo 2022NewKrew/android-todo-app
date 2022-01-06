@@ -3,6 +3,7 @@ package com.survivalcoding.todolist.presentation.main.todolist
 import android.os.Bundle
 import android.view.*
 import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -65,6 +66,9 @@ class ToDoListFragment : Fragment() {
         binding?.toDoListRecyclerView?.adapter = toDoListConcatAdapter
         binding?.createButton?.setOnClickListener {
             findNavController().navigate(R.id.action_toDoListFragment_to_createToDoFragment)
+        }
+        binding?.searchEditText?.doOnTextChanged { text, _, _, _ ->
+            viewModel.searchToDo(text)
         }
 
         collect()
