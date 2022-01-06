@@ -12,7 +12,7 @@ data class Todo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String = "",
     val createDate: Long = Date().time,
-    val dueDate: Long = createDate - createDate % 86400000, // hour 이전 데이터 삭제 위한 야매 방법
+    val dueDate: Long = createDate - createDate % (1000 * 60 * 60 * 24), // hour 이전 데이터 삭제 위한 야매 방법
     val content: String = "",
     val isDone: Boolean = false
 ) : Parcelable

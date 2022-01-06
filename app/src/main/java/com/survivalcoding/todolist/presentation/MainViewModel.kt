@@ -4,13 +4,23 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
+import com.survivalcoding.todolist.data.database.AppDatabase
 import com.survivalcoding.todolist.data.repository.TodosRepositoryImpl
 import com.survivalcoding.todolist.domain.model.Todo
 
 // ViewModel: View로부터 독립적인 데이터 저장
 // Activity가 완전히 종료할 때까지 데이터를 계속 가지고 있음
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val todoListRepository = TodosRepositoryImpl(application)
+    private val todoListRepository = TodosRepositoryImpl(
+        Room.databaseBuilder(
+            application.applicationContext,
+            AppDatabase::class.java,
+            "database"
+        )
+            .allowMainThreadQueries()
+            .build().todoDao()
+    )
 
     private var _todos = MutableLiveData(
         todoListRepository.getTodos()
