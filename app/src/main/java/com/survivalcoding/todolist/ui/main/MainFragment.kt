@@ -26,6 +26,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private val mainViewModel by activityViewModels<MainViewModel> {
         MainViewModelFactory(
+            // TodoInMemoryRepositoryImpl()
             TodoRepositoryImpl(
                 Room.databaseBuilder(
                     requireContext(),
@@ -75,7 +76,8 @@ class MainFragment : Fragment() {
 
         //observe
         mainViewModel.todos.observe(this, { todos ->
-            todoListAdapter.submitList(todos.sortedBy { it.isDone })
+            todoListAdapter.submitList(todos.sortedByDescending { it.timestamp }
+                .sortedBy { it.isDone })
         })
         // menu -> button
         binding.addBtn.setOnClickListener {

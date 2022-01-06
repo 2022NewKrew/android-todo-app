@@ -1,12 +1,11 @@
 package com.survivalcoding.todolist.domain.repository
 
 import com.survivalcoding.todolist.domain.entity.Todo
-import kotlinx.coroutines.flow.Flow
 
 
 interface TodoRepository {
-    fun getTodos(): Flow<List<Todo>>
-    fun update(todo: Todo)
-    fun insert(todo: Todo)
-    fun delete(todo: Todo)
+    suspend fun getTodos(): List<Todo>
+    suspend fun update(todo: Todo)
+    suspend fun insert(todo: Todo)
+    suspend fun delete(todo: Todo)
 }
