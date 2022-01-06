@@ -2,6 +2,7 @@ package com.survivalcoding.todolist.presentation.main.todolist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.survivalcoding.todolist.domain.OrderBy
 import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.domain.usecase.DeleteToDoUseCase
 import com.survivalcoding.todolist.domain.usecase.GetMatchingToDosUseCase
@@ -22,52 +23,20 @@ class ToDoListViewModel @Inject constructor(
     private val getMatchingToDosUseCase: GetMatchingToDosUseCase
 ) : ViewModel() {
 
-    private val _toDoList = MutableStateFlow(getMatchingToDosUseCase(""))
-    val toDoList = _toDoList.asStateFlow()
-
-    private var searchJob: Job? = null
-
     private var toDoListOrder = OrderBy.TIME_ASC
         set(value) {
             field = value
-//            _toDoList.value = sortToDoList(_toDoList.value)
+            _toDoList.value = getMatchingToDosUseCase(currentQuery, value)
         }
+
+    private var searchJob: Job? = null
+    private var currentQuery: String = ""
+
+    private val _toDoList = MutableStateFlow(getMatchingToDosUseCase(currentQuery, toDoListOrder))
+    val toDoList = _toDoList.asStateFlow()
 
     fun setOrder(orderBy: OrderBy) {
         toDoListOrder = orderBy
-    }
-
-    private fun sortToDoList(toDoList: List<ToDo>): List<ToDo> {
-        val sortedToDoList = mutableListOf<ToDo>()
-
-        val notDoneToDoList = toDoList.filter {
-            !it.isDone
-        }
-        sortedToDoList.addAll(sortToDoListBySelectedOrder(notDoneToDoList, toDoListOrder))
-
-        val doneToDoList = toDoList.filter {
-            it.isDone
-        }
-        sortedToDoList.addAll(sortToDoListBySelectedOrder(doneToDoList, toDoListOrder))
-
-        return sortedToDoList
-    }
-
-    private fun sortToDoListBySelectedOrder(toDoList: List<ToDo>, orderBy: OrderBy): List<ToDo> {
-        return when (orderBy) {
-            OrderBy.TIME_ASC -> toDoList.sortedBy { toDo ->
-                toDo.timeStamp
-            }
-            OrderBy.TIME_DESC -> toDoList.sortedByDescending { toDo ->
-                toDo.timeStamp
-            }
-            OrderBy.TITLE_ASC -> toDoList.sortedBy { toDo ->
-                toDo.title
-            }
-            OrderBy.TITLE_DESC -> toDoList.sortedByDescending { toDo ->
-                toDo.title
-            }
-        }
     }
 
     fun changeDoneState(toDo: ToDo, isDone: Boolean) {
@@ -85,7 +54,8 @@ class ToDoListViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
             delay(DEBOUNCE_TIME)
             if (isActive) {
-                _toDoList.value = getMatchingToDosUseCase(query.toString())
+                currentQuery = query.toString()
+                _toDoList.value = getMatchingToDosUseCase(currentQuery, toDoListOrder)
             }
         }
     }
@@ -94,11 +64,4 @@ class ToDoListViewModel @Inject constructor(
     companion object {
         private const val DEBOUNCE_TIME = 300L
     }
-}
-
-enum class OrderBy {
-    TIME_ASC,
-    TIME_DESC,
-    TITLE_ASC,
-    TITLE_DESC
 }
