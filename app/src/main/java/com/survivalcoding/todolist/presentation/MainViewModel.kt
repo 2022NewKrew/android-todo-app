@@ -23,6 +23,7 @@ class MainViewModel(private val repository: TodoRepository) : ViewModel() {
     fun updateIsDone(todo: Todo) {
         viewModelScope.launch {
             repository.updateItem(todo.copy(isDone = !todo.isDone))
+            _todoList.postValue(repository.getTodoList())
         }
     }
 
