@@ -6,17 +6,17 @@ import com.survivalcoding.todolist.domain.model.Todo
 @Dao
 interface TodoDao {
     @Query("SELECT * FROM todo")
-    fun getTodos(): List<Todo>
+    suspend fun getTodos(): List<Todo>
 
     @Query("SELECT * FROM todo WHERE id = :id")
-    fun getTodoById(id: Int): Todo?
+    suspend fun getTodoById(id: Int): Todo?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(todo: Todo)
+    suspend fun insert(todo: Todo)
 
     @Delete
-    fun delete(todo: Todo)
+    suspend fun delete(todo: Todo)
 
     @Update
-    fun update(todo: Todo)
+    suspend fun update(todo: Todo)
 }

@@ -5,13 +5,13 @@ import com.survivalcoding.todolist.domain.model.Todo
 
 class TodoRoomRepository(private val dao: TodoDao) {
 
-    fun getTodos(): List<Todo> = dao.getTodos()
+    suspend fun getTodos(): List<Todo> = dao.getTodos()
 
-    fun getTodoById(id: Int): Todo? = dao.getTodoById(id)
+    suspend fun getTodoById(id: Int): Todo? = dao.getTodoById(id)
 
-    fun insert(todo: Todo) = dao.insert(todo)
+    suspend fun insert(todo: Todo) = dao.insert(todo)
 
-    fun delete(todo: Todo) = dao.delete(todo)
+    suspend fun delete(todo: Todo) = dao.delete(todo)
 
-    fun update(todo: Todo) = dao.update(todo)
+    suspend fun update(todo: Todo) = dao.update(todo)
 }
