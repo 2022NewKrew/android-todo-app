@@ -1,5 +1,10 @@
 package com.survivalcoding.todolist.domain.interfaces
 
-interface TodoDataSource<T> {
-    fun getData(): List<T>
+import com.survivalcoding.todolist.domain.models.TodoItem
+
+interface TodoDataSource {
+    fun getData(): List<TodoItem>
+    fun getById(id: Long): TodoItem
+    fun insert(todoItem: TodoItem)
+    fun update(todoItem: TodoItem)
 }
