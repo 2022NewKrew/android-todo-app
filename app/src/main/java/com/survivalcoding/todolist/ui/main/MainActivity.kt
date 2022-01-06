@@ -1,19 +1,12 @@
 package com.survivalcoding.todolist.ui.main
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.ActivityMainBinding
-import android.graphics.drawable.ColorDrawable
-
-
 
 
 class MainActivity : AppCompatActivity() {

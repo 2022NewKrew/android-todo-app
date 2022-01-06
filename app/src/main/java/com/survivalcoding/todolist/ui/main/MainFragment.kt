@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.survivalcoding.todolist.R
+import com.survivalcoding.todolist.data.TodoInMemoryRepositoryImpl
 import com.survivalcoding.todolist.data.TodoRepositoryImpl
 import com.survivalcoding.todolist.data.TodoRoomDataBase
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
@@ -26,12 +27,12 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private val mainViewModel by activityViewModels<MainViewModel> {
         MainViewModelFactory(
-            // TodoInMemoryRepositoryImpl()
-            TodoRepositoryImpl(
+           //  TodoInMemoryRepositoryImpl()
+           TodoRepositoryImpl(
                 Room.databaseBuilder(
                     requireContext(),
                     TodoRoomDataBase::class.java, TodoRoomDataBase.DATABASE_NAME
-                ).allowMainThreadQueries().build()
+                ).build()
             )
         )
     }
