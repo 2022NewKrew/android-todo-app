@@ -1,8 +1,8 @@
-package com.survivalcoding.todolist.domain.repository
+package com.survivalcoding.todolist.data.datasource
 
 import com.survivalcoding.todolist.domain.model.Todo
 
-interface TodosRepository {
+interface TodosLocalRepository {
     fun getTodos(): List<Todo>
     fun getTodoById(id: Int): Todo?
     fun addTodo(todo: Todo)

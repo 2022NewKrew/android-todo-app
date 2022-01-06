@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.upsert
+package com.survivalcoding.todolist.presentation.todo
 
 
 import android.app.DatePickerDialog
@@ -16,9 +16,9 @@ import com.survivalcoding.todolist.presentation.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UpsertFragment : Fragment() {
+class TodoFragment : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val upsertViewModel: UpsertViewModel by viewModels()
+    private val upsertViewModel: TodoViewModel by viewModels()
 
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!

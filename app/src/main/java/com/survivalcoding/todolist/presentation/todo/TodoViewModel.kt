@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.presentation.upsert
+package com.survivalcoding.todolist.presentation.todo
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.presentation.main.MainFragment.Companion.MODIFY
 
 //SavedStateHandle 사용하면 bundle에서 값을 여기에 저장시킨다.
-class UpsertViewModel(handle: SavedStateHandle) : ViewModel() {
+class TodoViewModel(handle: SavedStateHandle) : ViewModel() {
     private var _todo = MutableLiveData(Todo())
     val todo: LiveData<Todo> get() = _todo
     private var editedFlag: Boolean = false

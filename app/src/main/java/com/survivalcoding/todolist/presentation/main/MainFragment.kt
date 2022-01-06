@@ -14,7 +14,7 @@ import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.presentation.MainViewModel
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
-import com.survivalcoding.todolist.presentation.upsert.UpsertFragment
+import com.survivalcoding.todolist.presentation.todo.TodoFragment
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -68,7 +68,7 @@ class MainFragment : Fragment() {
             .beginTransaction()
             .replace(
                 R.id.fragment_container_view,
-                UpsertFragment().apply {
+                TodoFragment().apply {
                     this.arguments = bundleOf(MODIFY to todo)
                 })
             .addToBackStack(null)
