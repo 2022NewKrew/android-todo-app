@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
+import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.presentation.MainViewModel
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.presentation.upsert.UpsertFragment
@@ -34,8 +35,8 @@ class MainFragment : Fragment() {
 
         val adapter = TodoListAdapter(onClickCheckBox = { modify ->
             viewModel.toggleTodo(modify)
-        }, onClickViewShort = { pos ->
-            moveToAddFragment(pos)
+        }, onClickViewShort = { todo ->
+            moveToAddFragment(todo)
         }, onClickViewLong = { delete ->
             viewModel.deleteTodo(delete)
         })
@@ -62,14 +63,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun moveToAddFragment(pos: Int = NEW) {
+    private fun moveToAddFragment(todo: Todo? = null) {
         requireActivity().supportFragmentManager
             .beginTransaction()
             .replace(
                 R.id.fragment_container_view,
                 UpsertFragment().apply {
-                    if (pos != NEW) this.arguments =
-                        bundleOf(MODIFY to viewModel.getTodoByIndex(pos))
+                    this.arguments = bundleOf(MODIFY to todo)
                 })
             .addToBackStack(null)
             .commit()
@@ -81,7 +81,6 @@ class MainFragment : Fragment() {
     }
 
     companion object {
-        const val NEW = -1
         const val MODIFY = "modify"
     }
 }

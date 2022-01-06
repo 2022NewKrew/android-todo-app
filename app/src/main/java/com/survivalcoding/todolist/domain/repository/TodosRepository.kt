@@ -4,8 +4,8 @@ import com.survivalcoding.todolist.domain.model.Todo
 
 interface TodosRepository {
     fun getTodos(): List<Todo>
-    fun getTodoByIndex(pos: Int): Todo
+    fun getTodoById(id: Int): Todo?
     fun addTodo(todo: Todo)
-    fun updateTodos(todo: Todo)
+    fun updateTodo(todo: Todo)
     fun deleteTodo(todo: Todo)
 }

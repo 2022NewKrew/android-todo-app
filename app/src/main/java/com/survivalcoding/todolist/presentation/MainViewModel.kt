@@ -17,15 +17,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     )
     val todos: LiveData<List<Todo>> = _todos
 
-    fun getTodoByIndex(pos: Int): Todo = todoListRepository.getTodoByIndex(pos)
+    fun getTodoById(id: Int): Todo? = todoListRepository.getTodoById(id)
 
     fun toggleTodo(todo: Todo) { // 하나만 isDone을 변경
-        todoListRepository.updateTodos(todo.copy(isDone = !todo.isDone))
+        todoListRepository.updateTodo(todo.copy(isDone = !todo.isDone))
         _todos.value = todoListRepository.getTodos()
     }
 
     fun updateTodo(todo: Todo) { // 업데이
-        todoListRepository.updateTodos(todo)
+        todoListRepository.updateTodo(todo)
         _todos.value = todoListRepository.getTodos()
     }
 
@@ -40,7 +40,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun filterTodos(filter: String) { // 필터링 기능
-        todoListRepository.filterTodos(filter)
-        _todos.value = todoListRepository.getTodos()
+        _todos.value = getFiltered(todoListRepository.getTodos(), filter)
+    }
+
+    private fun getFiltered(
+        todos: List<Todo>,
+        filter: String
+    ): List<Todo> { // 정렬을 isDone, dueDate, createDate(내림차순)으로 진행
+        return todos.filter {
+            it.title.contains(filter, ignoreCase = true)
+        }
     }
 }

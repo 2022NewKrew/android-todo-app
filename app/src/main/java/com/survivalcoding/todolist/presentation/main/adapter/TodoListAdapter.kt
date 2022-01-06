@@ -8,7 +8,7 @@ import com.survivalcoding.todolist.domain.model.Todo
 
 class TodoListAdapter(
     private val onClickCheckBox: (Todo) -> Unit,
-    private val onClickViewShort: (Int) -> Unit,
+    private val onClickViewShort: (Todo) -> Unit,
     private val onClickViewLong: (Todo) -> Unit,
 ) : ListAdapter<Todo, TodoViewHolder>(TodoDiffItemCallback) {
 
