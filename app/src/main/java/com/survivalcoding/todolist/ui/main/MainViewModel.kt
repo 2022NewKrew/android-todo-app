@@ -7,18 +7,14 @@ import androidx.room.Room
 import com.survivalcoding.todolist.data.TodoRepositoryImpl
 import com.survivalcoding.todolist.data.TodoRoomDataBase
 import com.survivalcoding.todolist.domain.entity.Todo
+import com.survivalcoding.todolist.domain.repository.TodoRepository
 import com.survivalcoding.todolist.domain.usecase.GetTodosUseCase
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 import java.util.*
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(private val todoRepositoryImpl: TodoRepository) : ViewModel() {
 
-    private val todoRepositoryImpl = TodoRepositoryImpl(
-        Room.databaseBuilder(
-            application.applicationContext,
-            TodoRoomDataBase::class.java, TodoRoomDataBase.DATABASE_NAME
-        ).allowMainThreadQueries().build()
-    )
     val todos: LiveData<List<Todo>> = todoRepositoryImpl.getTodos().asLiveData()
     private val _todoNeedChanged = MutableLiveData<Todo?>(null)
     val todoNeedChanged get() = _todoNeedChanged
@@ -37,6 +33,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun removeTodo(todo: Todo) {
         todoRepositoryImpl.delete(todo)
     }
+}
 
-
+class MainViewModelFactory(private val repository: TodoRepository): ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java))
+            return MainViewModel(repository) as T
+        else
+            throw IllegalArgumentException()
+    }
 }
