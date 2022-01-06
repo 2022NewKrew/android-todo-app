@@ -1,6 +1,6 @@
 package com.survivalcoding.todolist.data.datasource
 
-import com.survivalcoding.todolist.data.ToDoDatabase
+import com.survivalcoding.todolist.data.dao.ToDoDao
 import com.survivalcoding.todolist.data.dto.ToDoRoomDto
 import com.survivalcoding.todolist.domain.model.ToDo
 import kotlinx.coroutines.Dispatchers
@@ -12,9 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ToDoRoomDataSource @Inject constructor(toDoDatabase: ToDoDatabase) : ToDoLocalDataSource {
-
-    private val toDoDao = toDoDatabase.toDoDao()
+class ToDoRoomDataSource @Inject constructor(private val toDoDao: ToDoDao) : ToDoLocalDataSource {
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
