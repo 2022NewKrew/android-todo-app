@@ -5,29 +5,11 @@ import com.survivalcoding.todolist.data.dto.ToDoRoomDto
 import com.survivalcoding.todolist.domain.model.ToDo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ToDoRoomDataSource @Inject constructor(private val toDoDao: ToDoDao) : ToDoLocalDataSource {
-
-    init {
-        GlobalScope.launch(Dispatchers.IO) {
-            toDoDao.getAll().collectLatest {
-                val toDoList = it.map { toDoRoomDto ->
-                    convert(toDoRoomDto)
-                }
-                _toDoList.emit(toDoList)
-            }
-        }
-    }
-
-    private val _toDoList = MutableStateFlow<List<ToDo>>(listOf())
-    override val toDoList: StateFlow<List<ToDo>> = _toDoList.asStateFlow()
-
 
     override fun updateItem(id: Long, newItem: ToDo) {
         GlobalScope.launch(Dispatchers.IO) { toDoDao.update(convert(newItem)) }
@@ -41,12 +23,14 @@ class ToDoRoomDataSource @Inject constructor(private val toDoDao: ToDoDao) : ToD
         GlobalScope.launch(Dispatchers.IO) { toDoDao.insert(convert(newItem)) }
     }
 
-    override fun searchItem(query: String) {
-        GlobalScope.launch(Dispatchers.IO) {
-            toDoDao.search(query).collectLatest {
-                _toDoList.value = it.map { toDoRoomDto ->
-                    convert(toDoRoomDto)
-                }
+    override fun getMatchingItems(query: String): Flow<List<ToDo>> {
+        return toDoDao.search(query).flatMapLatest {
+            flow {
+                emit(
+                    it.map { toDoRoomDto ->
+                        convert(toDoRoomDto)
+                    }
+                )
             }
         }
     }

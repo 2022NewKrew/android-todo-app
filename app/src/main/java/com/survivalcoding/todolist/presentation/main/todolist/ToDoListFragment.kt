@@ -75,7 +75,14 @@ class ToDoListFragment : Fragment() {
     }
 
     private fun collect() {
-        repeatOnStart { viewModel.toDoList.collectLatest { toDoListBodyAdapter.submitList(it) } }
+        repeatOnStart {
+            viewModel.toDoList
+                .collectLatest { toDoListFlow ->
+                    toDoListFlow.collectLatest { toDoList ->
+                        toDoListBodyAdapter.submitList(toDoList)
+                    }
+                }
+        }
     }
 
     private fun repeatOnStart(block: suspend CoroutineScope.() -> Unit) {

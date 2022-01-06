@@ -4,15 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.domain.usecase.DeleteToDoUseCase
-import com.survivalcoding.todolist.domain.usecase.GetAllToDoUseCase
-import com.survivalcoding.todolist.domain.usecase.SearchToDoUseCase
+import com.survivalcoding.todolist.domain.usecase.GetMatchingToDosUseCase
 import com.survivalcoding.todolist.domain.usecase.UpdateToDoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,11 +19,10 @@ import javax.inject.Inject
 class ToDoListViewModel @Inject constructor(
     private val deleteToDoUseCase: DeleteToDoUseCase,
     private val updateToDoUseCase: UpdateToDoUseCase,
-    private val getAllToDoUseCase: GetAllToDoUseCase,
-    private val searchToDoUseCase: SearchToDoUseCase
+    private val getMatchingToDosUseCase: GetMatchingToDosUseCase
 ) : ViewModel() {
 
-    private val _toDoList = MutableStateFlow<List<ToDo>>(listOf())
+    private val _toDoList = MutableStateFlow(getMatchingToDosUseCase(""))
     val toDoList = _toDoList.asStateFlow()
 
     private var searchJob: Job? = null
@@ -33,16 +30,8 @@ class ToDoListViewModel @Inject constructor(
     private var toDoListOrder = OrderBy.TIME_ASC
         set(value) {
             field = value
-            _toDoList.value = sortToDoList(_toDoList.value)
+//            _toDoList.value = sortToDoList(_toDoList.value)
         }
-
-    init {
-        viewModelScope.launch {
-            getAllToDoUseCase().collectLatest { toDoList ->
-                _toDoList.value = sortToDoList(toDoList)
-            }
-        }
-    }
 
     fun setOrder(orderBy: OrderBy) {
         toDoListOrder = orderBy
@@ -96,7 +85,7 @@ class ToDoListViewModel @Inject constructor(
         searchJob = viewModelScope.launch {
             delay(DEBOUNCE_TIME)
             if (isActive) {
-                searchToDoUseCase(query.toString())
+                _toDoList.value = getMatchingToDosUseCase(query.toString())
             }
         }
     }
