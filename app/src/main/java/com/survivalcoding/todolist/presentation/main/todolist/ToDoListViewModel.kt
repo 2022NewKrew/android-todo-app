@@ -33,13 +33,13 @@ class ToDoListViewModel @Inject constructor(
     private var toDoListOrder = OrderBy.TIME_ASC
         set(value) {
             field = value
-            _toDoList.value = sortToDoListBy(_toDoList.value, value)
+            _toDoList.value = sortToDoList(_toDoList.value)
         }
 
     init {
         viewModelScope.launch {
             getAllToDoUseCase().collectLatest { toDoList ->
-                _toDoList.value = sortToDoListBy(toDoList, toDoListOrder)
+                _toDoList.value = sortToDoList(toDoList)
             }
         }
     }
@@ -48,15 +48,23 @@ class ToDoListViewModel @Inject constructor(
         toDoListOrder = orderBy
     }
 
-    fun changeDoneState(toDo: ToDo, isDone: Boolean) {
-        updateToDoUseCase(toDo.id, toDo.copy(isDone = isDone))
+    private fun sortToDoList(toDoList: List<ToDo>): List<ToDo> {
+        val sortedToDoList = mutableListOf<ToDo>()
+
+        val notDoneToDoList = toDoList.filter {
+            !it.isDone
+        }
+        sortedToDoList.addAll(sortToDoListBySelectedOrder(notDoneToDoList, toDoListOrder))
+
+        val doneToDoList = toDoList.filter {
+            it.isDone
+        }
+        sortedToDoList.addAll(sortToDoListBySelectedOrder(doneToDoList, toDoListOrder))
+
+        return sortedToDoList
     }
 
-    fun deleteToDo(toDo: ToDo) {
-        deleteToDoUseCase(toDo.id)
-    }
-
-    private fun sortToDoListBy(toDoList: List<ToDo>, orderBy: OrderBy): List<ToDo> {
+    private fun sortToDoListBySelectedOrder(toDoList: List<ToDo>, orderBy: OrderBy): List<ToDo> {
         return when (orderBy) {
             OrderBy.TIME_ASC -> toDoList.sortedBy { toDo ->
                 toDo.timeStamp
@@ -73,16 +81,29 @@ class ToDoListViewModel @Inject constructor(
         }
     }
 
+    fun changeDoneState(toDo: ToDo, isDone: Boolean) {
+        updateToDoUseCase(toDo.id, toDo.copy(isDone = isDone))
+    }
+
+    fun deleteToDo(toDo: ToDo) {
+        deleteToDoUseCase(toDo.id)
+    }
+
     fun searchToDo(query: CharSequence?) {
         if (query == null) return
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(300L)
+            delay(DEBOUNCE_TIME)
             if (isActive) {
                 searchToDoUseCase(query.toString())
             }
         }
+    }
+
+
+    companion object {
+        private const val DEBOUNCE_TIME = 300L
     }
 }
 
