@@ -4,4 +4,8 @@
     <string name="save">save</string>
     <string name="create">create</string>
     <string name="modify">modify</string>
+    <string name="time_desc">time desc</string>
+    <string name="time_asc">time asc</string>
+    <string name="title_desc">title desc</string>
+    <string name="title_asc">title asc</string>
 </resources>

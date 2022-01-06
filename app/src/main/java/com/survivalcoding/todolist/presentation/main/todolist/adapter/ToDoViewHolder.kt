@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.domain.model.ToDo
 import com.survivalcoding.todolist.databinding.ToDoListItemLayoutBinding
+import com.survivalcoding.todolist.domain.model.ToDo
+import com.survivalcoding.todolist.domain.usecase.ConvertDateFormatUseCase
 
 class ToDoViewHolder private constructor(
     private val binding: ToDoListItemLayoutBinding
@@ -65,6 +66,8 @@ class ToDoViewHolder private constructor(
     private fun bindTextView(toDo: ToDo) {
         binding.titleTextView.text = toDo.title
         binding.titleTextView.setTextColor(getTextColor(toDo.isDone))
+        binding.dateTextView.text = ConvertDateFormatUseCase().invoke(toDo.timeStamp)
+        binding.dateTextView.setTextColor(getTextColor(toDo.isDone))
     }
 
     private fun getTextColor(isDone: Boolean) =

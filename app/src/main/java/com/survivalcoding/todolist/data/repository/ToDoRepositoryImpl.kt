@@ -15,4 +15,6 @@ class ToDoRepositoryImpl @Inject constructor(private val toDoLocalDataSource: To
     override fun deleteItem(id: Long) = toDoLocalDataSource.deleteItem(id)
 
     override fun addItem(newItem: ToDo) = toDoLocalDataSource.addItem(newItem)
+
+    override fun searchItem(query: String) = toDoLocalDataSource.searchItem(query)
 }

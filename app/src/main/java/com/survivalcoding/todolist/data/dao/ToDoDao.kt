@@ -9,6 +9,9 @@ interface ToDoDao {
     @Query("SELECT * FROM todoroomdto")
     fun getAll(): Flow<List<ToDoRoomDto>>
 
+    @Query("SELECT * FROM todoroomdto WHERE LOWER(title) LIKE '%' || :query || '%'")
+    fun search(query: String): Flow<List<ToDoRoomDto>>
+
     @Query("DELETE FROM todoroomdto WHERE id = :id")
     suspend fun deleteById(id: Long)
 
