@@ -37,7 +37,7 @@ android {
     }
     // 다양한 형태의 apk를 만들기 위한 것이라고
     //flavorDimensions("room", "cache")
-
+    flavorDimensions "Top"
     productFlavors {
         create("room") {
             applicationIdSuffix = ".room"
