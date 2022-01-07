@@ -4,7 +4,7 @@ package com.survivalcoding.todolist.data
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
 
-class TodoRepositoryImpl(db: TodoRoomDataBase) : TodoRepository {
+class TodoRoomRepositoryImpl(db: TodoRoomDataBase) : TodoRepository {
 
     private val todoDao: TodoDao = db.todoDao()
 

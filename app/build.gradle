@@ -40,10 +40,12 @@ android {
     flavorDimensions "Top"
     productFlavors {
         create("room") {
+            dimension = "Top"
             applicationIdSuffix = ".room"
             versionNameSuffix = "-room"
         }
         create("cache") {
+            dimension = "Top"
             applicationIdSuffix = ".cache"
             versionNameSuffix = "-cache"
         }    }
