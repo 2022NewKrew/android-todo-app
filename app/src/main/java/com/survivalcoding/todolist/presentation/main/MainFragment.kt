@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.survivalcoding.todolist.App
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
@@ -19,7 +20,12 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by activityViewModels<MainViewModel> {
+        MainViewModel.MainViewModelFactory(
+            application = requireActivity().application,
+            todoRepository = (requireActivity().application as App).todoRepository
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

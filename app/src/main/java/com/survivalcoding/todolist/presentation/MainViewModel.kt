@@ -1,27 +1,25 @@
 package com.survivalcoding.todolist.presentation
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.survivalcoding.todolist.data.data_source.local.AppDatabase
-import com.survivalcoding.todolist.data.repository.TodoRoomRepository
+import androidx.lifecycle.*
 import com.survivalcoding.todolist.domain.model.Todo
+import com.survivalcoding.todolist.domain.repository.TodoRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(
+    application: Application,
+    private val todoRepository: TodoRepository,
+) : AndroidViewModel(application) {
     var currentTodo: Todo? = null
 
 //    private val todoRepository = TodoInMemoryRepository()
-    private val todoRepository = TodoRoomRepository(
-        Room.databaseBuilder(
-            application.applicationContext,
-            AppDatabase::class.java, "todo-db"
-        ).build().todoDao()
-    )
+//    private val todoRepository: TodoRepository = TodoRoomRepository(
+//        Room.databaseBuilder(
+//            application.applicationContext,
+//            AppDatabase::class.java, "todo-db"
+//        ).build().todoDao()
+//    )
 
     private val _todos = MutableLiveData<List<Todo>>()
     val todos: LiveData<List<Todo>> = _todos
@@ -66,6 +64,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             todoRepository.delete(todo)
             _todos.value = todoRepository.getTodos()
+        }
+    }
+
+    class MainViewModelFactory(
+        private val application: Application,
+        private val todoRepository: TodoRepository
+    ) :
+        ViewModelProvider.AndroidViewModelFactory(
+            application
+        ) {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java))
+                return MainViewModel(
+                    application = application,
+                    todoRepository = todoRepository
+                ) as T
+            else throw IllegalArgumentException()
         }
     }
 }
