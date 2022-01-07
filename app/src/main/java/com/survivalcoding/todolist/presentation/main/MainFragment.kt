@@ -9,30 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.survivalcoding.todolist.App
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.data.datasource.TodoLocalDataSource
-import com.survivalcoding.todolist.data.local.TodoDatabase
-import com.survivalcoding.todolist.data.repository.TodoRepositoryImpl
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
 import com.survivalcoding.todolist.presentation.MainViewModelFactory
 import com.survivalcoding.todolist.presentation.add.AddFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
-import kotlinx.coroutines.Dispatchers
 
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<MainViewModel> {
-        MainViewModelFactory(
-            TodoRepositoryImpl(
-                TodoLocalDataSource(
-                    TodoDatabase.getDatabase(requireContext()).todoDao(),
-                    Dispatchers.IO
-                )
-            )
-        )
+        MainViewModelFactory((requireActivity().application as App).todoRepository)
     }
     private val adapter by lazy {
         TodoListAdapter({ todo -> viewModel.updateIsDone(todo) }, { todo ->
