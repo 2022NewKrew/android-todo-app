@@ -14,7 +14,6 @@ class TodoViewHolder(
     itemView: View,
     val onClickCheckBox: (Todo) -> Unit,
     val onClickViewShort: (Todo) -> Unit,
-    val onClickViewLong: (Todo) -> Unit,
 ) : RecyclerView.ViewHolder(itemView) {
     private val binding = ItemTodoBinding.bind(itemView)
 
@@ -43,11 +42,6 @@ class TodoViewHolder(
 
         itemView.setOnClickListener {
             onClickViewShort(todo)
-        }
-
-        binding.root.setOnLongClickListener {
-            onClickViewLong(todo)
-            true
         }
     }
 }
