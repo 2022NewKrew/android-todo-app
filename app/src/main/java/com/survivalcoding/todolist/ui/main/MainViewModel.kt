@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.entity.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -17,33 +18,33 @@ class MainViewModel(private val todoRepositoryImpl: TodoRepository) : ViewModel(
     val todoNeedChanged get() = _todoNeedChanged
 
     init {
-        viewModelScope.launch {
-            _todos.value = todoRepositoryImpl.getTodos()
+        viewModelScope.launch(Dispatchers.IO) {
+            _todos.postValue(todoRepositoryImpl.getTodos())
         }
     }
 
     fun toggleIsDone(todo: Todo) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             todoRepositoryImpl.update(todo)
-            _todos.value = todoRepositoryImpl.getTodos()
+            _todos.postValue(todoRepositoryImpl.getTodos())
         }
     }
 
     fun upsertTodo(title: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _todoNeedChanged.value?.let {
                 todoRepositoryImpl.update(it.copy(title = title, timestamp = Date().time))
-                _todoNeedChanged.value = null
+                _todoNeedChanged.postValue(null)
             } ?: todoRepositoryImpl.insert(Todo(title = title))
-            _todos.value = todoRepositoryImpl.getTodos()
+            _todos.postValue(todoRepositoryImpl.getTodos())
         }
 
     }
 
     fun removeTodo(todo: Todo) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             todoRepositoryImpl.delete(todo)
-            _todos.value = todoRepositoryImpl.getTodos()
+            _todos.postValue(todoRepositoryImpl.getTodos())
         }
     }
 
