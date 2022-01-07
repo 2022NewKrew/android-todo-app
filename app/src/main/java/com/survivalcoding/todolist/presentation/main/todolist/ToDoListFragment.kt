@@ -75,6 +75,12 @@ class ToDoListFragment : Fragment() {
         collect()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.searchToDo(binding?.searchEditText?.text)
+    }
+
     private fun collect() {
         repeatOnStart {
             viewModel.toDoListUiState.collectLatest {

@@ -18,7 +18,6 @@ import javax.inject.Inject
 class ToDoListViewModel @Inject constructor(
     private val deleteToDoUseCase: DeleteToDoUseCase,
     private val updateToDoUseCase: UpdateToDoUseCase,
-    private val getAllToDoUseCase: GetAllToDoUseCase,
     private val sortToDoListUseCase: SortToDoListUseCase,
     private val getMatchingToDosUseCase: GetMatchingToDosUseCase
 ) : ViewModel() {
@@ -28,14 +27,6 @@ class ToDoListViewModel @Inject constructor(
 
     private val _toDoListUiState = MutableStateFlow(ToDoListUiState(listOf(), OrderBy.TIME_ASC))
     val toDoListUiState = _toDoListUiState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            _toDoListUiState.value = _toDoListUiState.value.copy(
-                toDoList = getAllToDoUseCase()
-            )
-        }
-    }
 
     fun setOrder(orderBy: OrderBy) {
         _toDoListUiState.value = _toDoListUiState.value.copy(
@@ -48,7 +39,7 @@ class ToDoListViewModel @Inject constructor(
             updateToDoUseCase(toDo.id, toDo.copy(isDone = isDone))
 
             _toDoListUiState.value = _toDoListUiState.value.copy(
-                toDoList = getAllToDoUseCase()
+                toDoList = getMatchingToDosUseCase(currentQuery)
             )
         }
     }
@@ -58,12 +49,14 @@ class ToDoListViewModel @Inject constructor(
             deleteToDoUseCase(toDo.id)
 
             _toDoListUiState.value = _toDoListUiState.value.copy(
-                toDoList = getAllToDoUseCase()
+                toDoList = getMatchingToDosUseCase(currentQuery)
             )
         }
     }
 
     fun searchToDo(query: CharSequence?) {
+        if (query == currentQuery) return
+
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(DEBOUNCE_TIME)
