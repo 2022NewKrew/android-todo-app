@@ -1,4 +1,4 @@
-package com.survivalcoding.todolist.ui.main
+package com.survivalcoding.todolist.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -33,7 +33,7 @@ class MainViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     }
 
     fun getTasksLive(): LiveData<List<Task>> = _tasksLive
-
+    
     fun getTasksList(): List<Task> {
         viewModelScope.launch {
             _tasksList = taskRepository.getTasksList()
