@@ -1,8 +1,10 @@
 package com.survivalcoding.todolist.data.datasource
 
 import com.survivalcoding.todolist.domain.model.ToDo
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ToDoMockDataSource @Inject constructor() : ToDoLocalDataSource {
@@ -15,7 +17,6 @@ class ToDoMockDataSource @Inject constructor() : ToDoLocalDataSource {
     }
 
     private val _toDoList = MutableStateFlow(mockToDoList)
-    override val toDoList = _toDoList.asStateFlow()
 
     override fun updateItem(id: Long, newItem: ToDo) {
         mockToDoList = _toDoList.value.map { toDo ->
@@ -40,9 +41,11 @@ class ToDoMockDataSource @Inject constructor() : ToDoLocalDataSource {
         _toDoList.value = mockToDoList
     }
 
-    override fun searchItem(query: String) {
-        _toDoList.value = mockToDoList.filter {
-            it.title.lowercase().contains(query.lowercase())
+    override fun getMatchingItems(query: String): Flow<List<ToDo>> {
+        return _toDoList.flatMapLatest {
+            flow {
+                emit(it)
+            }
         }
     }
 }
