@@ -18,7 +18,7 @@ class TaskMockDataSource : TaskDao {
         }.toMutableList()
 
     override fun getAllLive(): LiveData<List<Task>> {
-        return MutableLiveData(_tasks)
+        return MutableLiveData<List<Task>>().apply { setValue(_tasks) }
     }
 
     override suspend fun getAllList(): List<Task> {
@@ -27,10 +27,15 @@ class TaskMockDataSource : TaskDao {
 
     override suspend fun insert(vararg tasks: Task) {
         tasks.forEach { newTask ->
-            _tasks = _tasks.map {
-                if (it.id == newTask.id) newTask
-                else it
-            }.toMutableList()
+            _tasks =
+                if (_tasks.any { it.id == newTask.id }) {
+                    _tasks.map {
+                        if (it.id == newTask.id) newTask
+                        else it
+                    }.toMutableList()
+                } else {
+                    _tasks.plus(newTask).toMutableList()
+                }
         }
     }
 
