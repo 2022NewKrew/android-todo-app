@@ -10,14 +10,21 @@ class TodoRoomDataSource(appContext: Context) : TodoDataSource {
     private val _db = Room.databaseBuilder(
         appContext,
         TodoDatabase::class.java, "todo-database"
-    ).allowMainThreadQueries()
-        .build()
+    ).build()
 
-    override fun getData(): List<TodoItem> = _db.todoDao().selectAll()
+    override suspend fun getData(): List<TodoItem> = _db.todoDao().selectAll()
+    override suspend fun setData(list: List<TodoItem>) {
+        _db.todoDao().deleteAll()
+        list.forEach {
+            _db.todoDao().insert(it)
+        }
+    }
 
-    override fun getById(id: Long) = _db.todoDao().getById(id)
+    override suspend fun getById(id: Long) = _db.todoDao().getById(id)
 
-    override fun insert(todoItem: TodoItem) = _db.todoDao().insert(todoItem)
+    override suspend fun insert(todoItem: TodoItem) = _db.todoDao().insert(todoItem)
 
-    override fun update(todoItem: TodoItem) = _db.todoDao().update(todoItem)
+    override suspend fun update(todoItem: TodoItem) = _db.todoDao().update(todoItem)
+    override suspend fun deleteAll() = _db.todoDao().deleteAll()
+
 }
