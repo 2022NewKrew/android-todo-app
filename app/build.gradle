@@ -34,6 +34,20 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    flavorDimensions "app"
+    productFlavors{
+        memory{
+            dimension "app"
+            applicationIdSuffix ".memory"
+            versionNameSuffix "-memory"
+        }
+        room{
+            dimension "app"
+            applicationIdSuffix ".room"
+            versionNameSuffix "-room"
+        }
+    }
 }
 
 dependencies {
