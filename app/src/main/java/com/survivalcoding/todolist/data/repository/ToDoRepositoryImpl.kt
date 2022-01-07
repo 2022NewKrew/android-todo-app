@@ -8,11 +8,13 @@ import javax.inject.Inject
 class ToDoRepositoryImpl @Inject constructor(private val toDoLocalDataSource: ToDoLocalDataSource) :
     ToDoRepository {
 
-    override fun updateItem(id: Long, newItem: ToDo) = toDoLocalDataSource.updateItem(id, newItem)
+    override suspend fun updateItem(id: Long, newItem: ToDo) = toDoLocalDataSource.updateItem(id, newItem)
 
-    override fun deleteItem(id: Long) = toDoLocalDataSource.deleteItem(id)
+    override suspend fun deleteItem(id: Long) = toDoLocalDataSource.deleteItem(id)
 
-    override fun addItem(newItem: ToDo) = toDoLocalDataSource.addItem(newItem)
+    override suspend fun addItem(newItem: ToDo) = toDoLocalDataSource.addItem(newItem)
 
-    override fun getMatchingItem(query: String) = toDoLocalDataSource.getMatchingItems(query)
+    override suspend fun getAllItem() = toDoLocalDataSource.getAllItem()
+
+    override suspend fun getMatchingItem(query: String) = toDoLocalDataSource.getMatchingItems(query)
 }

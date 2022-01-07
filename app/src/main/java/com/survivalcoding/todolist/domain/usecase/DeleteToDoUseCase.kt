@@ -4,5 +4,5 @@ import com.survivalcoding.todolist.domain.repository.ToDoRepository
 import javax.inject.Inject
 
 class DeleteToDoUseCase @Inject constructor(private val toDoRepository: ToDoRepository) {
-    operator fun invoke(id: Long) = toDoRepository.deleteItem(id)
+    suspend operator fun invoke(id: Long) = toDoRepository.deleteItem(id)
 }

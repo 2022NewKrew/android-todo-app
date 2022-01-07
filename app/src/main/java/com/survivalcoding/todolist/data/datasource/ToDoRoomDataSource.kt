@@ -3,37 +3,19 @@ package com.survivalcoding.todolist.data.datasource
 import com.survivalcoding.todolist.data.dao.ToDoDao
 import com.survivalcoding.todolist.data.dto.ToDoRoomDto
 import com.survivalcoding.todolist.domain.model.ToDo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ToDoRoomDataSource @Inject constructor(private val toDoDao: ToDoDao) : ToDoLocalDataSource {
 
-    override fun updateItem(id: Long, newItem: ToDo) {
-        GlobalScope.launch(Dispatchers.IO) { toDoDao.update(convert(newItem)) }
-    }
+    override suspend fun updateItem(id: Long, newItem: ToDo) = toDoDao.update(convert(newItem))
 
-    override fun deleteItem(id: Long) {
-        GlobalScope.launch(Dispatchers.IO) { toDoDao.deleteById(id) }
-    }
+    override suspend fun deleteItem(id: Long) = toDoDao.deleteById(id)
 
-    override fun addItem(newItem: ToDo) {
-        GlobalScope.launch(Dispatchers.IO) { toDoDao.insert(convert(newItem)) }
-    }
+    override suspend fun addItem(newItem: ToDo) = toDoDao.insert(convert(newItem))
 
-    override fun getMatchingItems(query: String): Flow<List<ToDo>> {
-        return toDoDao.search(query).flatMapLatest {
-            flow {
-                emit(
-                    it.map { toDoRoomDto ->
-                        convert(toDoRoomDto)
-                    }
-                )
-            }
-        }
-    }
+    override suspend fun getAllItem() = toDoDao.getAll().map { convert(it) }
+
+    override suspend fun getMatchingItems(query: String) = toDoDao.search(query).map { convert(it) }
 
     private fun convert(toDoRoomDto: ToDoRoomDto) = ToDo(
         id = toDoRoomDto.id,

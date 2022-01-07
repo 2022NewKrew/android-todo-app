@@ -77,12 +77,9 @@ class ToDoListFragment : Fragment() {
 
     private fun collect() {
         repeatOnStart {
-            viewModel.toDoList
-                .collectLatest { toDoListFlow ->
-                    toDoListFlow.collectLatest { toDoList ->
-                        toDoListBodyAdapter.submitList(toDoList)
-                    }
-                }
+            viewModel.toDoListUiState.collectLatest {
+                toDoListBodyAdapter.submitList(viewModel.sortToDoList(it.toDoList, it.orderBy))
+            }
         }
     }
 
