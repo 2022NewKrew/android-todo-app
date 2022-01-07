@@ -1,17 +1,13 @@
 package com.survivalcoding.todolist.data
 
 import com.survivalcoding.todolist.data.model.Todo
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class TodoRepository @Inject constructor(private val todoDao: TodoDao) {
+interface TodoRepository {
 
-    val todos = todoDao.selectAll()
+    val todos: Flow<List<Todo>>
 
-    suspend fun upsertTodo(todo: Todo) {
-        todoDao.upsert(todo)
-    }
+    suspend fun upsertTodo(todo: Todo)
 
-    suspend fun deleteTodo(todo: Todo) {
-        todoDao.delete(todo)
-    }
+    suspend fun deleteTodo(todo: Todo)
 }
