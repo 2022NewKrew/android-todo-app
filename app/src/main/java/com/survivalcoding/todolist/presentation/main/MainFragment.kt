@@ -50,12 +50,11 @@ class MainFragment : Fragment() {
         binding.mainFabAdd.setOnClickListener { moveToAdd() }
 
         // 할 일 검색
-        binding.mainIvSearch.setOnClickListener { viewModel.search(binding.mainEtSearch.text.toString()) }
-        // 검색어 지웠을 때 전체 리스트 조회
-        binding.mainEtSearch.doAfterTextChanged {
-            if (it.isNullOrEmpty()) {
-                viewModel.getTodoList()
-            }
+        binding.mainEtSearch.doAfterTextChanged { query ->
+            // 검색어 지웠을 때 전체 리스트 조회
+            if (query.isNullOrEmpty()) viewModel.getTodoList()
+            // 검색어 입력시 자동 검색
+            else viewModel.search(query.toString())
         }
 
         // todolist 업데이트 관찰
