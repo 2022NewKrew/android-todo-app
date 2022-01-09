@@ -75,14 +75,17 @@ class ToDoListFragment : Fragment() {
         collect()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.searchToDo(binding?.searchEditText?.text)
+    }
+
     private fun collect() {
         repeatOnStart {
-            viewModel.toDoList
-                .collectLatest { toDoListFlow ->
-                    toDoListFlow.collectLatest { toDoList ->
-                        toDoListBodyAdapter.submitList(toDoList)
-                    }
-                }
+            viewModel.toDoListUiState.collectLatest {
+                toDoListBodyAdapter.submitList(it.toDoList)
+            }
         }
     }
 

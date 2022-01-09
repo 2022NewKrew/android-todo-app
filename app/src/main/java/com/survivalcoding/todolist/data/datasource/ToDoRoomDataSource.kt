@@ -3,37 +3,27 @@ package com.survivalcoding.todolist.data.datasource
 import com.survivalcoding.todolist.data.dao.ToDoDao
 import com.survivalcoding.todolist.data.dto.ToDoRoomDto
 import com.survivalcoding.todolist.domain.model.ToDo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ToDoRoomDataSource @Inject constructor(private val toDoDao: ToDoDao) : ToDoLocalDataSource {
 
-    override fun updateItem(id: Long, newItem: ToDo) {
-        GlobalScope.launch(Dispatchers.IO) { toDoDao.update(convert(newItem)) }
-    }
+    override suspend fun updateToDo(id: Long, newItem: ToDo) = toDoDao.update(convert(newItem))
 
-    override fun deleteItem(id: Long) {
-        GlobalScope.launch(Dispatchers.IO) { toDoDao.deleteById(id) }
-    }
+    override suspend fun deleteToDo(id: Long) = toDoDao.deleteById(id)
 
-    override fun addItem(newItem: ToDo) {
-        GlobalScope.launch(Dispatchers.IO) { toDoDao.insert(convert(newItem)) }
-    }
+    override suspend fun addToDo(newItem: ToDo) = toDoDao.insert(convert(newItem))
 
-    override fun getMatchingItems(query: String): Flow<List<ToDo>> {
-        return toDoDao.search(query).flatMapLatest {
-            flow {
-                emit(
-                    it.map { toDoRoomDto ->
-                        convert(toDoRoomDto)
-                    }
-                )
-            }
-        }
-    }
+    override suspend fun getAllToDo() = toDoDao.getAll().map { convert(it) }
+
+    override suspend fun getMatchingToDos(query: String) = toDoDao.search(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTimeAsc(query: String) = toDoDao.getOrderByTimeAsc(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTimeDesc(query: String) = toDoDao.getOrderByTimeDesc(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTitleAsc(query: String) = toDoDao.getOrderByTitleAsc(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTitleDesc(query: String) = toDoDao.getOrderByTitleDesc(query).map { convert(it) }
 
     private fun convert(toDoRoomDto: ToDoRoomDto) = ToDo(
         id = toDoRoomDto.id,

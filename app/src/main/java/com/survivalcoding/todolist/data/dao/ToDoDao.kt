@@ -2,15 +2,26 @@ package com.survivalcoding.todolist.data.dao
 
 import androidx.room.*
 import com.survivalcoding.todolist.data.dto.ToDoRoomDto
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ToDoDao {
-    @Query("SELECT * FROM todoroomdto")
-    fun getAll(): Flow<List<ToDoRoomDto>>
+    @Query("SELECT * FROM todoroomdto  WHERE LOWER(title) ORDER BY isDone ASC")
+    suspend fun getAll(): List<ToDoRoomDto>
+
+    @Query("SELECT * FROM todoroomdto  WHERE LOWER(title) LIKE '%' || :query || '%' ORDER BY isDone ASC, timeStamp ASC")
+    suspend fun getOrderByTimeAsc(query: String): List<ToDoRoomDto>
+
+    @Query("SELECT * FROM todoroomdto  WHERE LOWER(title) LIKE '%' || :query || '%' ORDER BY isDone ASC, timeStamp DESC")
+    suspend fun getOrderByTimeDesc(query: String): List<ToDoRoomDto>
+
+    @Query("SELECT * FROM todoroomdto  WHERE LOWER(title) LIKE '%' || :query || '%' ORDER BY isDone ASC, title ASC")
+    suspend fun getOrderByTitleAsc(query: String): List<ToDoRoomDto>
+
+    @Query("SELECT * FROM todoroomdto  WHERE LOWER(title) LIKE '%' || :query || '%' ORDER BY isDone ASC, title DESC")
+    suspend fun getOrderByTitleDesc(query: String): List<ToDoRoomDto>
 
     @Query("SELECT * FROM todoroomdto WHERE LOWER(title) LIKE '%' || :query || '%'")
-    fun search(query: String): Flow<List<ToDoRoomDto>>
+    suspend fun search(query: String): List<ToDoRoomDto>
 
     @Query("DELETE FROM todoroomdto WHERE id = :id")
     suspend fun deleteById(id: Long)

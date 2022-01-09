@@ -8,7 +8,7 @@ import java.util.*
 @Entity
 data class ToDoRoomDto(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "timeStamp")

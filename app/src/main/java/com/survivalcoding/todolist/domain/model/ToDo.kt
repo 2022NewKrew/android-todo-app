@@ -6,7 +6,7 @@ import java.util.*
 
 @Parcelize
 data class ToDo(
-    val id: Long,
+    val id: Long = 0,
     val title: String,
     val timeStamp: Long = Date().time,
     val isDone: Boolean = false,

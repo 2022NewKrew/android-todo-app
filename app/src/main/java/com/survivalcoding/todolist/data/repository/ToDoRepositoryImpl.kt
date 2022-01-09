@@ -8,11 +8,21 @@ import javax.inject.Inject
 class ToDoRepositoryImpl @Inject constructor(private val toDoLocalDataSource: ToDoLocalDataSource) :
     ToDoRepository {
 
-    override fun updateItem(id: Long, newItem: ToDo) = toDoLocalDataSource.updateItem(id, newItem)
+    override suspend fun updateToDo(id: Long, newItem: ToDo) = toDoLocalDataSource.updateToDo(id, newItem)
 
-    override fun deleteItem(id: Long) = toDoLocalDataSource.deleteItem(id)
+    override suspend fun deleteToDo(id: Long) = toDoLocalDataSource.deleteToDo(id)
 
-    override fun addItem(newItem: ToDo) = toDoLocalDataSource.addItem(newItem)
+    override suspend fun addToDo(newItem: ToDo) = toDoLocalDataSource.addToDo(newItem)
 
-    override fun getMatchingItem(query: String) = toDoLocalDataSource.getMatchingItems(query)
+    override suspend fun getAllToDo() = toDoLocalDataSource.getAllToDo()
+
+    override suspend fun getMatchingToDos(query: String) = toDoLocalDataSource.getMatchingToDos(query)
+
+    override suspend fun getToDosOrderByTimeAsc(query: String) = toDoLocalDataSource.getToDosOrderByTimeAsc(query)
+
+    override suspend fun getToDosOrderByTimeDesc(query: String) = toDoLocalDataSource.getToDosOrderByTimeDesc(query)
+
+    override suspend fun getToDosOrderByTitleAsc(query: String) = toDoLocalDataSource.getToDosOrderByTitleAsc(query)
+
+    override suspend fun getToDosOrderByTitleDesc(query: String) = toDoLocalDataSource.getToDosOrderByTitleDesc(query)
 }
