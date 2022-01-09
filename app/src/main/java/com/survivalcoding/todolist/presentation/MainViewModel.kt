@@ -21,35 +21,25 @@ class MainViewModel(
     private val _currentTodo = MutableLiveData<Todo?>()
     val currentTodo get() = _currentTodo
 
-    fun getTodoList() {
-        viewModelScope.launch {
-            _todoList.postValue(getTodoListUseCase())
-        }
+    fun getTodoList() = viewModelScope.launch {
+        _todoList.value = getTodoListUseCase.invoke()
     }
 
-    fun updateIsDone(todo: Todo) {
-        viewModelScope.launch {
-            updateTodoUseCase(todo.copy(isDone = !todo.isDone))
-            _todoList.postValue(getTodoListUseCase())
-        }
+    fun updateIsDone(todo: Todo) = viewModelScope.launch {
+        updateTodoUseCase(todo.copy(isDone = !todo.isDone))
+        _todoList.value = getTodoListUseCase.invoke()
     }
 
-    private fun addItem(todo: Todo) {
-        viewModelScope.launch {
-            insertTodoUseCase(todo)
-        }
+    private fun addItem(todo: Todo) = viewModelScope.launch {
+        insertTodoUseCase(todo)
     }
 
-    private fun updateItem(todo: Todo) {
-        viewModelScope.launch {
-            updateTodoUseCase(todo)
-        }
+    private fun updateItem(todo: Todo) = viewModelScope.launch {
+        updateTodoUseCase(todo)
     }
 
-    fun deleteItem(todo: Todo) {
-        viewModelScope.launch {
-            deleteTodoUseCase(todo)
-        }
+    fun deleteItem(todo: Todo) = viewModelScope.launch {
+        deleteTodoUseCase(todo)
     }
 
     fun setTodo(todo: Todo?) {
@@ -67,10 +57,8 @@ class MainViewModel(
 
     private fun newTodo(): Todo = Todo(null, "")
 
-    fun search(query: String) {
-        viewModelScope.launch {
-            _todoList.postValue(searchTodoUseCase(query))
-        }
+    fun search(query: String) = viewModelScope.launch {
+        _todoList.value = searchTodoUseCase.invoke(query)
     }
 }
 

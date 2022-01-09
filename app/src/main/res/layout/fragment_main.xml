@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/main_title"
+        android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold"
@@ -19,44 +19,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_goneMarginTop="16dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main_cl_search"
+    <EditText
+        android:id="@+id/main_et_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_search"
+        android:drawableEnd="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="@string/search_hint"
+        android:importantForAutofill="no"
+        android:inputType="textImeMultiLine"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_tv_title">
-
-        <EditText
-            android:id="@+id/main_et_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="@string/search_hint"
-            android:importantForAutofill="no"
-            android:inputType="textImeMultiLine"
-            android:paddingVertical="8dp"
-            android:paddingStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/main_iv_search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/main_iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/search_icon"
-            android:padding="8dp"
-            android:src="@drawable/ic_search"
-            app:layout_constraintBottom_toBottomOf="@id/main_et_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/main_et_search" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/main_tv_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_rv_todo"
@@ -68,7 +49,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_cl_search"
+        app:layout_constraintTop_toBottomOf="@id/main_et_search"
         tools:listitem="@layout/item_todo" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

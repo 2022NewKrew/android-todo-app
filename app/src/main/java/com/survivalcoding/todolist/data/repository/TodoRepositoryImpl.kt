@@ -1,10 +1,10 @@
 package com.survivalcoding.todolist.data.repository
 
-import com.survivalcoding.todolist.data.datasource.TodoLocalDataSource
+import com.survivalcoding.todolist.data.datasource.TodoDataSource
 import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
 
-class TodoRepositoryImpl(private val todoDataSource: TodoLocalDataSource) : TodoRepository {
+class TodoRepositoryImpl(private val todoDataSource: TodoDataSource) : TodoRepository {
     override suspend fun getTodoList(): List<Todo> = todoDataSource.getTodoList()
 
     override suspend fun insertItem(todo: Todo) = todoDataSource.insertItem(todo)

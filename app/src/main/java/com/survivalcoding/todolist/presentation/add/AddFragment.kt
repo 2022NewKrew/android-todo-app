@@ -7,28 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.survivalcoding.todolist.App
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.data.datasource.TodoLocalDataSource
-import com.survivalcoding.todolist.data.local.TodoDatabase
-import com.survivalcoding.todolist.data.repository.TodoRepositoryImpl
 import com.survivalcoding.todolist.databinding.FragmentAddBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
 import com.survivalcoding.todolist.presentation.MainViewModelFactory
-import kotlinx.coroutines.Dispatchers
 
 class AddFragment : Fragment() {
 
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<MainViewModel> {
-        MainViewModelFactory(
-            TodoRepositoryImpl(
-                TodoLocalDataSource(
-                    TodoDatabase.getDatabase(requireContext()).todoDao(),
-                    Dispatchers.IO
-                )
-            )
-        )
+        MainViewModelFactory((requireActivity().application as App).todoRepository)
     }
 
     override fun onCreateView(
