@@ -11,11 +11,8 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
+import com.survivalcoding.todolist.MyApp
 import com.survivalcoding.todolist.R
-import com.survivalcoding.todolist.data.TodoInMemoryRepositoryImpl
-import com.survivalcoding.todolist.data.TodoRepositoryImpl
-import com.survivalcoding.todolist.data.TodoRoomDataBase
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.ui.main.adapter.TodoListAdapter
 import com.survivalcoding.todolist.ui.main.adapter.TodoSwipeHandler
@@ -27,13 +24,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private val mainViewModel by activityViewModels<MainViewModel> {
         MainViewModelFactory(
-           //  TodoInMemoryRepositoryImpl()
-           TodoRepositoryImpl(
-                Room.databaseBuilder(
-                    requireContext(),
-                    TodoRoomDataBase::class.java, TodoRoomDataBase.DATABASE_NAME
-                ).build()
-            )
+            (requireActivity().application as MyApp).todoRepository
         )
     }
 
@@ -97,7 +88,7 @@ class MainFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filteredList = mainViewModel.searchTodos(newText)
                 todoListAdapter.submitList(filteredList)
-                return false
+                return true
             }
         })
 

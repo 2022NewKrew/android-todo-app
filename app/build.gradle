@@ -35,6 +35,20 @@ android {
     viewBinding {
         enabled true
     }
+    // 다양한 형태의 apk를 만들기 위한 것이라고
+    //flavorDimensions("room", "cache")
+    flavorDimensions "Top"
+    productFlavors {
+        create("room") {
+            dimension = "Top"
+            applicationIdSuffix = ".room"
+            versionNameSuffix = "-room"
+        }
+        create("cache") {
+            dimension = "Top"
+            applicationIdSuffix = ".cache"
+            versionNameSuffix = "-cache"
+        }    }
 }
 
 dependencies {

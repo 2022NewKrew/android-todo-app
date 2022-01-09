@@ -19,6 +19,7 @@ class TodoListAdapter(
     }
 
     // diff.util의 비동기 처리를 고려해야한다고 본 것 같은데 잘되는 것 같다.
+    // listAdapter는 다 고려되어있음
     fun removeItem(position: Int) {
         if (position >= itemCount) return
         onLeftSwiped(currentList.toMutableList()[position])
