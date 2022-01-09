@@ -1,9 +1,13 @@
 package com.survivalcoding.todolist.data.datasource
 
 import com.survivalcoding.todolist.domain.model.ToDo
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 class ToDoInMemoryDataSource @Inject constructor() : ToDoLocalDataSource {
+
+    private var nextId = AtomicLong(1)
 
     private var toDoList: List<ToDo> = listOf()
 
@@ -24,7 +28,7 @@ class ToDoInMemoryDataSource @Inject constructor() : ToDoLocalDataSource {
     }
 
     override suspend fun addItem(newItem: ToDo) {
-        toDoList = toDoList.plus(newItem)
+        toDoList = toDoList.plus(newItem.copy(id = nextId.getAndIncrement()))
     }
 
     override suspend fun getAllItem() = toDoList

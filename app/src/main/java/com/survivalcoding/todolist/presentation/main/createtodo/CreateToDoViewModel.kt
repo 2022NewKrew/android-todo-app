@@ -25,7 +25,7 @@ class CreateToDoViewModel @Inject constructor(
             if (prevToDo != null) {
                 updateToDoUseCase(prevToDo.id, prevToDo.copy(title = toDoText))
             } else {
-                addToDoUseCase(ToDo(id = Date().time, title = toDoText))
+                addToDoUseCase(ToDo(title = toDoText))
             }
         }
     }
