@@ -7,15 +7,23 @@ import javax.inject.Inject
 
 class ToDoRoomDataSource @Inject constructor(private val toDoDao: ToDoDao) : ToDoLocalDataSource {
 
-    override suspend fun updateItem(id: Long, newItem: ToDo) = toDoDao.update(convert(newItem))
+    override suspend fun updateToDo(id: Long, newItem: ToDo) = toDoDao.update(convert(newItem))
 
-    override suspend fun deleteItem(id: Long) = toDoDao.deleteById(id)
+    override suspend fun deleteToDo(id: Long) = toDoDao.deleteById(id)
 
-    override suspend fun addItem(newItem: ToDo) = toDoDao.insert(convert(newItem))
+    override suspend fun addToDo(newItem: ToDo) = toDoDao.insert(convert(newItem))
 
-    override suspend fun getAllItem() = toDoDao.getAll().map { convert(it) }
+    override suspend fun getAllToDo() = toDoDao.getAll().map { convert(it) }
 
-    override suspend fun getMatchingItems(query: String) = toDoDao.search(query).map { convert(it) }
+    override suspend fun getMatchingToDos(query: String) = toDoDao.search(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTimeAsc(query: String) = toDoDao.getOrderByTimeAsc(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTimeDesc(query: String) = toDoDao.getOrderByTimeDesc(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTitleAsc(query: String) = toDoDao.getOrderByTitleAsc(query).map { convert(it) }
+
+    override suspend fun getToDosOrderByTitleDesc(query: String) = toDoDao.getOrderByTitleDesc(query).map { convert(it) }
 
     private fun convert(toDoRoomDto: ToDoRoomDto) = ToDo(
         id = toDoRoomDto.id,

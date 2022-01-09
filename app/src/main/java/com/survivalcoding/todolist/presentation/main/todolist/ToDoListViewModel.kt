@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.OrderBy
 import com.survivalcoding.todolist.domain.model.ToDo
-import com.survivalcoding.todolist.domain.usecase.*
+import com.survivalcoding.todolist.domain.usecase.DeleteToDoUseCase
+import com.survivalcoding.todolist.domain.usecase.GetSortedMatchingToDosUseCase
+import com.survivalcoding.todolist.domain.usecase.UpdateToDoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,20 +20,23 @@ import javax.inject.Inject
 class ToDoListViewModel @Inject constructor(
     private val deleteToDoUseCase: DeleteToDoUseCase,
     private val updateToDoUseCase: UpdateToDoUseCase,
-    private val sortToDoListUseCase: SortToDoListUseCase,
-    private val getMatchingToDosUseCase: GetMatchingToDosUseCase
+    private val getSortedMatchingToDosUseCase: GetSortedMatchingToDosUseCase
 ) : ViewModel() {
 
     private var searchJob: Job? = null
     private var currentQuery: String = ""
+    private var currentOrder = OrderBy.TIME_DESC
 
-    private val _toDoListUiState = MutableStateFlow(ToDoListUiState(listOf(), OrderBy.TIME_ASC))
+    private val _toDoListUiState = MutableStateFlow(ToDoListUiState(listOf()))
     val toDoListUiState = _toDoListUiState.asStateFlow()
 
     fun setOrder(orderBy: OrderBy) {
-        _toDoListUiState.value = _toDoListUiState.value.copy(
-            orderBy = orderBy
-        )
+        currentOrder = orderBy
+        viewModelScope.launch {
+            _toDoListUiState.value = _toDoListUiState.value.copy(
+                toDoList = getSortedMatchingToDosUseCase(currentQuery, currentOrder)
+            )
+        }
     }
 
     fun changeDoneState(toDo: ToDo, isDone: Boolean) {
@@ -39,7 +44,7 @@ class ToDoListViewModel @Inject constructor(
             updateToDoUseCase(toDo.id, toDo.copy(isDone = isDone))
 
             _toDoListUiState.value = _toDoListUiState.value.copy(
-                toDoList = getMatchingToDosUseCase(currentQuery)
+                toDoList = getSortedMatchingToDosUseCase(currentQuery, currentOrder)
             )
         }
     }
@@ -49,7 +54,7 @@ class ToDoListViewModel @Inject constructor(
             deleteToDoUseCase(toDo.id)
 
             _toDoListUiState.value = _toDoListUiState.value.copy(
-                toDoList = getMatchingToDosUseCase(currentQuery)
+                toDoList = getSortedMatchingToDosUseCase(currentQuery, currentOrder)
             )
         }
     }
@@ -67,12 +72,10 @@ class ToDoListViewModel @Inject constructor(
         }
     }
 
-    fun sortToDoList(toDoList: List<ToDo>, orderBy: OrderBy) = sortToDoListUseCase(toDoList, orderBy)
-
     private fun getMatchingToDos(query: String) {
         viewModelScope.launch {
             _toDoListUiState.value = _toDoListUiState.value.copy(
-                toDoList = getMatchingToDosUseCase(query)
+                toDoList = getSortedMatchingToDosUseCase(currentQuery, currentOrder)
             )
         }
     }
@@ -84,6 +87,5 @@ class ToDoListViewModel @Inject constructor(
 }
 
 data class ToDoListUiState(
-    val toDoList: List<ToDo>,
-    val orderBy: OrderBy
+    val toDoList: List<ToDo>
 )

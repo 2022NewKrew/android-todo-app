@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class AddToDoUseCase @Inject constructor(private val toDoRepository: ToDoRepository) {
     suspend operator fun invoke(newItem: ToDo) {
-        if (newItem.title.isNotBlank()) toDoRepository.addItem(newItem)
+        if (newItem.title.isNotBlank()) toDoRepository.addToDo(newItem)
     }
 }
