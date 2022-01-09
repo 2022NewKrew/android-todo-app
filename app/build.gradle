@@ -16,14 +16,42 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
+
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".debug"
+        }
     }
+
+    flavorDimensions "apptype"
+    productFlavors {
+        full {
+            dimension "apptype"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+        type1 {
+            dimension "apptype"
+            applicationIdSuffix ".type1"
+            versionNameSuffix "-type2"
+        }
+        type2 {
+            dimension "apptype"
+            applicationIdSuffix ".type2"
+            versionNameSuffix "-type2"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
