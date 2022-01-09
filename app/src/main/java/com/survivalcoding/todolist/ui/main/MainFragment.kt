@@ -1,8 +1,6 @@
 package com.survivalcoding.todolist.ui.main
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +10,12 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.survivalcoding.todolist.data.datasource.TaskDatabase
-import com.survivalcoding.todolist.data.datasource.TaskInMemoryDataSource
-import com.survivalcoding.todolist.data.repository.TaskRepositoryImpl
+import com.survivalcoding.todolist.App
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.domain.entity.Task
 import com.survivalcoding.todolist.ui.MainActivity
+import com.survivalcoding.todolist.ui.MainViewModel
+import com.survivalcoding.todolist.ui.MainViewModelFactory
 import com.survivalcoding.todolist.ui.add.AddEditFragment
 import com.survivalcoding.todolist.ui.main.adapter.OnClickEvent
 import com.survivalcoding.todolist.ui.main.adapter.ToDoListAdapter
@@ -34,17 +31,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by activityViewModels<MainViewModel> {
-        MainViewModelFactory(
-            TaskRepositoryImpl(
-                TaskInMemoryDataSource(
-                    Room.databaseBuilder(
-                        requireContext(),
-                        TaskDatabase::class.java,
-                        "taskDB"
-                    ).build().taskDao()
-                )
-            )
-        )
+        MainViewModelFactory((requireActivity().application as App).taskRepository)
     }
 
     private var clickTime = -1L

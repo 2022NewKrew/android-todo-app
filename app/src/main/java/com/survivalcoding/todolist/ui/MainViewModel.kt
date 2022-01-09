@@ -1,15 +1,13 @@
-package com.survivalcoding.todolist.ui.main
+package com.survivalcoding.todolist.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.survivalcoding.todolist.domain.entity.Task
 import com.survivalcoding.todolist.domain.repository.TaskRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
 class MainViewModel(private val taskRepository: TaskRepository) : ViewModel() {
+    private val live = MutableLiveData<List<Task>>()
     private val _tasksLive get() = taskRepository.getTasksLive()
     private var _tasksList = listOf<Task>()
 
@@ -19,6 +17,7 @@ class MainViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     init {
         viewModelScope.launch {
             _tasksList = taskRepository.getTasksList()
+            live.value = _tasksList
         }
     }
 
@@ -33,6 +32,11 @@ class MainViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     }
 
     fun getTasksLive(): LiveData<List<Task>> = _tasksLive
+//    fun getTasksLive(): LiveData<List<Task>> {
+//        live.value = getTasksList()
+//        return live
+//    }
+
 
     fun getTasksList(): List<Task> {
         viewModelScope.launch {
