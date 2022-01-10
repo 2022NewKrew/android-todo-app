@@ -1,9 +1,10 @@
 package com.survivalcoding.todolist.domain.repository
 
 import com.survivalcoding.todolist.domain.model.Todo
+import kotlinx.coroutines.flow.Flow
 
 interface TodoRepository {
-    suspend fun getTodos(): List<Todo>
+    fun getTodos(): Flow<List<Todo>>
 
     suspend fun getTodoById(id: Int): Todo?
 

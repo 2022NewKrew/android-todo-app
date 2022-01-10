@@ -2,11 +2,12 @@ package com.survivalcoding.todolist.data.data_source.local
 
 import androidx.room.*
 import com.survivalcoding.todolist.domain.model.Todo
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao {
     @Query("SELECT * FROM todo")
-    suspend fun getTodos(): List<Todo>
+    fun getTodos(): Flow<List<Todo>>
 
     @Query("SELECT * FROM todo WHERE id = :id")
     suspend fun getTodoById(id: Int): Todo?

@@ -13,29 +13,13 @@ class MainViewModel(
 ) : AndroidViewModel(application) {
     var currentTodo: Todo? = null
 
-//    private val todoRepository = TodoInMemoryRepository()
-//    private val todoRepository: TodoRepository = TodoRoomRepository(
-//        Room.databaseBuilder(
-//            application.applicationContext,
-//            AppDatabase::class.java, "todo-db"
-//        ).build().todoDao()
-//    )
-
-    private val _todos = MutableLiveData<List<Todo>>()
-    val todos: LiveData<List<Todo>> = _todos
-
-    init {
-        viewModelScope.launch {
-            _todos.value = todoRepository.getTodos()
-        }
-    }
+    val todos: LiveData<List<Todo>> = todoRepository.getTodos().asLiveData()
 
     fun toggleTodo(todo: Todo) {
         val newTodo = todo.copy(isDone = !todo.isDone)
 
         viewModelScope.launch {
             todoRepository.update(newTodo) // 오래 걸릴 수 있는 애
-            _todos.value = todoRepository.getTodos()
         }
     }
 
@@ -56,14 +40,12 @@ class MainViewModel(
                     )
                 )
             }
-            _todos.value = todoRepository.getTodos()
         }
     }
 
     fun deleteTodo(todo: Todo) {
         viewModelScope.launch {
             todoRepository.delete(todo)
-            _todos.value = todoRepository.getTodos()
         }
     }
 
