@@ -1,9 +1,14 @@
 package com.survivalcoding.todolist.presentation
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -13,7 +18,14 @@ class MainViewModel(
 ) : AndroidViewModel(application) {
     var currentTodo: Todo? = null
 
-    val todos: LiveData<List<Todo>> = todoRepository.getTodos().asLiveData()
+    private val _todos = MutableStateFlow<List<Todo>>(listOf())
+    val todos: StateFlow<List<Todo>> = _todos
+
+    init {
+        viewModelScope.launch {
+
+        }
+    }
 
     fun toggleTodo(todo: Todo) {
         val newTodo = todo.copy(isDone = !todo.isDone)

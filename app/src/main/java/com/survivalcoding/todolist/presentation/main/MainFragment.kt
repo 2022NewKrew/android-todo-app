@@ -9,12 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.survivalcoding.todolist.App
 import com.survivalcoding.todolist.R
 import com.survivalcoding.todolist.databinding.FragmentMainBinding
 import com.survivalcoding.todolist.presentation.MainViewModel
 import com.survivalcoding.todolist.presentation.add.AddEditFragment
 import com.survivalcoding.todolist.presentation.main.adapter.TodoListAdapter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -74,8 +79,16 @@ class MainFragment : Fragment() {
 
         binding.todoRecyclerView.adapter = adapter
 
-        viewModel.todos.observe(this) { todos ->
-            adapter.submitList(todos)
+//        viewModel.todos.observe(this) { todos ->
+//            adapter.submitList(todos)
+//        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.todos.collectLatest { todos ->
+                    adapter.submitList(todos)
+                }
+            }
         }
     }
 
