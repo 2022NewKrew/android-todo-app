@@ -2,56 +2,41 @@ package com.survivalcoding.todolist.presentation
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.survivalcoding.todolist.App
 import com.survivalcoding.todolist.domain.model.Todo
 import com.survivalcoding.todolist.domain.repository.TodoRepository
+import com.survivalcoding.todolist.domain.usecase.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 class MainViewModel(
     application: Application,
-    private val todoRepository: TodoRepository,
+    private val todoUseCases: TodoUseCases
 ) : AndroidViewModel(application) {
     var currentTodo: Todo? = null
 
-    val todos: LiveData<List<Todo>> = todoRepository.getTodos().asLiveData()
+    val todos: LiveData<List<Todo>> = todoUseCases.getTodosUseCase().asLiveData()
 
     fun toggleTodo(todo: Todo) {
-        val newTodo = todo.copy(isDone = !todo.isDone)
-
         viewModelScope.launch {
-            todoRepository.update(newTodo) // 오래 걸릴 수 있는 애
+            todoUseCases.toggleTodoUseCase(todo)
         }
     }
 
     fun saveTodo(title: String) {
         viewModelScope.launch {
-            if (currentTodo != null) {
-                todoRepository.update(
-                    Todo(
-                        id = currentTodo!!.id,
-                        title = title,
-                        timestamp = Date().time
-                    )
-                )
-            } else {
-                todoRepository.insert(
-                    Todo(
-                        title = title
-                    )
-                )
-            }
+            todoUseCases.saveTodoUseCase(currentTodo, title)
         }
     }
 
     fun deleteTodo(todo: Todo) {
         viewModelScope.launch {
-            todoRepository.delete(todo)
+            todoUseCases.deleteTodoUseCase(todo)
         }
     }
 
     class MainViewModelFactory(
         private val application: Application,
-        private val todoRepository: TodoRepository
     ) :
         ViewModelProvider.AndroidViewModelFactory(
             application
@@ -60,7 +45,7 @@ class MainViewModel(
             if (modelClass.isAssignableFrom(MainViewModel::class.java))
                 return MainViewModel(
                     application = application,
-                    todoRepository = todoRepository
+                    todoUseCases = (application as App).todoUseCases
                 ) as T
             else throw IllegalArgumentException()
         }

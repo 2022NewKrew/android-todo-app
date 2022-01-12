@@ -22,8 +22,7 @@ class MainFragment : Fragment() {
 
     private val viewModel by activityViewModels<MainViewModel> {
         MainViewModel.MainViewModelFactory(
-            application = requireActivity().application,
-            todoRepository = (requireActivity().application as App).todoRepository
+            application = requireActivity().application
         )
     }
 
